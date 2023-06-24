@@ -1,0 +1,166 @@
+:root{
+    --header_f_size:15px;
+    --header_f_family:"Arboria";
+    --header_f_color:#000;
+    --header_f_color_h:#000;
+    --header_i_height:22px;
+    
+
+    --menu_f_size:14px;
+    --menu_icon_height:154px;
+    --menu_banner_f_size:36px;
+    --menu_banner_f_family:"Arboria";
+    --menu_btn_f_size:12px;
+    --menu_btn_f_family:"Arboria";
+
+    --topbar_f_size:12px;
+    --topbar_f_family:"Arboria-Bold";
+    --topbar_i_height:14px;
+    --topbar_arrow_height: 8.5px;
+
+    --product_list_title_f_size:20px;
+    --product_list_price_f_size:20px;
+    --product_list_price_strike_f_size:12px;
+
+    --slider_circle_arrow_height:30px;
+
+    --product_list_side_banner_title_f_size:48px;
+    --product_list_side_banner_button_f_size:16px;
+
+    --transition:all .3s ease-in;
+
+    --green: #39E241;
+}
+
+/* LI RESET */
+body{
+    background:transparent;
+}
+a:hover,
+a{text-decoration: none;}
+*{box-sizing:border-box}
+.conteiner-principal .conteiner{box-shadow:0px 0px 0px}
+.container,
+.conteiner{
+    max-width:1320px;
+    padding-right: var(--bs-gutter-x,.75rem)!important;
+    padding-left: var(--bs-gutter-x,.75rem)!important;
+}
+
+#barraTopo,
+.barra-inicial{display:none!important;}
+
+
+
+/* [apx_load="functions"] */
+[apx_load="functions"]{}
+[apx_load="functions"] .carrinho{border:0}
+[apx_load="functions"] .carrinho-interno-ajax,
+[apx_load="functions"] span{display:none!important}
+
+[apx_load="functions"] .carrinho > a strong.qtd-carrinho{
+    display: block!important;
+    position: absolute;
+    font-size: 10px;
+    right: -7px;
+    bottom: -7px;
+    top: auto;
+    left: auto;
+    background: #000;
+    color: #fff;
+    line-height: initial;
+    width: 14px;
+    height: 14px;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: bold;
+}
+[apx_load="functions"] button{padding:0;background: transparent;}
+[apx_load="functions"] img{
+    height:var(--header_i_height)
+}
+
+
+
+
+/*
+apx_load="menu"
+apx_load="menu_extra"
+*/
+
+[apx_load="menu_extra"]{}
+[apx_load="menu"] .nivel-um > li > a > strong,
+[apx_load="menu_extra"] nav a{
+    font-size:var(--header_f_size);
+    font-family:var(--header_f_family), Helvetica, sans-serif;
+    color:var(--header_f_color);
+    font-weight:bold;    
+    text-transform: uppercase;
+}
+[apx_load="menu_extra"] nav a:hover{
+    transition: var(--transition);
+}
+
+[apx_load="menu"] .menu.superior{
+    margin: 0;
+    background-color: transparent;
+}
+
+[apx_load="menu"] .nivel-um:before,
+[apx_load="menu"] .nivel-um:after,
+[apx_load="menu"] .icon-chevron-down{display:none!important}
+
+
+[apx_load="menu"] .nivel-um{
+    /* like a row */
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+[apx_load="menu"] .menu.superior .nivel-um > li{
+    /* like a col */
+    box-sizing: border-box;    
+    width: auto;
+    max-width: auto;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+    flex: 0 0  auto;
+    border: 0;
+    float: none;
+    border-right: 0;
+}
+@media(min-width:768px){
+    [apx_load="menu"] .menu.superior .nivel-um > li{
+        padding-right: 1.5rem!important;
+        padding-left: 1.5rem!important;
+    }
+}
+
+/* apx_load="logo" */
+[apx_load="logo"]{}
+[apx_load="logo"] .logo{font-size:initial;line-height:initial}
+[apx_load="logo"] .logo a{height:auto;}
+[apx_load="logo"] .logo img{position: relative;}
+
+
+/* cdsg - header fixed */
+#cdsg_header_fixed{
+    background:#1E1E1E;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    translate: 0 -101%;
+    transition: var(--transition);
+}
+#cdsg_header_fixed.visible{
+    translate: 0 0%;
+}
+[apx_load="functions"].invert img{filter: brightness(0) invert(1);}
+[apx_load="menu"].invert .nivel-um > li > a > strong, [apx_load="menu_extra"].invert nav a{color:#fff}
+[apx_load="functions"].invert .carrinho > a strong.qtd-carrinho{background:var(--green)}
+
