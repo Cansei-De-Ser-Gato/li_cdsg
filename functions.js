@@ -1,8 +1,16 @@
-const CDN_PATH = "https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/";
+//EQUAL HEIGHTS
+!function(a){a.fn.equalHeights=function(){var b=0,c=a(this);return c.each(function(){var c=a(this).innerHeight();c>b&&(b=c)}),c.css("height",b)},a("[data-equal]").each(function(){var b=a(this),c=b.data("equal");b.find(c).equalHeights()})}(jQuery);
 
+const CDN_PATH = "https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/";
+const CMS_PATH = "https://cms-cdsg.up.railway.app/api";
 
 
 let theme = [];
+
+theme.settings = [];
+theme.functions = [];
+theme.pages = [];
+theme.resources = [];
 
 theme.init = function(){
     theme.isMobile = window.innerWidth < 990;
@@ -33,10 +41,110 @@ theme.init = function(){
     theme.icon.filter = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="funnel"><rect width="24" height="24" opacity="0"/><path d="M13.9 22a1 1 0 0 1-.6-.2l-4-3.05a1 1 0 0 1-.39-.8v-3.27l-4.8-9.22A1 1 0 0 1 5 4h14a1 1 0 0 1 .86.49 1 1 0 0 1 0 1l-5 9.21V21a1 1 0 0 1-.55.9 1 1 0 0 1-.41.1zm-3-4.54l2 1.53v-4.55A1 1 0 0 1 13 14l4.3-8H6.64l4.13 8a1 1 0 0 1 .11.46z"/></g></g></svg>';
     theme.icon.seeMore = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="eye"><rect width="24" height="24" opacity="0"/><path d="M21.87 11.5c-.64-1.11-4.16-6.68-10.14-6.5-5.53.14-8.73 5-9.6 6.5a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25c5.53-.14 8.74-5 9.6-6.5a1 1 0 0 0 0-1zM12.22 17c-4.31.1-7.12-3.59-8-5 1-1.61 3.61-4.9 7.61-5 4.29-.11 7.11 3.59 8 5-1.03 1.61-3.61 4.9-7.61 5z"/><path d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5zm0 5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z"/></g></g></svg>';
     theme.icon.close = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="close"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"/></g></g></svg>';
+
+    theme.resources.json = {};
+    theme.resources.json.social = $('.barra-inicial .lista-redes a').map(function(i){
+        return {
+            name : $(this).find('i').attr('class').replace('icon-','').trim(),
+            url : $(this).attr('href')        
+        };
+    }).get();
+
+    theme.resources.json.categories = $('.menu.superior [class^="categoria-id-"] a').map(function(i){
+        return {
+            id : $(this).closest('li').attr('class').replace('com-filho','').replace('borda-principal','').trim(),
+            vitrine: $(this).closest('li').attr('class').replace('com-filho','').replace('borda-principal','').replace('categoria-id','vitrine').trim(),
+            name : $(this).text().trim(),
+            url : $(this).attr('href'),
+            level : $(this).closest('ul').attr('class').replace('borda-alpha','').trim(),
+            parent : !$(this).closest('ul').attr('class').includes('nivel-um') ? $(this).closest('ul').closest('li').attr('class').replace('borda-principal','').replace('com-filho','').trim() : null
+        };
+    }).get();
+
+    theme.resources.json.pages = $('.links-rodape-paginas a').map(function(i){
+        return {
+            name : $(this).text().trim(),
+            url : $(this).attr('href')        
+        };
+    }).get();
+
+
+    $('.banner img').each(function(){
+        let trigger = $(this).attr('alt');           
+        
+        //trigger ICONS
+        if(trigger.includes('[vitrine:')){
+            let regVitrine = /\[vitrine:(.*?)\]/;
+            let regBotao = /\[botao:(.*?)\]/;
+            let regOrdem = /\[ordem:(.*?)\]/;
+            let regPagina = /\[pagina:(.*?)\]/;
+            
+            let vitrine = regVitrine.exec(trigger);
+            let botao = regBotao.exec(trigger);
+            let ordem = regOrdem.exec(trigger);
+            let pagina = regPagina.exec(trigger);
+
+            let removeAfter = $(this).closest('li');            
+            if(!ordem && !pagina && vitrine && botao && theme.currentPage == "pagina-inicial"){
+                let target = theme.resources.json.categories.find(el => el.name == vitrine[1]);
+                if(target){
+                    target = target.vitrine;
+                    console.log(target);
+                    $('.' + target).next('[data-produtos-linha]').wrap('<div class="col-12 col-md-6 px-0"></div>')
+                    $('.' + target).next('.col-md-6').wrap('<div class="banner_'+ target + ' banner_vitrine_home row align-items-center"></div>');
+                    $('.banner_' + target).prepend('<div class="col-12 col-md-6 cdsg_list_side_banner justify-content-center"></div>');
+                    $(this).closest('a').append('<button type="button">'+ botao[1] +'</button>');
+                    $(this).closest('a').appendTo('.banner_' + target + ' .cdsg_list_side_banner');
+                    $('.banner_' + target + ' .cdsg_list_side_banner').append('');
+                    $('.' + target).remove();
+                    removeAfter.remove();   
+                }
+
+            }           
+        }
+
+        //REDUCE IMAGES WHEN HAS A MOBILE VIEW
+        if(!trigger.includes('[mobile]') && theme.isMobile){
+            $(this).closest('li').remove();                        
+        }
+        if(trigger.includes('[mobile]') && !theme.isMobile){
+            $(this).closest('li').remove();                        
+        }
+    });
+
+    if($('.banner.cheio img').length  == 0){
+        $('.banner.cheio').remove()
+    }
+    if($('.secao-banners img').length  == 0){
+        $('.secao-banners').remove()
+    }
 }
 
 
 theme.generateContent = [];
+
+theme.generateContent.categoryIconList = function(prop){
+    let el = $('<div class="items"></div>');
+
+    let category_main = theme.resources.json.categories.find(el => el.name == prop);
+    let category_id = category_main && category_main.id ? category_main.id : false;
+    let categories = false;
+    
+    if(category_id){
+        categories = theme.resources.json.categories.filter(el => el.parent == category_id);
+        if(categories){
+            $.each(categories, function(k_, i_){
+                let icon = false;
+                let item = $('<a href="'+ i_.url+'">'+ i_.name +'</a>');
+                
+                icon ? item.prepend('<img src="https://via.placeholder.com/111x111"/>') : item.prepend('<img src="https://via.placeholder.com/111x111"/>');
+                el.append(item);
+            });
+        }
+    }
+
+    return el.prop('outerHTML');
+};
 
 theme.generateContent.menu = function(){
     return theme.headerMenu;
@@ -61,11 +169,9 @@ theme.generateContent.logo_fixed = function(){
 };
 
 theme.generateContent.menu_extra = function(){
-    //let el = $('<div class="row align-items-center"></div>');
     let el = $('<nav class="d-flex align-items-center row"></nav>');
     el.append('<div class="col px-md-4"><a href="#">Blog</a></div>');
     el.append('<div class="col px-md-4"><a href="#">Atendimento</a></div>');
-    //el.append(nav);
     return el.prop('outerHTML');
 };
 
@@ -81,8 +187,135 @@ theme.generateContent.functions = function(){
 };
 
 
+theme.generateContent.testimonials = function(prop){
+    let el = $('<div class="container"></div>');
+    let cms_testimonials = prop == "store" ? sessionStorage.getItem('cms_testimonials_store') : sessionStorage.getItem('cms_testimonials_' + prop);
+    if(cms_testimonials){    
+        cms_testimonials = JSON.parse(cms_testimonials);        
+        el.append(theme.functions.testimonials(cms_testimonials));
+    }else{
+        console.log(prop);
+        $.ajax({
+            url: CMS_PATH + "/testimonials?populate[order][fields]=client_name&filters[type][$eq]=" +  (prop == "store" ? 'store' : 'product&populate=gallery&[filters][product_sku][$eq]=' + prop) + "&sort[0]=publishedAt%3Adesc&sort[1]=rating",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_testimonials = response.data;
+                sessionStorage.setItem('cms_testimonials_' + (prop == "store" ? "store" : prop),JSON.stringify(cms_testimonials));
+                //el.append(theme.functions.topbar(cms_testimonials));                
+            }
+        });
+    }
+    
+    return el.prop('outerHTML');    
+}
+theme.functions.testimonials = function(cms_testimonials){
+    let items = cms_testimonials;
+    let list = $('<div class="slick-me cdsg_testimonials" data-md-cols="1" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="true" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_black_l.svg' + '"></div>');
+    $.each(items, function(k_, i_){
+        let item = $('<div class="item"></div>');
+        if(i_.gallery && i_.gallery.data.length > 0){
+            let gallery = $('<div class="gallery"></div>');
+            $.each(i_.gallery.data, function(k__,i__){
+                gallery.append('<a href="'+ i__.attributes.url +'"><img src="'+ i__.attributes.formats.thumbnail.url +'"/></a>')
+            });
+            item.append(gallery);
+        }
+        i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
+        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
+
+        list.append(item);      
+    });
+    return list;
+}
+
+theme.generateContent.benefits = function(){
+    let el = $('<div class="container"></div>');
+    let cms_benefits = sessionStorage.getItem('cms_benefits');
+    if(cms_benefits){    
+        cms_benefits = JSON.parse(cms_benefits);        
+        //el.append(theme.functions.benefits(cms_benefits));
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/benefit-stripe",   
+            method: 'GET'         
+        }).done(function(response){
+            console.log(response.data);
+            if(response.data){
+                cms_benefits = response.data;
+                sessionStorage.setItem('cms_benefits',JSON.stringify(cms_benefits));
+                el.append(theme.functions.topbar(cms_benefits));                
+            }
+        });
+    }
+    el.get(0).style.setProperty('--cms_benefits_text_color', cms_benefits.text_color);
+    el.get(0).style.setProperty('--cms_benefits_background_color', cms_benefits.background_color);
+    return el.prop('outerHTML');    
+}
+theme.functions.benefits = function(cms_benefits){
+    let items = cms_testimonials;
+    let list = $('<div class="slick-me cdsg_benefits" data-md-cols="0" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="false" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_indigo.svg' + '"></div>');
+    $.each(items, function(k_, i_){
+        let item = $('<div class="item"></div>');
+        if(i_.gallery && i_.gallery.data.length > 0){
+            let gallery = $('<div class="gallery"></div>');
+            $.each(i_.gallery.data, function(k__,i__){
+                gallery.append('<a href="'+ i__.attributes.url +'"><img src="'+ i__.attributes.formats.thumbnail.url +'"/></a>')
+            });
+            item.append(gallery);
+        }
+        i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
+        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
+
+        list.append(item);      
+    });
+    return list;
+}
+
+
+
+
 
 theme.build = [];
+
+theme.build.topbar = function(){
+    $('#cdsg_header_default').prepend('<div class="cdsg_topbar py-md-3"></div>');
+    let el = $('<div class="container"></div>');
+    let items = false;
+    let cms_topbar = sessionStorage.getItem('cms_topbar');
+    if(cms_topbar){    
+        cms_topbar = JSON.parse(cms_topbar);        
+        el.append(theme.functions.topbar(cms_topbar));
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/topbar?populate[items][populate][0]=icon",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_topbar = response.data.attributes;
+                sessionStorage.setItem('cms_topbar',JSON.stringify(cms_topbar));
+                el.append(theme.functions.topbar(cms_topbar));                
+            }
+        });
+    }
+    el.appendTo('.cdsg_topbar');
+}
+theme.functions.topbar = function(cms_topbar){
+    let items = cms_topbar.items;
+    $('.cdsg_topbar').get(0).style.setProperty('--cms_topbar_text_color', cms_topbar.text_color);
+    $('.cdsg_topbar').get(0).style.setProperty('--cms_topbar_background_color', cms_topbar.background_color);
+    let list = $('<div class="slick-me" data-md-cols="1" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="false" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="false" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'topbar_arrow_l.svg' + '"></div>');
+    $.each(items, function(k_, i_){
+        let item = $('<div class="item"></div>');
+        i_.icon != null && i_.icon.data != null ? item.append('<img src="'+ i_.icon.data.attributes.url +'"/>') : false;
+        i_.text != null ? item.append('<span>'+ i_.text +'</span>') : false;
+        i_.url != null ? item.innerWrap('<a href="'+ i_.url +'"></a>') : false;
+
+        list.append(item);      
+    });
+    return list;
+}
+
 
 theme.build.header = function(){
     $('#cabecalho').html(''+
@@ -135,36 +368,283 @@ theme.build.header = function(){
    
 };
 
+theme.settings.imageRatio = 1.3;
+theme.build.productList = function(){
+    $('.listagem-linha > ul > li:first-child').unwrap();
+    $('.listagem-linha > li:first-child').unwrap();
+
+    $('[data-produtos-linha]').addClass('row');
+    $('[data-produtos-linha] > li').addClass('col-6 col-md-3 mb-md-4 mb-3');
+    $('[data-produtos-linha] > li').removeClass('span3');
+
+    $('.listagem-item .imagem-produto img').each(function(){
+        let src = $(this).attr('src').replace('300x300','600x600');
+        $(this).attr('src',src);
+    });
+
+    let h = $('.listagem-item .imagem-produto').first().innerWidth() * theme.settings.imageRatio;
+    $('.listagem-item .imagem-produto').css('--ratio',theme.settings.imageRatio);
+    $('.listagem-item .imagem-produto').css('height',h + 'px');   
+
+    theme.functions.productListLoadColors();
+};
+
+
+
 theme.build.footer = function(){
     $('#rodape').prepend('<div id="cdsg_footer"></div>');
     $('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
    
 };
 
-theme.functions = [];
+theme.build.sliders = function(){
+    $('.cdsg_list_side_banner').next('div').find('[data-produtos-linha]:not(.slick-slider)').slick({
+        responsive: [
+            {
+                breakpoint: 990,
+                settings: {
+                    infinite: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: false,
+                    arrows: true,
+                    autoplay: true,
+                    autoplaySpeed: 3000
+                }
+            }
+        ],
+        infinite: true,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>"
+    });
 
+    //$('[data-produtos-linha].slick-slider .nome-produto').css('height','auto');
+        
+
+    $('.pagina-inicial').find('[data-produtos-linha]:not(.slick-slider)').slick({
+        responsive: [
+            {
+                breakpoint: 990,
+                settings: {
+                    infinite: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: false,
+                    arrows: true,
+                    autoplay: true,
+                    autoplaySpeed: 3000
+                }
+            }
+        ],
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>"
+    });
+
+    $('.slick-me:not(.slick-slider)').each(function(){
+        let oObj = $(this);
+        let settings = {};
+        settings.responsive = [];
+        let md = {};
+        let sm = {};
+
+        
+        if(parseInt(oObj.attr('data-md-cols')) < 1){
+            settings.responsive.push({
+                breakpoint:9999,
+                settings:'unslick'
+            })
+        }else{
+            settings.infinite = oObj.attr('data-md-infinite') == "true" ? true : false;
+            settings.slidesToShow = oObj.attr('data-md-slidesToShow') ? parseInt(oObj.attr('data-md-slidesToShow')) : 1;
+            settings.slidesToScroll = oObj.attr('data-md-slidesToScroll') ? parseInt(oObj.attr('data-md-slidesToScroll')) : 1;
+            settings.dots = oObj.attr('data-md-dots') == "true" ? true : false;
+            settings.arrows = oObj.attr('data-md-arrows') == "true" ? true : false;
+            settings.autoplay = oObj.attr('data-md-delay') && parseInt(oObj.attr('data-md-delay')) > 0 ? true : false;
+            settings.autoplaySpeed = oObj.attr('data-md-delay') && parseInt(oObj.attr('data-md-delay')) > 0 ? parseInt(oObj.attr('data-md-delay')) : 5000;
+        }
+        
+        sm.breakpoint = 990;
+        if(parseInt(oObj.attr('data-sm-cols')) < 1){
+            sm.settings = "unslick";
+        }else{
+            sm.settings = {};
+            sm.settings.infinite = oObj.attr('data-sm-infinite') == "true" ? true : false;
+            sm.settings.slidesToShow = oObj.attr('data-sm-slidesToShow') ? parseInt(oObj.attr('data-sm-slidesToShow')) : 1;
+            sm.settings.slidesToScroll = oObj.attr('data-sm-slidesToScroll') ? parseInt(oObj.attr('data-sm-slidesToScroll')) : 1;
+            sm.settings.dots = oObj.attr('data-sm-dots') == "true" ? true : false;
+            sm.settings.arrows = oObj.attr('data-sm-arrows') == "true" ? true : false;
+            sm.settings.autoplay = oObj.attr('data-sm-delay') && parseInt(oObj.attr('data-sm-delay')) > 0 ? true : false;
+            sm.settings.autoplaySpeed = oObj.attr('data-sm-delay') && parseInt(oObj.attr('data-sm-delay')) > 0 ? parseInt(oObj.attr('data-sm-delay')) : 5000;
+
+        }
+
+        settings.responsive.push(sm);
+
+        if(oObj.attr('data-arrow-image')){
+            settings.prevArrow = '<button type="button" class="apx_arrow prev"><img src="' + oObj.attr('data-arrow-image') + '"/></button>';
+            settings.nextArrow= '<button type="button" class="apx_arrow next"><img src="' + oObj.attr('data-arrow-image') + '"/></button>';
+        }
+        console.log(settings);
+        $(this).slick(settings);
+    });
+};
+
+theme.functions.productDataById = function(_id){
+    let product = null;
+    $.ajax({
+        url: window.API_PRODUCT_PUBLIC_URL + "/" + _id,
+        headers: {
+            "x-store-id": window.LOJA_ID
+        }            
+    }).done(function(response){
+        if(response.data){
+            product = response.data;            
+            return product
+        }
+    });
+    console.log(product);
+    return product;
+};
+
+theme.functions.productListLoadColors = function(){
+    $('.listagem-item .info-produto').prepend('<div class="cdsg_colors"></div>');
+    
+    $('.listagem-item').each(function(){
+        let _id = $(this).find('[data-trustvox-product-code]').attr('data-trustvox-product-code');
+        let me = $(this);
+        let colors = false;
+        if(_id){
+            if(sessionStorage.getItem('colors_' + _id) && sessionStorage.getItem('colors_' + _id) != "false"){
+                if(sessionStorage.getItem('colors_' + _id) != "empty"){
+                    colors = JSON.parse(sessionStorage.getItem('colors_' + _id));
+                    theme.functions.productListSetColors(colors, me);
+                }
+            }else{
+                $.ajax({
+                    url: window.API_PRODUCT_PUBLIC_URL + "/" + _id,
+                    headers: {
+                        "x-store-id": window.LOJA_ID
+                    }            
+                }).done(function(response){
+                    if(response.data){
+                        product = response.data;            
+                        if(product.skus[0].variations.find(el => el.grid.value_for_display == "Cor")){
+                            let colors_ = [];
+                            $.each(product.skus, function(k_, i_){
+                                $.each(i_.variations.filter(el => el.grid.value_for_display == "Cor"), function(k__, i__){
+                                    colors_.push(i__.value);
+                                });
+                            });
+                            sessionStorage.setItem('colors_' + _id, JSON.stringify(colors_));
+                            theme.functions.productListSetColors(colors_, me);
+                        }else{
+                            sessionStorage.setItem('colors_' + _id, 'empty');    
+                        }
+                    }else{
+                        sessionStorage.setItem('colors_' + _id, 'empty');
+                    }
+                });
+            }
+        }
+    });    
+};
+
+theme.pages['pagina-inicial'] = function(){
+    
+    $('#corpo').prepend('<div class="container" class="cdsg_home-categoryIconList"><div class="row cdsg_categoryIconListHeader"><div class="col-md-8"><h3>Para Gatos</h3></div><div class="col-md-4"><h3>Para Humanos</h3></div></div><div class="row"><div class="col-md-8"><div apx_load="categoryIconList" apx_load_prop="PARA GATOS" class="cdsg_categoryIconList"></div></div><div class="col-md-4"><div apx_load="categoryIconList" apx_load_prop="PARA HUMANOS" class="cdsg_categoryIconList"></div></div></div><hr></hr></div>');
+
+    $('.vitrine-mas-vendido, .vitrine-mas-vendido + ul').wrapAll('<div class="box-mais-vendidos"></div>');
+    $('.box-mais-vendidos').appendTo('#listagemProdutos');
+    $('.secao-secundaria').append('<div class="container"><div apx_load="testimonials" apx_load_prop="store" class="cdsg_testimonials"></div></div>');
+    $('.secao-secundaria').append('<div class="container"><div apx_load="benefits" class="cdsg_benefits"></div></div>');
+    $('.secao-secundaria').append('<div class="container"><div class="row"><div class="col-12 col-md-8"><div apx_load="blog" class="cdsg_blog"></div></div><div class="col-12 col-md-4"><div apx_load="podcast" class="cdsg_podcast"></div></div></div></div>');
+    $('.secao-secundaria').append('<div class="container"><div apx_load="" class="cdsg_benefits"></div></div>');
+    $('#rodape').before('<div class="container mt-3 mb-5"><div class="row align-items-center justify-content-between"><div class="col-12 col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-12 col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="cdsg_instagram"></div></div>');
+    
+};
+
+
+
+theme.functions.productListSetColors = function(colors, me){
+    let block = $('<div></div>');
+    $.each(colors, function(k_, i_){
+        if(i_.codes.secondary != null){
+            block.append('<span style="background: linear-gradient( -45deg, '+ i_.codes.primary+', '+ i_.codes.primary+' 50%,  '+ i_.codes.secondary+' 50% ); "></span>')
+        }else{
+            block.append('<span style="background-color:'+ i_.codes.primary +'"></span>');
+        }
+    });
+    me.find('.cdsg_colors').append(block);
+};
 
 $(document).ready(function(){
     theme.init();
-
+    
     theme.build.header();
+    theme.build.topbar();
     theme.build.footer();
-       
-});
+    theme.build.productList();
+    
 
-$(window).load(function(){
+    try{
+        theme.pages[theme.currentPage]();
+    }catch(e){
+        console.log('Page Function Err: ' + e)
+    }
+
+
     $('[apx_load]').each(function(){
         let load = $(this).attr('apx_load');
 
         try{
-            if(theme.generateContent[load]){
+            if(theme.generateContent[load]){                
                 $(this).append(theme.generateContent[load]($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''));
             }
         }catch(e){
             console.log(e);
         }        
-    });
+    });    
+       
+    theme.build.sliders();
+    theme.build.afterLoad();
 });
+
+$(window).load(function(){
+    $('[apx_load]:empty').each(function(){
+        let load = $(this).attr('apx_load');
+        console.log(load, $(this).attr('apx_load_prop'));
+        try{
+            if(theme.generateContent[load]){                
+                $(this).append(theme.generateContent[load]($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''));
+            }
+        }catch(e){
+            console.log(e);
+        }        
+    });    
+       
+    theme.build.sliders();
+});
+
+theme.build.afterLoad = function(){
+    $('[data-produtos-linha]:not(.slick-slider)').each(function(){
+        $(this).find('.nome-produto').equalHeights();
+    });
+    
+}
+
 
 $.fn.isInViewport = function() {
     var elementTop = $(this).offset().top;
