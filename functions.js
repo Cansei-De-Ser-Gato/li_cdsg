@@ -123,7 +123,7 @@ theme.init = function(){
 
 theme.generateContent = [];
 
-theme.generateContent.categoryIconList = function(prop){
+theme.generateContent.categoryIconList = function(prop, oObj){
     let el = $('<div class="items"></div>');
 
     let category_main = theme.resources.json.categories.find(el => el.name == prop);
@@ -146,11 +146,11 @@ theme.generateContent.categoryIconList = function(prop){
     return el.prop('outerHTML');
 };
 
-theme.generateContent.menu = function(){
+theme.generateContent.menu = function(prop, oObj){
     return theme.headerMenu;
 };
 
-theme.generateContent.logo = function(prop){
+theme.generateContent.logo = function(prop, oObj){
     let el = $(theme.logo);
 
     if(prop == 'fixed'){
@@ -162,20 +162,26 @@ theme.generateContent.logo = function(prop){
     return el;
 };
 
-theme.generateContent.logo_fixed = function(){
+theme.generateContent.social = function(prop, oObj){
+    let el = $('<div>Nos acompanhe '+ theme.socialIcons +'</div>');
+    return el;
+};
+
+
+theme.generateContent.logo_fixed = function(prop, oObj){
     let el = $(theme.logo);
     el.find('img').attr('src',CDN_PATH + 'logo_fixo.svg');
     return el;
 };
 
-theme.generateContent.menu_extra = function(){
+theme.generateContent.menu_extra = function(prop, oObj){
     let el = $('<nav class="d-flex align-items-center row"></nav>');
     el.append('<div class="col px-md-4"><a href="#">Blog</a></div>');
     el.append('<div class="col px-md-4"><a href="#">Atendimento</a></div>');
     return el.prop('outerHTML');
 };
 
-theme.generateContent.functions = function(){
+theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
     el.append('<div class="col"><button type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button></div>');
     el.append('<div class="col"><a href="#"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
@@ -187,12 +193,13 @@ theme.generateContent.functions = function(){
 };
 
 
-theme.generateContent.testimonials = function(prop){
+theme.generateContent.testimonials = function(prop, oObj){
     let el = $('<div class="container"></div>');
     let cms_testimonials = prop == "store" ? sessionStorage.getItem('cms_testimonials_store') : sessionStorage.getItem('cms_testimonials_' + prop);
     if(cms_testimonials){    
         cms_testimonials = JSON.parse(cms_testimonials);        
         el.append(theme.functions.testimonials(cms_testimonials));
+        oObj.html(el.prop('outerHTML'));
     }else{
         console.log(prop);
         $.ajax({
@@ -202,12 +209,10 @@ theme.generateContent.testimonials = function(prop){
             if(response.data){
                 cms_testimonials = response.data;
                 sessionStorage.setItem('cms_testimonials_' + (prop == "store" ? "store" : prop),JSON.stringify(cms_testimonials));
-                //el.append(theme.functions.topbar(cms_testimonials));                
+                theme.generateContent.testimonials(prop,oObj);
             }
         });
     }
-    
-    return el.prop('outerHTML');    
 }
 theme.functions.testimonials = function(cms_testimonials){
     let items = cms_testimonials;
@@ -229,44 +234,41 @@ theme.functions.testimonials = function(cms_testimonials){
     return list;
 }
 
-theme.generateContent.benefits = function(){
+theme.generateContent.benefits = function(prop, oObj){
     let el = $('<div class="container"></div>');
     let cms_benefits = sessionStorage.getItem('cms_benefits');
     if(cms_benefits){    
-        cms_benefits = JSON.parse(cms_benefits);        
-        //el.append(theme.functions.benefits(cms_benefits));
+        cms_benefits = JSON.parse(cms_benefits);   
+        console.log('local benefits', cms_benefits)     
+        el.get(0).style.setProperty('--cms_benefits_text_color', cms_benefits.attributes.text_color);
+        el.get(0).style.setProperty('--cms_benefits_background_color', cms_benefits.attributes.background_color);
+        el.append(theme.functions.benefits(cms_benefits));        
+        oObj.html(el.prop('outerHTML'));
     }else{
         $.ajax({
-            url: CMS_PATH + "/benefit-stripe",   
+            url: CMS_PATH + "/benefit-stripe?populate=deep",   
             method: 'GET'         
         }).done(function(response){
             console.log(response.data);
             if(response.data){
                 cms_benefits = response.data;
                 sessionStorage.setItem('cms_benefits',JSON.stringify(cms_benefits));
-                el.append(theme.functions.topbar(cms_benefits));                
+                console.log('ixi boy')
+                theme.generateContent.benefits(prop,oObj);
             }
         });
-    }
-    el.get(0).style.setProperty('--cms_benefits_text_color', cms_benefits.text_color);
-    el.get(0).style.setProperty('--cms_benefits_background_color', cms_benefits.background_color);
-    return el.prop('outerHTML');    
-}
+    } 
+};
+
 theme.functions.benefits = function(cms_benefits){
-    let items = cms_testimonials;
-    let list = $('<div class="slick-me cdsg_benefits" data-md-cols="0" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="false" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_indigo.svg' + '"></div>');
+    let items = cms_benefits.attributes.benefits;
+    let list = $('<div class="slick-me cdsg_benefits my-4" data-md-cols="0" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="false" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_indigo.svg' + '"></div>');
     $.each(items, function(k_, i_){
         let item = $('<div class="item"></div>');
-        if(i_.gallery && i_.gallery.data.length > 0){
-            let gallery = $('<div class="gallery"></div>');
-            $.each(i_.gallery.data, function(k__,i__){
-                gallery.append('<a href="'+ i__.attributes.url +'"><img src="'+ i__.attributes.formats.thumbnail.url +'"/></a>')
-            });
-            item.append(gallery);
+        if(i_.image && i_.image.data){
+            item.append($('<div class="image"><img src="'+ i_.image.data.attributes.url +'"/></div>'));
         }
-        i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
-        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
-
+        i_.text != null ? item.append('<p>'+ i_.text +'</p>') : false;
         list.append(item);      
     });
     return list;
@@ -393,6 +395,8 @@ theme.build.productList = function(){
 
 theme.build.footer = function(){
     $('#rodape').prepend('<div id="cdsg_footer"></div>');
+    $('#barraNewsletter .interno-conteudo').append('<div apx_load="social" class="cdsg_social"></div>');
+    $('#barraNewsletter .componente').append('<img src="'+ CDN_PATH + 'newsletter.png'+'"/>');
     $('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
    
 };
@@ -608,10 +612,11 @@ $(document).ready(function(){
 
     $('[apx_load]').each(function(){
         let load = $(this).attr('apx_load');
-
+        let me = $(this);
+        console.log(me);
         try{
             if(theme.generateContent[load]){                
-                $(this).append(theme.generateContent[load]($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''));
+                $(this).append(theme.generateContent[load](($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''),me));
             }
         }catch(e){
             console.log(e);
@@ -625,10 +630,11 @@ $(document).ready(function(){
 $(window).load(function(){
     $('[apx_load]:empty').each(function(){
         let load = $(this).attr('apx_load');
+        let me = $(this);
         console.log(load, $(this).attr('apx_load_prop'));
         try{
             if(theme.generateContent[load]){                
-                $(this).append(theme.generateContent[load]($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''));
+                $(this).append(theme.generateContent[load](($(this).attr('apx_load_prop') ? $(this).attr('apx_load_prop') : ''),me));
             }
         }catch(e){
             console.log(e);

@@ -56,6 +56,13 @@
 
     --testimonial_content_f_size:18px;
     --testimonial_name_f_size:14px;
+
+    --benefits_f_size:13px;
+
+    --newsletter_text_f_size:20px;
+    --newsletter_title_f_size:32px;
+
+    --newsletter_btn_f_size:18px;
 }
 
 /* LI RESET */
@@ -583,7 +590,7 @@ apx_load="menu_extra"
 
 /* apx_load="testimonials" */
 
-[apx_load="testimonials"]{margin:0 0 3rem 0}
+[apx_load="testimonials"]{margin:2rem 0 8rem 0}
 [apx_load="testimonials"] .item:before,
 [apx_load="testimonials"] .item:after{
     content: "";
@@ -637,4 +644,128 @@ apx_load="menu_extra"
 [apx_load="testimonials"] .slick-dots .slick-active{}
 [apx_load="testimonials"] .slick-dots .slick-active button{
     border: 3px solid var(--green);
+}
+
+/* apx_load="benefits" */
+[apx_load="benefits"]{}
+[apx_load="benefits"] > .container{position: relative;}
+[apx_load="benefits"] > .container:before{
+    content:"";
+    height:100%;
+    width: 100vw;
+    left: 50%;
+    translate: -50%;
+    top: 0;
+    background: var(--cms_benefits_background_color);
+    position: absolute;
+}
+[apx_load="benefits"] *{
+    color: var(--cms_benefits_text_color);
+}
+[apx_load="benefits"] .item .image{
+    display: flex;
+    height: 80px;
+    align-items: flex-end;
+    justify-content: center;
+    margin: 0 0 1rem 0;
+}
+[apx_load="benefits"] .item .image img{
+    width: auto;
+    height: auto;
+}
+[apx_load="benefits"] .item p{}
+[apx_load="benefits"] .cdsg_benefits{position: relative;z-index:1}
+
+.cdsg_benefits .item{
+    position: relative;
+    justify-content: center;
+    padding: 0 1.5rem;
+}
+.cdsg_benefits .item p{
+    font-size: var(--benefits_f_size);
+    font-weight: bold;
+    text-align: center;
+}
+@media(min-width:990px){
+    .cdsg_benefits{
+        display:flex;
+    }
+    .cdsg_benefits .item{
+        position: relative;
+        flex: 1 1 16.6666666666666666666%;
+    }
+    .cdsg_benefits .item:not(:last-child):before{
+        content: "";
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 1px;
+        background: var(--cms_benefits_text_color);
+        position: absolute;
+        display: block;
+        opacity: .3;
+    }
+}
+
+/* newsletter footer */
+#barraNewsletter,
+#barraNewsletter .conteiner,
+#barraNewsletter.posicao-rodape .conteiner,
+#barraNewsletter .componente{
+    background-color: transparent!important;
+    box-shadow: 0px 0px 0px;
+}
+#barraNewsletter .componente .texto-newsletter.newsletter-cadastro:before{
+    content:"Receba nossas novidades";
+    font-size:var(--newsletter_title_f_size);
+    font-weight: bold;
+    color: #000;
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+}
+#barraNewsletter .componente .texto-newsletter, #barraNewsletter .componente .input-conteiner{
+    text-align: left;
+    font-size:var(--newsletter_text_f_size);
+    color: #000;
+    font-weight: 400;
+}
+#barraNewsletter.posicao-rodape .componente .interno-conteudo {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+#barraNewsletter .componente div.newsletter-cadastro{
+    width: 100%;
+    display: flex;
+    gap: 0;
+}
+#barraNewsletter .componente input[type="text"]{
+    height: 52px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px 0 0 10px;
+    background: #f9f9f9;
+    box-shadow: unset;
+    max-width: unset;
+    width: 100%;
+    margin: 0;
+}
+#barraNewsletter .componente .newsletter-assinar:after{
+    content: "Me conta, chico.";
+    text-transform: uppercase;
+    line-height: initial;
+    font-size:var(--newsletter_btn_f_size);
+    font-family:var(--body_f_family)
+}
+#barraNewsletter .componente .newsletter-assinar{
+    background: var(--green);
+    border-radius: 0 10px 10px 0;
+    margin: 0;
+    padding: 0 3rem;
+    border: 0;
+    position: relative;
+    font-size: 0;
 }
