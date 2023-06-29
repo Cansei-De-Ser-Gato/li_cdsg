@@ -23,7 +23,7 @@ theme.init = function(){
     theme.currentPage = $('body').attr('class').split(' ')[0].trim();
     theme.searchForm = $('<div></div>').append($('#cabecalho .busca #form-buscar').clone()).html();
     theme.socialIcons = $('<div></div>').append($('.barra-inicial .lista-redes a').clone()).html();
-    theme.footerSeals = $('<div></div>').append($('#rodape .selos').clone()).html();
+    theme.footerSeals = $('<div></div>').append($('#rodape .selos ul').clone()).html();
     theme.footerPayments = $('<div></div>').append($('#rodape .bandeiras-pagamento').clone()).html();
     theme.footerGateways = $('<div></div>').append($('#rodape .gateways-rodape').clone()).html();
     theme.headerMenu = $('<div></div>').append($('.menu.superior').clone()).html();
@@ -162,8 +162,14 @@ theme.generateContent.logo = function(prop, oObj){
     return el;
 };
 
+theme.generateContent.load_img = function(prop, oObj){
+    let el = $('<img src="'+ CDN_PATH + prop +'"/>');
+
+    return el;
+};
+
 theme.generateContent.social = function(prop, oObj){
-    let el = $('<div>Nos acompanhe '+ theme.socialIcons +'</div>');
+    let el = $('<div>Nos acompanhe <div>'+ theme.socialIcons +'</div></div>');
     return el;
 };
 
@@ -181,6 +187,55 @@ theme.generateContent.menu_extra = function(prop, oObj){
     return el.prop('outerHTML');
 };
 
+
+theme.generateContent.footer_payments = function(prop, oObj){
+    return theme.footerPayments;
+};
+theme.generateContent.footer_secure = function(prop, oObj){
+    return theme.footerSeals;
+};
+theme.generateContent.contact_phone = function(prop, oObj){
+    return 'Telefone: <b>' + theme.storePhone + '</b>';
+};
+theme.generateContent.contact_hour = function(prop, oObj){
+    return 'Seg a Sex - 9h às 18h.';
+};
+theme.generateContent.contact_mail = function(prop, oObj){
+    return '<a href="">Mande um oi aqui</a>';
+};
+
+theme.generateContent.find_where_form = function(prop, oObj){
+    let el = $('<form action=""><div class="d-flex w-100"><input type="text" placeholder="Informe seu CEP ou Cidade" required minlength="5" maxlength="20"><button type="submit">Buscar</button></div></form>');
+    return el;
+};
+
+theme.generateContent.menu_footer = function(prop, oObj){
+    let el = $('<ul></ul>');
+    if(prop == "DÚVIDAS?"){
+        for(let i = 1; i <= theme.resources.json.pages.length; i++){
+            if(theme.resources.json.pages[i].name.includes('O CANSEI DE SER GATO')){
+                i = theme.resources.json.pages.length
+            }else{
+                el.append('<li><a href="'+ theme.resources.json.pages[i].url +'">'+ theme.resources.json.pages[i].name +'</a></li>')
+            }
+        }
+    }
+    if(prop == "O CANSEI DE SER GATO"){
+        let i = theme.resources.json.pages.findIndex(el => el.name == '[O CANSEI DE SER GATO]');
+        if(i !== -1){
+            let pages = theme.resources.json.pages.slice(i + 1, theme.resources.json.pages.length);
+            console.log(pages)
+            for(let i = 0; i <= pages.length; i++){
+                if(pages[i]){
+                    el.append('<li><a href="'+ pages[i].url +'">'+ pages[i].name +'</a></li>');
+                }
+            }
+        }
+        
+    }
+    return el.prop('outerHTML');
+};
+
 theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
     el.append('<div class="col"><button type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button></div>');
@@ -191,6 +246,47 @@ theme.generateContent.functions = function(prop, oObj){
     el.find('.carrinho .icon-shopping-cart').remove();
     return el.prop('outerHTML');
 };
+
+theme.generateContent.instafeed = function(prop, oObj){
+    let el = $('<div class="container"></div>');
+    let instafeed = sessionStorage.getItem('instafeed');
+    if(instafeed){    
+        instafeed = JSON.parse(instafeed);        
+        el.append(theme.functions.instafeed(instafeed));
+        oObj.html(el.prop('outerHTML'));
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/testimonials",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                instafeed = response.data;
+                sessionStorage.setItem('instafeed',JSON.stringify(instafeed));
+                theme.generateContent.instafeed(prop,oObj);
+            }
+        });
+    }
+}
+
+theme.functions.instafeed = function(instafeed){
+    let items = instafeed;
+    let list = $('<div class="slick-me cdsg_instafeed" data-md-cols="5" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="true" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_black_l.svg' + '"></div>');
+    $.each(items, function(k_, i_){
+        let item = $('<div class="item"></div>');
+        if(i_.gallery && i_.gallery.data.length > 0){
+            let gallery = $('<div class="gallery"></div>');
+            $.each(i_.gallery.data, function(k__,i__){
+                gallery.append('<a href="'+ i__.attributes.url +'"><img src="'+ i__.attributes.formats.thumbnail.url +'"/></a>')
+            });
+            item.append(gallery);
+        }
+        i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
+        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
+
+        list.append(item);      
+    });
+    return list;
+}
 
 
 theme.generateContent.testimonials = function(prop, oObj){
@@ -279,6 +375,11 @@ theme.functions.benefits = function(cms_benefits){
 
 
 theme.build = [];
+
+theme.build.sideHelp = function(){
+    let el = $('<div class="cdsg_sideHelp"><div class="triggers"><div><button type="button"><span><i></i>Ajuda?</span></button><div class="cdsg_sideHelp-menu"><div><div><div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b></div><button type="button" class="close"></div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div></div><a href="#"><div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a></div></div>');
+    el.appendTo('body');
+}
 
 theme.build.topbar = function(){
     $('#cdsg_header_default').prepend('<div class="cdsg_topbar py-md-3"></div>');
@@ -394,9 +495,10 @@ theme.build.productList = function(){
 
 
 theme.build.footer = function(){
+    $('#rodape > *:not(div:last-child)').remove();
     $('#rodape').prepend('<div id="cdsg_footer"></div>');
     $('#barraNewsletter .interno-conteudo').append('<div apx_load="social" class="cdsg_social"></div>');
-    $('#barraNewsletter .componente').append('<img src="'+ CDN_PATH + 'newsletter.png'+'"/>');
+    $('#barraNewsletter .componente').prepend('<img src="'+ CDN_PATH + 'newsletter.png'+'"/>');
     $('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
    
 };
@@ -601,6 +703,8 @@ $(document).ready(function(){
     theme.build.topbar();
     theme.build.footer();
     theme.build.productList();
+    theme.build.sideHelp();
+    
     
 
     try{

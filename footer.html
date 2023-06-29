@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-5">
     <div class="row align-items-start justify-content-between">
         <div class="col-auto">
             <h4>Dúvidas</h4>
@@ -8,34 +8,38 @@
             <h4>O Cansei de Ser Gato</h4>
             <div apx_load="menu_footer" apx_load_prop="O CANSEI DE SER GATO"></div>
             <h4>Onde encontrar nossos produtos</h4>
-            <form action="">
-                <div class="d-flex">
-                    <input type="text" placeholder="Informe seu CEP ou Cidade" required minlength="5" maxlength="20">
-                    <button type="submit">Buscar</button>
-                </div>
-            </form>
+            <div apx_load="find_where_form"></div>
+            
         </div>
         <div class="col-auto">
             <h4>Fale Conosco</h4>
             <p>Compre ou tire suas dúvidas por WhatsApp</p>
-            <div class="row">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-2">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
                             <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div>
                         </div>
                         <div class="col-auto">
-                            <div apx_load="contact_phone"></div>
+                            <div apx_load="contact_phone" class="mb-2"></div>
                             <div apx_load="contact_hour"></div>
                         </div>
-                        <div class="col-auto">
-                            <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div>
-                        </div>
+                        
                     </div>
                 </div>
+                <div class="col-auto">
+                    <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div>
+                </div>
+            </div>
+            <div class="row mt-4">
                 <div class="col-12">
-                    <div class="col-2">
-                        <div apx_load="load_img" apx_load_prop="footer_email.svg"></div>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div apx_load="load_img" apx_load_prop="footer_email.svg"></div>
+                        </div>
+                        <div class="col-auto">
+                            <div apx_load="contact_mail"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,7 +47,7 @@
     </div>
 </div>
 <hr></hr>
-<div class="container">
+<div class="container footer_bottom pb-4">
     <div class="row align-items-center justify-content-between">
         <div class="col-auto d-flex align-items-center">
             <h4 class="me-md-4">Formas de pagamento</h4>
@@ -51,7 +55,7 @@
         </div>
         <div class="col-auto d-flex align-items-center">
             <h4 class="me-md-4">Segurança</h4>
-            <div apx_load="footer_payments"></div>
+            <div apx_load="footer_secure"></div>
         </div>
     </div>
 </div>

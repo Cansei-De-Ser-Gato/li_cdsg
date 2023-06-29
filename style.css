@@ -63,6 +63,9 @@
     --newsletter_title_f_size:32px;
 
     --newsletter_btn_f_size:18px;
+
+    --footer_title_f_size:20px;
+    --footer_menu_f_size:14px;
 }
 
 /* LI RESET */
@@ -78,7 +81,8 @@ body,
 button, a,
 p,
 span,
-div{
+div,
+input{
     font-family:var(--body_f_family);
     font-size:var(--body_f_size);
 }
@@ -752,6 +756,8 @@ apx_load="menu_extra"
     max-width: unset;
     width: 100%;
     margin: 0;
+    padding: 0 1.5rem;
+    font-size:var(--newsletter_btn_f_size);
 }
 #barraNewsletter .componente .newsletter-assinar:after{
     content: "Me conta, chico.";
@@ -769,3 +775,148 @@ apx_load="menu_extra"
     position: relative;
     font-size: 0;
 }
+#barraNewsletter .componente.newsletter{
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+/* apx_load="social" */
+[apx_load="social"]{}
+[apx_load="social"] > div{
+    font-size:var(--newsletter_text_f_size);
+    color: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+[apx_load="social"] > div > div{
+    display: flex;
+    gap: 10px;
+}
+[apx_load="social"] > div a{
+    color: #000;
+    font-size: 16px;
+}
+
+/* footer */
+#rodape #cdsg_footer{
+    background: #F2F2F2;
+    border-top: 1px solid #d9d9d9;
+    color: #1e1e1e;
+}
+#rodape #cdsg_footer h4{
+    font-size: var(--footer_title_f_size);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    margin-bottom: 1.5rem;
+}
+[apx_load="menu_footer"]{}
+[apx_load="menu_footer"] ul{
+    padding: 0;
+    margin: 0 0 3.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+[apx_load="menu_footer"] ul:after{display: none;}
+[apx_load="menu_footer"] ul li{}
+[apx_load="menu_footer"] ul li a{
+    font-size: var(--footer_menu_f_size);
+    color: #1e1e1e;
+    text-transform: uppercase;
+}
+
+
+
+
+/* apx_load="find_where_form" */
+[apx_load="find_where_form"] form{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+[apx_load="find_where_form"] input::placeholder{color:#000;}
+[apx_load="find_where_form"] input{
+    border-radius: 52px 0 0 52px ;
+    height: 52px;
+    font-size: var(--footer_menu_f_size);
+    border: 0;
+    padding: 0 1rem;
+    margin: 0;
+    width: 100%;
+    text-transform: uppercase;
+}
+[apx_load="find_where_form"] button{
+    border-radius: 0 52px 52px 0;
+    font-size:var(--newsletter_btn_f_size);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--violet);
+    padding: 0 1.5rem;
+
+}
+
+
+/* [apx_load="contact_phone"] */
+[apx_load="contact_phone"]{
+    font-size: var(--footer_menu_f_size);
+    color:#1e1e1e
+}
+[apx_load="contact_phone"] b{border-bottom: 1px solid;padding-bottom: 2px;}
+
+/* apx_load="contact_hour" */
+[apx_load="contact_hour"]{
+    font-size: var(--footer_menu_f_size);
+}
+
+/*apx_load="contact_mail"*/
+[apx_load="contact_mail"]{
+    font-size: var(--footer_menu_f_size);
+    text-transform: uppercase;
+}
+
+/* apx_load="footer_payments" */
+[apx_load="footer_payments"]{}
+[apx_load="footer_payments"] i,
+[apx_load="footer_secure"] ul li{
+    filter: grayscale(1);
+}
+
+[apx_load="footer_secure"] ul,
+.bandeiras-pagamento{margin: 0;display: flex;flex-wrap: wrap;gap: 10px;}
+
+[apx_load="footer_secure"] ul li,
+.bandeiras-pagamento li{margin: 0;}
+
+.footer_bottom h4{margin-top: 0!important;margin-bottom: 0!important;}
+.bandeiras-pagamento i{display: block;}
+
+#rodape > div:last-child{background: var(--green)!important;}
+#rodape > div:last-child *{color:#000;font-weight: bold;}
+#rodape > div:last-child .row-fluid:before,
+#rodape > div:last-child .row-fluid:after{display: none;}
+#rodape > div:last-child .row-fluid {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    justify-content: space-between;
+}
+#rodape > div:last-child .row-fluid > div{
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+    flex: 0 0 auto;
+    width: auto!important;
+    max-width: fit-content;
+}
+
+#rodape #cdsg_footer hr{border-color: #d9d9d9;border-bottom: 0;margin-top: 0;}
