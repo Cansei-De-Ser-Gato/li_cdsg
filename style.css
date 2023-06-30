@@ -66,6 +66,8 @@
 
     --footer_title_f_size:20px;
     --footer_menu_f_size:14px;
+
+    --instafeed_title_f_size:20px;
 }
 
 /* LI RESET */
@@ -920,3 +922,78 @@ apx_load="menu_extra"
 }
 
 #rodape #cdsg_footer hr{border-color: #d9d9d9;border-bottom: 0;margin-top: 0;}
+
+
+/* side help */
+.cdsg_sideHelp{
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 20%;
+    z-index: 3;
+}
+.cdsg_sideHelp-menu{position: absolute;bottom: 0;left: 100%;}
+.cdsg_sideHelp .triggers{display: flex;flex-direction: column;gap: 5px;}
+.cdsg_sideHelp .triggers > div > button,
+.cdsg_sideHelp .triggers > a{
+    background-color: #1e1e1e;
+    width: 54px;
+    display: block;
+    min-height: 46px;
+    text-align: center;
+}
+.cdsg_sideHelp .triggers > a{line-height: 42px;}
+.cdsg_sideHelp .triggers > div > button span{
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    rotate: -90deg;
+    display: block;
+}
+.cdsg_sideHelp .triggers > div > button{padding: 1.2rem 0 2.5rem 0;}
+.cdsg_sideHelp .triggers > div > button i{
+    display: flex;
+    gap: 5px;
+    width: 21px;
+    flex-direction: column;
+    margin: 0 auto 2rem auto;
+}
+.cdsg_sideHelp .triggers > div > button i:after,
+.cdsg_sideHelp .triggers > div > button i:before{
+    content: "";
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+    border-radius: 2px;
+}
+
+/* apx_load="instafeed" */
+[apx_load="instafeed"]{}
+[apx_load="instafeed"] a{aspect-ratio: 1;display: block;}
+[apx_load="instafeed"] a img{height: 100%;object-fit: cover;}
+[apx_load="instafeed"] span{display: none;}
+.cdsg_instafeed_home b{
+    font-size:var(--instafeed_title_f_size);
+    color: #000;
+}
+
+/* apx_load="search" */
+#cdsg_header > div > .container{position: relative;}
+[apx_load="search"]{
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 10;
+}
+[apx_load="search"]:before{
+    content: "";
+    height: 100%;
+    background:#f2f2f2;
+    width: 100vw;
+    left: 50%;
+    translate: -50% 0;
+    position: absolute;
+    z-index: -1; 
+}

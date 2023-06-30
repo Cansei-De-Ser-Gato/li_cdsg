@@ -238,7 +238,7 @@ theme.generateContent.menu_footer = function(prop, oObj){
 
 theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
-    el.append('<div class="col"><button type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button></div>');
+    el.append('<div class="col"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
     el.append('<div class="col"><a href="#"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
     el.append('<div class="col"><a href="#"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
     el.append('<div class="col">'+ theme.headerCart +'</a></div>');
@@ -247,8 +247,18 @@ theme.generateContent.functions = function(prop, oObj){
     return el.prop('outerHTML');
 };
 
-theme.generateContent.instafeed = function(prop, oObj){
+theme.generateContent.search = function(prop, oObj){
     let el = $('<div class="container"></div>');
+    el.append('<div class="cdsg_search_form"><form id="form-buscar" action="/buscar" method="get"><button class="botao botao-busca" aria-label="Buscar"></button><input id="auto-complete" type="text" name="q" placeholder="Digite o que você procura" value="" autocomplete="off" maxlength="255" class="ui-autocomplete-input"></form></div>');
+    el.append('<div class="cdsg_search-results"></div>');
+    el.append('<div class="cdsg_suggestion"></div>');
+    
+    return el.prop('outerHTML');
+};
+
+
+theme.generateContent.instafeed = function(prop, oObj){
+    let el = $('<div class=""></div>');
     let instafeed = sessionStorage.getItem('instafeed');
     if(instafeed){    
         instafeed = JSON.parse(instafeed);        
@@ -269,20 +279,47 @@ theme.generateContent.instafeed = function(prop, oObj){
 }
 
 theme.functions.instafeed = function(instafeed){
-    let items = instafeed;
-    let list = $('<div class="slick-me cdsg_instafeed" data-md-cols="5" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="true" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="true" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'arrow_slider_black_l.svg' + '"></div>');
-    $.each(items, function(k_, i_){
-        let item = $('<div class="item"></div>');
-        if(i_.gallery && i_.gallery.data.length > 0){
-            let gallery = $('<div class="gallery"></div>');
-            $.each(i_.gallery.data, function(k__,i__){
-                gallery.append('<a href="'+ i__.attributes.url +'"><img src="'+ i__.attributes.formats.thumbnail.url +'"/></a>')
-            });
-            item.append(gallery);
+    //let items = instafeed;
+    let items = [
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 1'
+        },
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 2'
+        },
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 3'
+        },
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 4'
+        },
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 5'
+        },
+        {
+            img: 'https://www.petz.com.br/blog/wp-content/uploads/2021/11/enxoval-para-gato-Copia.jpg',
+            url: '#',
+            caption: 'Um gatíneo 6'
         }
-        i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
-        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
-
+    ]
+    let list = $('<div class="cdsg_instafeed row"></div>');
+    $.each(items.slice(0,5), function(k_, i_){
+        let item = $('<div class="col"></div>');
+        if(i_.img){
+            let gallery = $('<div class="gallery"></div>');
+            
+            item.append('<div class="image"><a href="'+ i_.url +'"><img src="'+ i_.img +'"/><span>'+ i_.caption +'</span></a></div>');
+        }
         list.append(item);      
     });
     return list;
@@ -377,7 +414,7 @@ theme.functions.benefits = function(cms_benefits){
 theme.build = [];
 
 theme.build.sideHelp = function(){
-    let el = $('<div class="cdsg_sideHelp"><div class="triggers"><div><button type="button"><span><i></i>Ajuda?</span></button><div class="cdsg_sideHelp-menu"><div><div><div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b></div><button type="button" class="close"></div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div></div><a href="#"><div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a></div></div>');
+    let el = $('<div class="cdsg_sideHelp"> <div class="triggers"> <div> <button type="button"><i></i><span> Ajuda? </span> </button> <div class="cdsg_sideHelp-menu"> <div> <div> <div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b> </div><button type="button" class="close"> </div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div><a href="#"> <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a> </div></div>');
     el.appendTo('body');
 }
 
@@ -678,7 +715,7 @@ theme.pages['pagina-inicial'] = function(){
     $('.secao-secundaria').append('<div class="container"><div apx_load="benefits" class="cdsg_benefits"></div></div>');
     $('.secao-secundaria').append('<div class="container"><div class="row"><div class="col-12 col-md-8"><div apx_load="blog" class="cdsg_blog"></div></div><div class="col-12 col-md-4"><div apx_load="podcast" class="cdsg_podcast"></div></div></div></div>');
     $('.secao-secundaria').append('<div class="container"><div apx_load="" class="cdsg_benefits"></div></div>');
-    $('#rodape').before('<div class="container mt-3 mb-5"><div class="row align-items-center justify-content-between"><div class="col-12 col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-12 col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="cdsg_instagram"></div></div>');
+    $('#rodape').before('<div class="container mt-3 mb-5 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-12 col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-12 col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
     
 };
 
