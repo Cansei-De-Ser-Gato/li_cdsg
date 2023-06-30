@@ -566,6 +566,7 @@ theme.build.header = function(){
     $(window).on('resize scroll', function() {
         if (header.isInViewport()) {
             header_fixed.removeClass('visible');
+            header_fixed.find('[apx_load="search"]').removeClass('visible');
         } else {
             header_fixed.addClass('visible');
         }
