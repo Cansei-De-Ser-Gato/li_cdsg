@@ -248,9 +248,9 @@ theme.generateContent.functions = function(prop, oObj){
 };
 
 theme.generateContent.search = function(prop, oObj){
-    let el = $('<div class="container"></div>');
-    el.append('<div class="cdsg_search_form"><form id="form-buscar" action="/buscar" method="get"><button class="botao botao-busca" aria-label="Buscar"></button><input id="auto-complete" type="text" name="q" placeholder="Digite o que você procura" value="" autocomplete="off" maxlength="255" class="ui-autocomplete-input"></form></div>');
-    el.append('<div class="cdsg_search-results"></div>');
+    let el = $('<div class="container"><button class="cdsg_search_trigger" type="button"></div>');
+    el.append('<div class="cdsg_search_form"><form id="form-buscar" action="/buscar" method="get"><button class="botao botao-busca" aria-label="Buscar"><img src="'+ CDN_PATH + 'search_green.svg' +'"/></button><input id="auto-complete" type="text" name="q" placeholder="O que procuras, humano?" value="" autocomplete="off" maxlength="255" class="ui-autocomplete-input"><button type="button" class="clear_list"></button></form></div>');
+    el.append('<div class="cdsg_results"> <div class="row"> <div class="col-12 results-products"> <div class="row justify-content-between align-items-center count"></div><div class="row list"></div></div><div class="d-none col-12 results-blog-posts"> <div class="row count"></div><div class="row list"></div></div></div></div>');
     el.append('<div class="cdsg_suggestion"></div>');
     
     return el.prop('outerHTML');
@@ -440,6 +440,71 @@ theme.build.topbar = function(){
     }
     el.appendTo('.cdsg_topbar');
 }
+
+
+theme.functions.searchAutoComplete = function(){
+    $('body').on('keyup','[apx_load="search"] form input', function(){
+        let results = $(this).closest('[apx_load="search"]').find('.results-products > .list');
+        let count = $(this).closest('[apx_load="search"]').find('.results-products > .count');
+        let clearBtn = $(this).closest('[apx_load="search"]').find('.clear_list');
+        let q = $(this).val().toLowerCase();
+        if(q.length > 3){
+            clearBtn.show();
+            $.ajax({
+                url: window.API_PRODUCT_PUBLIC_URL + "/autocomplete",
+                headers: {
+                    "x-store-id": window.LOJA_ID
+                },
+                dataType: "json",
+                data: {
+                    q: q,
+                    page: {
+                        size: 6
+                    }
+                },
+            }).done(function(response){
+                if(results.length > 0){
+                    results.empty();
+                    count.empty()
+                    response.meta.total.resources > 0 ? count.append('<div class="col-auto">' + response.meta.total.resources + ' <span>produtos</span></div>') : false;
+                    response.meta.total.resources > 0 ? count.append('<div class="col-auto"><a href="/buscar?q='+ q +'">ver tudo</a></div>') : false;
+                    
+                    $.each(response.data, function(k_, i_){
+                        let box = $('<div class="col-12 col-md-2"></div></div>');
+                        let item = $('<div class="item"></div>');
+
+                        item.append('<button type="button" class="add-wishlist"><img src="'+ CDN_PATH + 'wishlist.svg' + '"/></button>');
+                        item.append('<a href="'+ i_.url +'"><div class="image"><img src="'+ (i_.images && i_.images[0] ? window.MEDIA_URL + i_.images[0].url.slice(1,i_.images[0].url.length) : 'https://via.placeholder.com/200x200') +'"/></div></a>');
+                        item.append('<a href="'+ i_.url +'"><div class="name">'+ i_.name +'</div></a>');
+                        box.append(item);
+                        
+                        results.append(box);
+
+                    });
+                }
+                console.log(response.data)
+            })
+        }else{
+            clearBtn.hide();
+        }
+        console.log()
+    });
+    $('body').on('click', '.clear_list', function(){
+        $(this).closest('[apx_load="search"]').find('.list, .count').empty();
+        $(this).closest('[apx_load="search"]').find('input').val('');
+        $(this).closest('[apx_load="search"]').find('input').keyup();
+    });
+    $('body').on('click', '.cdsg_search_trigger', function(){
+        if($(this).next('[apx_load="search"]').length > 0){
+            $(this).next('[apx_load="search"]').toggleClass('visible');
+        }
+        if($(this).closest('[apx_load="search"]').length > 0){
+            $(this).closest('[apx_load="search"]').toggleClass('visible');
+        }
+    });
+};
+
+
 theme.functions.topbar = function(cms_topbar){
     let items = cms_topbar.items;
     $('.cdsg_topbar').get(0).style.setProperty('--cms_topbar_text_color', cms_topbar.text_color);
@@ -733,6 +798,8 @@ theme.functions.productListSetColors = function(colors, me){
     me.find('.cdsg_colors').append(block);
 };
 
+
+
 $(document).ready(function(){
     theme.init();
     
@@ -741,7 +808,7 @@ $(document).ready(function(){
     theme.build.footer();
     theme.build.productList();
     theme.build.sideHelp();
-    
+    theme.functions.searchAutoComplete();
     
 
     try{
