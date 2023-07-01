@@ -169,6 +169,7 @@ apx_load="menu_extra"
 */
 
 [apx_load="menu_extra"]{}
+[apx_load="menu"] .menu.superior .nivel-um > li:first-child{padding-left:0!important}
 [apx_load="menu"] .nivel-um > li > a > strong,
 [apx_load="menu_extra"] nav a{
     font-size:var(--header_f_size);
@@ -197,9 +198,10 @@ apx_load="menu_extra"
     --bs-gutter-y: 0;
     display: flex;
     flex-wrap: wrap;
-    margin-top: calc(var(--bs-gutter-y) * -1);
+    /* margin-top: calc(var(--bs-gutter-y) * -1);
     margin-right: calc(var(--bs-gutter-x) * -.5);
-    margin-left: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5); */
+    margin:0!important
 }
 [apx_load="menu"] .menu.superior .nivel-um > li{
     /* like a col */
@@ -1292,6 +1294,7 @@ padding-right: calc(var(--bs-gutter-x) * .5);
     top: 100%;
     position: absolute;
     background: #f2f2f2;
+    padding:0!important
 }
 .menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box .nivel-dois:after{display: none;}
 .menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box .nivel-dois{
