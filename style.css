@@ -1251,3 +1251,7 @@ padding-right: calc(var(--bs-gutter-x) * .5);
 }
 
 #cdsg_footer p {font-size: 16px;margin-bottom: 2rem;}
+
+.cdsg_side_page_bar .side_img{
+    
+}
