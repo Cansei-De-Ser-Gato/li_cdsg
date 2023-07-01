@@ -126,26 +126,45 @@ theme.init = function(){
 theme.generateContent = [];
 
 theme.generateContent.categoryIconList = function(prop, oObj){
-    let el = $('<div class="items"></div>');
-
-    let category_main = theme.resources.json.categories.find(el => el.name == prop);
-    let category_id = category_main && category_main.id ? category_main.id : false;
-    let categories = false;
+    let cms_categories = sessionStorage.getItem('cms_categories');
     
-    if(category_id){
-        categories = theme.resources.json.categories.filter(el => el.parent == category_id);
-        if(categories){
-            $.each(categories, function(k_, i_){
-                let icon = false;
-                let item = $('<a href="'+ i_.url+'">'+ i_.name +'</a>');
-                
-                icon ? item.prepend('<img src="https://via.placeholder.com/111x111"/>') : item.prepend('<img src="https://via.placeholder.com/111x111"/>');
-                el.append(item);
-            });
+    if(cms_categories){   
+        cms_categories = JSON.parse(cms_categories);        
+        let el = $('<div class="items"></div>');
+        let category_main = theme.resources.json.categories.find(el => el.name == prop);
+        let category_id = category_main && category_main.id ? category_main.id : false;
+        let categories = false;
+        
+        if(category_id){
+            categories = theme.resources.json.categories.filter(el => el.parent == category_id);
+            if(categories){
+                $.each(categories, function(k_, i_){
+                    console.log(i_.name.toLowerCase().trim());
+                    let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == i_.name.toLowerCase().trim());
+                    console.log('ixiii',q);
+                    let icon = q && q.attributes && q.attributes.icon && q.attributes.icon.data && q.attributes.icon.data[0] && q.attributes.icon.data[0].attributes.url || 'https://via.placeholder.com/111x111'; 
+                    let item = $('<a href="'+ i_.url+'">'+ i_.name +'</a>');
+                    
+                    item.prepend('<div class="image"><img src="'+ icon +'"/></div>');
+                    el.append(item);
+                });
+            }
         }
-    }
 
-    return el.prop('outerHTML');
+        return el.prop('outerHTML');
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/categories?populate=deep",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_categories = response.data;
+                sessionStorage.setItem('cms_categories',JSON.stringify(cms_categories));
+                theme.generateContent.categoryIconList(prop,oObj);
+            }
+        });
+    }
+    
 };
 
 theme.generateContent.menu = function(prop, oObj){
@@ -573,6 +592,10 @@ theme.build.header = function(){
             header_fixed.addClass('visible');
         }
     });
+
+    $(window).load(function(){
+        theme.functions.headerCategoriesDropdown();
+    });
    
 };
 
@@ -598,13 +621,80 @@ theme.build.productList = function(){
 };
 
 
-
+theme.lang.footer = [];
+theme.lang.footer.duvidas = "Dúvidas?";
+theme.lang.footer.institucional = "O Cansei de Ser Gato";
+theme.lang.footer.fale_conosco = "Fale Conosco";
+theme.lang.footer.fale_conosco_text = "Compre ou tire suas dúvidas por WhatsApp";
+theme.lang.footer.pagamento = "Formas de Pagamento"; 
+theme.lang.footer.seguranca = "Segurança"; 
 theme.build.footer = function(){
     $('#rodape > *:not(div:last-child)').remove();
     $('#rodape').prepend('<div id="cdsg_footer"></div>');
     $('#barraNewsletter .interno-conteudo').append('<div apx_load="social" class="cdsg_social"></div>');
     $('#barraNewsletter .componente').prepend('<img src="'+ CDN_PATH + 'newsletter.png'+'"/>');
-    $('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
+    //$('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
+    $('#cdsg_footer').html(`<div class="container mt-5">` +
+        `<div class="row align-items-start justify-content-between">` +
+            `<div class="col-auto">` +
+                `<h4>${theme.lang.footer.duvidas}</h4>` +
+                `<div apx_load="menu_footer" apx_load_prop="DÚVIDAS?"></div>` +
+            `</div>` +
+            `<div class="col-auto">` +
+                `<h4>${theme.lang.footer.institucional}</h4>` +
+                `<div apx_load="menu_footer" apx_load_prop="O CANSEI DE SER GATO"></div>` +
+                `<h4>Onde encontrar nossos produtos</h4>` +
+                `<div apx_load="find_where_form"></div>` +
+                
+            `</div>` +
+            `<div class="col-auto">` +
+                `<h4>${theme.lang.footer.fale_conosco}</h4>` +
+                `<p>${theme.lang.footer.fale_conosco_text}</p>` +
+                `<div class="row align-items-center">` +
+                    `<div class="col-auto">` +
+                        `<div class="row align-items-center">` +
+                            `<div class="col-auto">` +
+                                `<div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div>`+
+                            `</div>` +
+                            `<div class="col-auto">` +
+                                `<div apx_load="contact_phone" class="mb-2"></div>` +
+                                `<div apx_load="contact_hour"></div>` +
+                            `</div>` +
+                            
+                        `</div>` +
+                    `</div>` +
+                    `<div class="col-auto">` +
+                        `<div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div>` +
+                    `</div>` +
+                `</div>` +
+                `<div class="row mt-4">` +
+                    `<div class="col-12">` +
+                        `<div class="row align-items-center">` +
+                            `<div class="col-auto">` +
+                                `<div apx_load="load_img" apx_load_prop="footer_email.svg"></div>` +
+                            `</div>` +
+                            `<div class="col-auto">` +
+                                `<div apx_load="contact_mail"></div>` +
+                            `</div>` +
+                        `</div>` +
+                    `</div>` +
+                `</div>` +
+            `</div>` +
+        `</div>` +
+    `</div>` +
+    `<hr></hr>` +
+    `<div class="container footer_bottom pb-4">` +
+        `<div class="row align-items-center justify-content-between">` +
+            `<div class="col-auto d-flex align-items-center">` +
+                `<h4 class="me-md-4">${theme.lang.footer.pagamento}</h4>` +
+                `<div apx_load="footer_payments"></div>` +
+            `</div>` +
+            `<div class="col-auto d-flex align-items-center">` +
+                `<h4 class="me-md-4">${theme.lang.footer.seguranca}</h4>` +
+                `<div apx_load="footer_secure"></div>` +
+            `</div>` +
+        `</div>` +
+    `</div>`);
    
 };
 
@@ -783,9 +873,11 @@ theme.lang.nao_encontrado.texto = "Você pode verificar o endereço acessado ou 
 // }
 
 theme.functions.sidePage = function(){
-    return `<div class="col-12 col-md-auto cdsg_side_page_bar"><b class="d-block mb-1">Ficou com alguma dúvida? Fale comigo!</b><br><p class="d-block mb-3">Compre ou tire suas dúvidas por WhatsApp</p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><div class="row mt-4"> <div class="col-12"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_email.svg"></div></div><div class="col-auto"> <div apx_load="contact_mail"></div></div></div></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages_.png'}"/></div>`;
+    return `<div class="col-12 col-md-auto cdsg_side_page_bar"><b class="d-block mb-1">Ficou com alguma dúvida? Fale comigo!</b><br><p class="d-block mb-3">Compre ou tire suas dúvidas por WhatsApp</p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><div class="row mt-4"> <div class="col-12"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_email.svg"></div></div><div class="col-auto"> <div apx_load="contact_mail"></div></div></div></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`;
 }
 
+theme.lang.faq = [];
+theme.lang.faq.titulo="FAQ - Chico Response";
 theme.build.faq = function(){
     let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
     let el = $('<div class="row align-items-start justify-content-between"></div>');
@@ -805,7 +897,7 @@ theme.build.faq = function(){
     el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
     el.append('<div class="col-md-5 col-12 cdsg_faq_content">'+ currentContent +'</div>');
     el.append(theme.functions.sidePage());
-    $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+    $('#corpo .secao-principal').html('<div class="container"><div class="cdsg_faq_title"><strong>'+ theme.lang.faq.titulo +'</strong></div>'+el.prop('outerHTML')+'</div>');
 
 }
 
@@ -832,6 +924,10 @@ theme.pages['pagina-pagina'] = function(){
         });
     }    
 };
+
+theme.pages['.pagina-categoria'] = function(){
+    
+}
 
 theme.pages['pagina-404'] = function(){
     $('#corpo').addClass('pagina-404');
@@ -866,17 +962,91 @@ theme.functions.productListSetColors = function(colors, me){
     me.find('.cdsg_colors').append(block);
 };
 
+theme.functions.headerCategoriesDropdown = function(){
+    let cms_categories = sessionStorage.getItem('cms_categories');
+    if(cms_categories){   
+        cms_categories = JSON.parse(cms_categories);
+        
+        if($('#cabecalho .nivel-um > .com-filho').length > 0){
+            $('#cabecalho .nivel-um > .com-filho').each(function(){
+                $(this).find('.nivel-dois > li > a').each(function(){
+                    let me = $(this);
+                    let txt = $(this).text().toLowerCase().trim();
+                    let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
+
+                    q ? me.prepend(`<div class="image"><img src="${q.attributes.icon && q.attributes.icon.data && q.attributes.icon.data[0].attributes.url || 'https://via.placeholder.com/111x111'}"/></div>`) : me.prepend(`<div class="image"><img src="https://via.placeholder.com/111x111"/></div>`)
+                });
+
+                $(this).find('.nivel-dois').wrap('<div class="cdsg_dropdown_box container justify-content-between align-items-center"></div>');
+
+                let me = $(this);
+                let txt = $(this).find('.titulo').text().toLowerCase().trim();
+                let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
+
+                if(q){
+                    if(q.attributes.dropdown_left_banner && q.attributes.dropdown_left_banner.Image && q.attributes.dropdown_left_banner.Image.data){
+                        let el = $('<div class="dropdown_left_banner col-auto"></div>');                        
+                        let box;
+                        if(q.attributes.dropdown_left_banner.url != ""){
+                            box = $('<a href="'+ q.attributes.dropdown_left_banner.url +'"></a>');
+                        }else{
+                            box = $('<div></div>');
+                        }
+
+                        q.attributes.dropdown_left_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_left_banner.Image.data.attributes.url}"/>`) : false;
+                        q.attributes.dropdown_left_banner.title ? box.append(`<strong>${q.attributes.dropdown_left_banner.title}</strong>`) : false;
+                        q.attributes.dropdown_left_banner.button_text ? box.append(`<button>${q.attributes.dropdown_left_banner.button_text}</button>`) : false;
+
+                        el.append(box);
+                        me.children('.cdsg_dropdown_box').prepend(el)
+                    }
+
+                    if(q.attributes.dropdown_right_banner && q.attributes.dropdown_right_banner.Image && q.attributes.dropdown_right_banner.Image.data){
+                        let el = $('<div class="dropdown_right_banner col-auto"></div>');                        
+                        let box;
+                        if(q.attributes.dropdown_right_banner.url != ""){
+                            box = $('<a href="'+ q.attributes.dropdown_right_banner.url +'"></a>');
+                        }else{
+                            box = $('<div></div>');
+                        }
+
+                        q.attributes.dropdown_right_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_right_banner.Image.data.attributes.url}"/>`) : false;
+                        q.attributes.dropdown_right_banner.title ? box.append(`<strong>${q.attributes.dropdown_right_banner.title}</strong>`) : false;
+                        q.attributes.dropdown_right_banner.button_text ? box.append(`<button>${q.attributes.dropdown_right_banner.button_text}</button>`) : false;
+
+                        el.append(box);
+                        me.children('.cdsg_dropdown_box').append(el)
+                    }
+                }
+            })
+            $.each(theme.resources.json.categories, function(k_, i_){
+                console.log(i_);
+            });
+        }
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/categories?populate=deep",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_categories = response.data;
+                sessionStorage.setItem('cms_categories',JSON.stringify(cms_categories));
+                theme.functions.headerCategoriesDropdown();
+            }
+        });
+    }
+};
 
 
 $(document).ready(function(){
     theme.init();
-    
     theme.build.header();
     theme.build.topbar();
     theme.build.footer();
     theme.build.productList();
     theme.build.sideHelp();
     theme.functions.searchAutoComplete();
+    
     
 
     if($('.conteudo h1').text().toLowerCase().trim() == "página não encontrada"){
