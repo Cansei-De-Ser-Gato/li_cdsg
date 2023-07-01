@@ -12,6 +12,8 @@ theme.functions = [];
 theme.pages = [];
 theme.resources = [];
 
+theme.lang = [];
+
 theme.init = function(){
     theme.isMobile = window.innerWidth < 990;
     theme.isLogged = window.IS_STORE_ASYNC ? ($.cookie('LI-isUserLogged') == "false" ? false : true) : ($('.bem-vindo > span').text() != "identifique-se" ? true : false);
@@ -771,6 +773,71 @@ theme.functions.productListLoadColors = function(){
     });    
 };
 
+theme.lang.nao_encontrado = [];
+theme.lang.nao_encontrado.titulo = "Não encontrei o que você procura, humano.";
+theme.lang.nao_encontrado.texto = "Você pode verificar o endereço acessado ou digitar o que está procurando em nossa busca.<br><br><br>Mas eu vou te ajudar a encontrar. verifique o endereço digitado ou faça uma nova busca.";
+
+// theme.generateContent.faq_menu = function(){
+    
+//     return el.prop('outerHTML');
+// }
+
+theme.functions.sidePage = function(){
+    return `<div class="col-12 col-md-auto cdsg_side_page_bar"><b class="d-block mb-1">Ficou com alguma dúvida? Fale comigo!</b><br><p class="d-block mb-3">Compre ou tire suas dúvidas por WhatsApp</p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><div class="row mt-4"> <div class="col-12"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_email.svg"></div></div><div class="col-auto"> <div apx_load="contact_mail"></div></div></div></div></div><img src="${CDN_PATH + 'gato_pages.png'}"/></div>`;
+}
+
+theme.build.faq = function(){
+    let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
+    let el = $('<div class="row align-items-start justify-content-between"></div>');
+
+    let cms_faq = sessionStorage.getItem('cms_faq');
+    let faq = $('<ul id="cdsg_faq"></ul>');
+    if(cms_faq){
+        cms_faq = JSON.parse(cms_faq);        
+        $.each(cms_faq, function(k_, i_){
+            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
+            if(page){
+                faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
+            }
+        })
+    }
+
+    el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
+    el.append('<div class="col-md-5 col-12 cdsg_faq_content">'+ currentContent +'</div>');
+    el.append(theme.functions.sidePage());
+    $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+
+}
+
+theme.pages['pagina-pagina'] = function(){
+    let cms_faq = sessionStorage.getItem('cms_faq');
+    if(cms_faq){ 
+        cms_faq = JSON.parse(cms_faq);
+        if(cms_faq.find(el => el.attributes.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+            theme.build.faq()
+        }
+    }else{  
+        $.ajax({
+            url: CMS_PATH + "/faqs?sort=order",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                sessionStorage.setItem('cms_faq',JSON.stringify(response.data));
+                console.log(response.data);
+                console.log($('body').find('h1').text().toLowerCase().trim());
+                if(response.data.find(el => el.attributes.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+                    theme.build.faq();
+                }                
+            }
+        });
+    }    
+};
+
+theme.pages['pagina-404'] = function(){
+    $('#corpo').addClass('pagina-404');
+    $('#corpo .secao-principal').html(`<div class="my-md-5 py-md-5"><div class="row justify-content-center align-items-center"><div class="col-6"><img src="${CDN_PATH + '404.svg'}"/></div><div class="col-12 col-md-5"><h1 class="mb-5">${theme.lang.nao_encontrado.titulo}</h1><p>${theme.lang.nao_encontrado.texto}</p></div></div></div>`);
+};
+
 theme.pages['pagina-inicial'] = function(){
     
     $('#corpo').prepend('<div class="container" class="cdsg_home-categoryIconList"><div class="row cdsg_categoryIconListHeader"><div class="col-md-8"><h3>Para Gatos</h3></div><div class="col-md-4"><h3>Para Humanos</h3></div></div><div class="row"><div class="col-md-8"><div apx_load="categoryIconList" apx_load_prop="PARA GATOS" class="cdsg_categoryIconList"></div></div><div class="col-md-4"><div apx_load="categoryIconList" apx_load_prop="PARA HUMANOS" class="cdsg_categoryIconList"></div></div></div><hr></hr></div>');
@@ -812,6 +879,9 @@ $(document).ready(function(){
     theme.functions.searchAutoComplete();
     
 
+    if($('.conteudo h1').text().toLowerCase().trim() == "página não encontrada"){
+        theme.currentPage = "pagina-404"; 
+    }
     try{
         theme.pages[theme.currentPage]();
     }catch(e){
