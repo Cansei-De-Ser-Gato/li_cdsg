@@ -13,6 +13,7 @@ theme.pages = [];
 theme.resources = [];
 
 theme.lang = [];
+theme.lang.products = [];
 
 theme.init = function(){
     theme.isMobile = window.innerWidth < 990;
@@ -933,9 +934,196 @@ theme.pages['pagina-404'] = function(){
     $('#corpo').addClass('pagina-404');
     $('#corpo .secao-principal').html(`<div class="my-md-5 py-md-5"><div class="row justify-content-center align-items-center"><div class="col-6"><img src="${CDN_PATH + '404.svg'}"/></div><div class="col-12 col-md-5"><h1 class="mb-5">${theme.lang.nao_encontrado.titulo}</h1><p>${theme.lang.nao_encontrado.texto}</p></div></div></div>`);
 };
+theme.pages['pagina-produto'] = function(){
+    $('.produto > .row-fluid > .span6:first-child').attr('class','col-md-8 apx_product_left apx_loading');
+    $('.produto > .row-fluid > .span6:last-child').attr('class','col-md-4');
+    $('.produto > .row-fluid').attr('class','row');
 
-theme.pages['pagina-inicial'] = function(){
+    $('.apx_product_left').empty();        
+
+    //galeria li
+    $('.apx_product_left').append('<div class="stage apx_loading apx_gallery"><div class="slider-for"></div><div class="slider-nav"></div></div>');    
     
+    //galeria cms
+    $('.apx_product_left').append('<div class="apx_loading cms_gallery"></div>');    
+    
+    
+    //video
+    $('#buy-together-position1').before('<div class="apx_product_video"></div>');    
+
+    //DMF - benefits
+    $('#buy-together-position1').before('<div apx_load="benefits" class="cdsg_benefits"></div>');    
+
+    //testimonials
+    $('#buy-together-position1').before('<div class="cms_product_testimonials"></div>');    
+
+    let sku = $('.produto .codigo-produto span[itemprop="sku"]').text().trim();
+    
+    //PRODUCT
+    $.ajax({
+        url: window.API_PRODUCT_PUBLIC_URL + "/" + window.PRODUTO_ID,
+        headers: {
+            "x-store-id": window.LOJA_ID
+        }            
+    }).done(function(response){
+        if(response.data){
+            let product = response.data;  
+            theme.functions.productInfo(product); 
+        }
+    });
+
+    //PRODUCT_CMS
+    let cms_product = sessionStorage.getItem('cms_product_'+sku);
+    if(cms_product){
+        theme.functions.productCMSInfo(JSON.parse(cms_product)); 
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/products?filters[identifier][$eq]="+ sku +"&populate=gallery",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_product = response.data && response.data[0] && response.data[0].attributes;
+                sessionStorage.setItem('cms_product_' + sku,JSON.stringify(cms_product));
+                theme.functions.productCMSInfo(cms_product);
+            }
+        });
+    }
+
+    //TESTIMONIALS
+    let cms_testimonials = sessionStorage.getItem('cms_testimonials_'+sku);
+    if(cms_testimonials){
+        theme.functions.productTestimonials(JSON.parse(cms_testimonials)); 
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/testimonials?populate[order][fields]=client_name&filters[type][$eq]=product&populate=gallery&[filters][product_sku][$eq]="+ sku +"&sort[0]=publishedAt%3Adesc&sort[1]=rating",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_testimonials = response;
+                sessionStorage.setItem('cms_testimonials_' + sku,JSON.stringify(cms_testimonials));
+                theme.functions.productTestimonials(cms_testimonials);
+            }
+        });
+    }
+};
+
+theme.lang.products.avaliacoes = "Avaliações"
+theme.lang.products.recomendam = "Dos clientes<br>recomendam este produto!";
+theme.lang.products.baseado_em = "baseado em";
+theme.lang.products.avaliacoes_mais_recentes = "Avaliações mais recentes";
+
+theme.functions.productTestimonials = function(testimonials){
+    console.log('productTestimonials',testimonials);
+    if(testimonials.data.length > 0){
+        $('.cms_product_testimonials').append(`<div class="row mt-5"><div class="col-12"><h2>${theme.lang.products.avaliacoes}</h2></div></div>`)
+        $('.cms_product_testimonials').append(`<div class="row mt-3 testimonials_header justify-content-center align-items-start"><div class="col-6 col-md-3"><b class="rating">5</b><div class="rating-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><div><strong>${theme.lang.products.baseado_em}</strong> ${testimonials.meta.pagination.total} avaliações</div></div><div class="col-6 col-md-3 offset-md-2"><b class="percent">100%</b><span>${theme.lang.products.recomendam}</span></div></div>`);
+        $('.cms_product_testimonials').append(`<div class="row mt-5 testimonials_list_header"><div class="col-12"><strong>${theme.lang.products.avaliacoes_mais_recentes}</strong></div></div><hr>`)
+        $('.cms_product_testimonials').append('<div class="testimonials_list"></div>');
+
+        $.each(testimonials.data, function(k_, i_){
+            let row = $('<div class="row align-items-center item"></div>');
+            let col = $('<div class="col-2"></div>');
+            col.append(`<b>${i_.attributes.rating}</b><div class="rating-stars"></div>`);
+
+            for(let i = 1; i<= 5; i++){
+                if(i <= i_.attributes.rating){
+                    if(i_.attributes > i - 1){
+                        col.find('.rating-stars').append('<i class="fa fa-star-half"></i>')
+                    }else{
+                        col.find('.rating-stars').append('<i class="fa fa-star"></i>')
+                        
+                    }
+                    
+                }else{
+                    col.find('.rating-stars').append('<i class="fa fa-star-o"></i>')
+                }
+            }
+            
+            row.append(col);
+
+            col = $('<div class="col-10"></div>');
+            i_.attributes.content ? col.append(`<p>${i_.attributes.content}</p>`) : false;
+            
+            if(i_.attributes.gallery && i_.attributes.gallery.data && i_.attributes.gallery.data.length > 0){
+                let gallery = $('<div class="gallery"></div>');
+                $.each(i_.attributes.gallery.data, function(k__, i__){
+                    gallery.append('<a href="#" data-href="'+ i__.attributes.url + '"><img src="'+ i__.attributes.formats.thumbnail.url+'"></a>');
+                });
+
+                col.append(gallery);
+            }
+
+            i_.attributes.order && i_.attributes.order.data ? col.append(`<div><strong>${i_.attributes.order.data.attributes.client_name}</strong><small>${theme.functions.formatData(i_.attributes.createdAt)}</small></div>`) : false;
+
+            row.append(col);
+            $('.cms_product_testimonials .testimonials_list').append(row);
+            $('.cms_product_testimonials .testimonials_list').append('<hr></hr>')
+        });
+    }
+
+};
+
+theme.functions.formatData = function(dataString) {
+    const data = new Date(dataString);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' };
+    const dataFormatada = data.toLocaleDateString('pt-BR', options);
+    
+    return dataFormatada;
+}
+
+theme.functions.productInfo = function(info){
+    console.log('productInfo',info);
+
+    
+    //gallery
+    if(info.images.length > 0){
+        
+        $.each(info.images, function(k_, i_){
+            $('.apx_gallery .slider-for').append('<div class="item" data-image-id="'+ i_.id +'"><a href="#"><img src="'+ window.MEDIA_URL + i_.url.slice(1,i_.url.length) +'"/></a></div>')
+            $('.apx_gallery .slider-nav').append('<div class="item '+ (k_ == 0 ? 'active': '') +'"><a href="#"><img src="'+ window.MEDIA_URL + i_.url.slice(1,i_.url.length) +'"/></a></div>');
+        });
+
+        $('.slider-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            fade: true,
+            prevArrow: '<button type="button" class="apx_arrow prev"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg' + '"/></button>',
+            nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg' + '"/></button>',
+            
+        });
+
+        $('.slider-for').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            $('.slider-nav .active').removeClass('active');
+            $($('.slider-nav .item').get(nextSlide)).addClass('active');            
+        });
+
+        if(info.description.youtube_url){
+            $('.apx_gallery').append('<button type="button" class="apx_youtube_vid"></button>');
+        }
+
+        $('.apx_gallery').append('<a class="apx_add_wishlist" href="/conta/favorito/'+ window.PRODUTO_ID+'/adicionar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a>')
+        
+        $('.apx_gallery').removeClass('apx_loading');
+    }
+    
+
+
+    $('.apx_product_left').removeClass('apx_loading');
+};
+
+theme.functions.productCMSInfo = function(info){
+    console.log('productCMSInfo',info)
+    if(info.gallery && info.gallery.data && info.gallery.data.length > 0){
+        $.each(info.gallery.data, function(k_, i_){
+            $('.cms_gallery').append('<div class="item"><img src="'+ i_.attributes.url +'"/></div>')
+        });
+
+        $('.cms_gallery').removeClass('apx_loading');
+    }
+};
+
+theme.pages['pagina-inicial'] = function(){    
     $('#corpo').prepend('<div class="container" class="cdsg_home-categoryIconList"><div class="row cdsg_categoryIconListHeader"><div class="col-md-8"><h3>Para Gatos</h3></div><div class="col-md-4"><h3>Para Humanos</h3></div></div><div class="row"><div class="col-md-8"><div apx_load="categoryIconList" apx_load_prop="PARA GATOS" class="cdsg_categoryIconList"></div></div><div class="col-md-4"><div apx_load="categoryIconList" apx_load_prop="PARA HUMANOS" class="cdsg_categoryIconList"></div></div></div><hr></hr></div>');
 
     $('.vitrine-mas-vendido, .vitrine-mas-vendido + ul').wrapAll('<div class="box-mais-vendidos"></div>');
