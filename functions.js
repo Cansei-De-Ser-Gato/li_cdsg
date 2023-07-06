@@ -926,8 +926,45 @@ theme.pages['pagina-pagina'] = function(){
     }    
 };
 
-theme.pages['.pagina-categoria'] = function(){
-    
+theme.pages['pagina-categoria'] = function(){
+    $('.secao-banners').prependTo('#corpo');
+    $('.breadcrumbs').prependTo('#corpo');
+    $('.breadcrumbs').wrap('<div class="conteiner breadcrumbs-no-margin"></div>');
+
+    let category_title = $('h1').text().toUpperCase().trim();
+    if(['PARA GATOS','PARA HUMANOS'].includes(category_title)){
+        $('.secao-banners').append('<div class="container py-5 cdsg_cat-categoryIconList"><div class="row justify-content-center"><div class="col-md-auto"><div apx_load="categoryIconList" apx_load_prop="'+ category_title +'" class="cdsg_categoryIconList"></div></div></div></div>');
+    }
+
+    $('h1').wrap('<div class="apx_categoryTitle"></div>');
+    $('.apx_categoryTitle').prependTo($('.apx_categoryTitle').closest('.conteiner'));
+    $('.apx_categoryTitle').after('<div class="apx_filters row align-items-center justify-content-between"><div class="filterBy col-auto"></div><div class="sortBy col-auto"><div class="filter" data-type="sort"><button type="button">Ordenar Por</button></div></div></div>')
+
+    $('.filtro-coluna.faceta-preco').remove(); 
+    $('.filtro-coluna').each(function(){
+        let title = $(this).find('.titulo').text().toUpperCase().trim().replace('FILTRAR POR','').trim();
+        let block = $('<div class="filter" data-type="'+ title +'"></div>');
+        block.append('<button type="button">'+ title +'</button>');
+        block.append($(this).find('ul'));
+        block.appendTo('.filterBy');
+    });
+
+    $('body').on('click','.apx_filters button',function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');            
+        }else{
+            $('.apx_filters button').removeClass('active');
+            $(this).addClass('active');
+        }        
+    });
+    $('#botaoOrdenar + ul a').each(function(){
+        $(this).attr('href').includes(window.location.search) ? $(this).addClass('active') : false;
+    });
+    $('#botaoOrdenar + ul').appendTo('.sortBy > .filter');
+    $('.sortBy > .filter ul').attr('class','');
+
+    $('.ordenar-listagem, .coluna.span3').remove();
+    $('.conteudo.span9').toggleClass('span9 span12');
 }
 
 theme.pages['pagina-404'] = function(){
@@ -1297,4 +1334,9 @@ $.fn.isInViewport = function() {
     var viewportBottom = viewportTop + $(window).height();
 
     return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+
+
+window.onerror = function(error) {
+    console.log('err tracking: ' + error + ' - url: ' + window.location + ' - browser: ' + (window.navigator.userAgent + ' | ' + window.navigator.vendor) + ' - datetime: ' + (new Date()));    
 };
