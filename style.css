@@ -1204,6 +1204,7 @@ body:not(.pagina-inicial) #barraNewsletter{margin-bottom: 3rem;}
 padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
 }
+.pagina-pagina .breadcrumbs ul{padding-left: 0;padding-right: 0;}
 .info-principal-produto .breadcrumbs ul li,
 .breadcrumbs ul li{display:flex;border: 0!important;align-items: center;}
 .info-principal-produto .breadcrumbs ul li *,
@@ -1752,3 +1753,8 @@ animation: lds-dual-ring 1.2s linear infinite;
 }
 .apx_filters .filter > ul li a.active{background: var(--violet);}
  
+/* lojas */
+.pagina-pagina .conteiner .container{
+    padding-left: 0!important;
+    padding-right: 0!important;
+}

@@ -902,11 +902,39 @@ theme.build.faq = function(){
 
 }
 
+theme.lang.store = [];
+theme.lang.store.title = "Lojas Petz";
+theme.build.store = function(){
+    let currentContent = $('#corpo .secao-principal .caixa-sombreada > div').html();
+    let el = $('<div class="row align-items-start justify-content-between"></div>');
+
+    let cms_store = sessionStorage.getItem('cms_store');
+    let stores = $('<ul id="cdsg_stores"></ul>');
+    if(cms_store){
+        // cms_faq = JSON.parse(cms_faq);        
+        // $.each(cms_faq, function(k_, i_){
+        //     let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
+        //     if(page){
+        //         faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
+        //     }
+        // })
+    }
+
+    //el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
+    el.append('<div class="col-md-3 col-12"><h1>'+ theme.lang.store.title +'</h1>'+ currentContent +'</div>');
+    //el.append(theme.functions.sidePage());
+    $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+};
+
 theme.pages['pagina-pagina'] = function(){
+    let page_title = $('body').find('h1').text().toLowerCase().trim();
+    let page_load = false;
+    
     let cms_faq = sessionStorage.getItem('cms_faq');
     if(cms_faq){ 
         cms_faq = JSON.parse(cms_faq);
-        if(cms_faq.find(el => el.attributes.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+        if(cms_faq.find(el => el.attributes.title.toLowerCase().trim() == page_title)){
+            page_load = true;
             theme.build.faq()
         }
     }else{  
@@ -916,14 +944,31 @@ theme.pages['pagina-pagina'] = function(){
         }).done(function(response){
             if(response.data){
                 sessionStorage.setItem('cms_faq',JSON.stringify(response.data));
-                console.log(response.data);
-                console.log($('body').find('h1').text().toLowerCase().trim());
                 if(response.data.find(el => el.attributes.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+                    page_load = true;
                     theme.build.faq();
                 }                
             }
         });
-    }    
+    }  
+
+    //alert(page_title)
+    if(page_title == 'encontre uma loja'){
+        let cms_store = sessionStorage.getItem('cms_store');
+        if(cms_store){ 
+            theme.build.store()            
+        }else{  
+            $.ajax({
+                url: CMS_PATH + "/stores?sort=name",   
+                method: 'GET'         
+            }).done(function(response){
+                if(response.data){
+                    sessionStorage.setItem('cms_store',JSON.stringify(response.data));
+                    theme.build.store();                                    
+                }
+            });
+        }   
+    } 
 };
 
 theme.pages['pagina-categoria'] = function(){
