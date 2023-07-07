@@ -4,7 +4,7 @@
 const CDN_PATH = "https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/";
 const CMS_PATH = "https://cms-cdsg.up.railway.app/api";
 
-
+var map;
 let theme = [];
 
 theme.settings = [];
@@ -908,23 +908,162 @@ theme.build.store = function(){
     let currentContent = $('#corpo .secao-principal .caixa-sombreada > div').html();
     let el = $('<div class="row align-items-start justify-content-between"></div>');
 
-    let cms_store = sessionStorage.getItem('cms_store');
-    let stores = $('<ul id="cdsg_stores"></ul>');
-    if(cms_store){
-        // cms_faq = JSON.parse(cms_faq);        
-        // $.each(cms_faq, function(k_, i_){
-        //     let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
-        //     if(page){
-        //         faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
-        //     }
-        // })
-    }
+    
 
     //el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
-    el.append('<div class="col-md-3 col-12 left"><h1>'+ theme.lang.store.title +'</h1>'+ currentContent +'<div id="apx_encontrar_loja"><div><button type="button"><img src="'+ CDN_PATH + 'pin_lojas.svg'+'"/>Ache a loja mais próxima</div><div><label>Procure por CEP</label><div class="field"><input type="text" name="apx_zip" class="apx_zip" placeholder="Informe o CEP"/><button type="button"><img src="'+ CDN_PATH + 'search.svg'+'"/></button></div><div><label>Procure por Cidade</label><div class="field"><input type="text" name="apx_city" class="apx_city"/><button type="button"><img src="'+ CDN_PATH + 'search.svg'+'"/></button></div></div></div></div>');
-    //el.append(theme.functions.sidePage());
+    el.append('<div class="col-md-3 col-12 left"><h1>'+ theme.lang.store.title +'</h1>'+ currentContent +'<div id="apx_encontrar_loja"><div><button id="apx_geo" type="button"><img src="'+ CDN_PATH + 'pin_lojas.svg'+'"/>Ache a loja mais próxima</div><form autocomplete="off"><div class="mt-4"><label>Procure por CEP</label><div class="field"><input type="text" name="apx_zip" class="apx_zip" placeholder="Informe o CEP"/><button type="button"><img src="'+ CDN_PATH + 'search_small.svg'+'"/></button></div><div><label>Procure por Cidade</label><div class="field"><input type="text"  name="apx_city" class="apx_city" autocomplete="off" /><button type="button"><img src="'+ CDN_PATH + 'search_small.svg'+'"/></button></div></div></form></div></div>');
+    el.append('<div class="col-md-9 col-12"><div class="row"><div class="col-12"><div id="cdsg_map"></div></div></div><div class="row cdsg_stores"></div></div>')
+    
     $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+
+    let cms_store = sessionStorage.getItem('cms_store');
+    if(cms_store){
+        $.each(JSON.parse(cms_store), function(k_, i_){
+            let store = i_.attributes;
+            let item = $('<div class="col-12 col-md-4 mt-4"><div class="item p-3"></div></div>');
+
+            item.find('.item').append(`<h3>${store.name}</h3>`);
+            item.find('.item').append(`<p>${store.location.details.adr_address}</p>`);
+            item.find('.item').append(`<div class="mt-5"><b>Horário:</b> ${store.opening_time.slice(0,5)} às ${store.closing_time.slice(0,5)}<br><b>Telefone:</b><a href="tel:${store.phone.replace(/\D/g, "")}">${store.phone}</a></div>`);
+            //if(store.location.place_id){
+                //item.find('.item').append(`<a href="https://www.google.com/maps/search/${store.location.lat},${store.location.lng}" target=_blank>Como Chegar</a>`);
+            //}else{
+                item.find('.item').append(`<a class="px-4 mt-3 d-block open_map" href="https://www.google.com/maps/place/${store.location.description}" target=_blank>Como Chegar</a>`);
+            //}
+
+            $('.cdsg_stores').append(item)
+        });
+    }
+
+    theme.functions.geo();
 };
+theme.functions.geo = function(){
+    $('.apx_zip').mask('00000-000');
+    $('#apx_geo').click(function(){
+        navigator.geolocation.getCurrentPosition(function(posicao) {
+            var url = "https://nominatim.openstreetmap.org/reverse?lat="+posicao.coords.latitude+"&lon="+posicao.coords.longitude+"&format=json";
+            $.get(url,function(result){
+                console.log(result);
+                sessionStorage.setItem('apx_geo', result)
+                let newLatLng = {lat:parseFloat(result.lat),lng:parseFloat(result.lon)};
+                console.log(newLatLng)
+                theme.functions.setLatLng(newLatLng,13)
+            }); 
+        });        
+    });
+
+    $('.apx_zip + button').click(function(){
+        let zip = $(this).closest('.field').find('input').val();
+        if(zip.length == 9){
+            let geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: zip }, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                var netLatLng = results[0].geometry.location;
+                theme.functions.setLatLng(netLatLng,17)
+                } else {
+                console.log("Geocode falhou: " + status);
+                }
+            });
+        }else{
+            alert('Digite o CEP e tente realizar novamente sua busca novamente.');
+        }
+    });
+
+    let cidadesEstados = [];
+    $.ajax({
+        url: "https://servicodados.ibge.gov.br/api/v1/localidades/municipios",
+        dataType: "json",
+    }).done(function (data) {
+        cidadesEstados = data;
+        $('.apx_city').autocomplete({
+            source: function (request, response) {
+              // Filtrar as cidades e estados com base no termo de pesquisa
+              var termo = request.term.toLowerCase();
+              var sugestoes = cidadesEstados.filter(function (item) {
+                return (
+                  item.nome.toLowerCase().indexOf(termo) !== -1 ||
+                  item.microrregiao.mesorregiao.UF.sigla.toLowerCase().indexOf(termo) !== -1
+                );
+              }).map(function (item) {
+                return {
+                  label: item.nome + ", " + item.microrregiao.mesorregiao.UF.sigla,
+                  value: item.nome,
+                };
+              });
+        
+              response(sugestoes);
+            },
+            minLength: 3,
+        });
+    });
+
+    $('.apx_city + button').click(function(){
+        let city = $(this).closest('.field').find('input').val();
+        if(city.length > 5){
+            $.get('https://nominatim.openstreetmap.org/search.php?city='+ city +'&format=jsonv2',function(result){
+                let newLatLng = {lat:parseFloat(result[0].lat),lng:parseFloat(result[0].lon)};
+                theme.functions.setLatLng(newLatLng,13)
+            });             
+        }else{
+            alert('Digite o nome da sua cidade e tente novamente.');
+        }
+    });
+
+    if($('#cdsg_map').length > 0){
+        $('head').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5CRJ2xF2iIiXoL2Nz3j2ivuX8CcRBHbw&callback=initMap" async defer></script>')
+        
+    }
+}
+
+theme.functions.setLatLng = function(netLatLng,zoom){
+    map.setCenter(netLatLng);
+    map.setZoom(zoom);
+}
+
+function initMap(){
+    var initialLatLng = { lat: -23.5505, lng: -46.6333 };
+    
+    map = new google.maps.Map(document.getElementById("cdsg_map"), {
+        center: initialLatLng,
+        zoom: 10,
+        fullscreenControl:false,
+        mapTypeControl:false
+    });
+
+    
+    var locations = [];
+
+    let cms_store = sessionStorage.getItem('cms_store');
+    if(cms_store){
+        $.each(JSON.parse(cms_store), function(k_, i_){
+            locations.push({
+                lat: i_.attributes.location.lat, lng: i_.attributes.location.lng, title: i_.attributes.name, info: `<b>${i_.attributes.name}</b><br><br><b>Endereço:</b> ${i_.attributes.location.description}<br><b>Telefone:</b> ${i_.attributes.phone}<br><b>Horário:</b> ${i_.attributes.opening_time.slice(0,5)} às ${i_.attributes.closing_time.slice(0,5)}`
+            });
+        });
+    }
+
+    //console.log(locations);
+
+    
+    for (var i = 0; i < locations.length; i++) {
+        var location = locations[i];
+
+        var marker = new google.maps.Marker({
+        position: { lat: location.lat, lng: location.lng },
+        map: map,
+        title: location.title,
+        });
+
+        // Criação de infowindow para exibir informações adicionais ao clicar no marcador
+        var infowindow = new google.maps.InfoWindow({
+        content: location.info,
+        });
+
+        marker.addListener("click", function () {
+            infowindow.open(map, marker);
+        });
+    }
+}
 
 theme.pages['pagina-pagina'] = function(){
     let page_title = $('body').find('h1').text().toLowerCase().trim();
@@ -1156,9 +1295,6 @@ theme.functions.formatData = function(dataString) {
 }
 
 theme.functions.productInfo = function(info){
-    console.log('productInfo',info);
-
-    
     //gallery
     if(info.images.length > 0){
         
