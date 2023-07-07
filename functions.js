@@ -921,7 +921,7 @@ theme.build.store = function(){
     }
 
     //el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
-    el.append('<div class="col-md-3 col-12"><h1>'+ theme.lang.store.title +'</h1>'+ currentContent +'</div>');
+    el.append('<div class="col-md-3 col-12 left"><h1>'+ theme.lang.store.title +'</h1>'+ currentContent +'<div id="apx_encontrar_loja"><div><button type="button"><img src="'+ CDN_PATH + 'pin_lojas.svg'+'"/>Ache a loja mais próxima</div><div><label>Procure por CEP</label><div class="field"><input type="text" name="apx_zip" class="apx_zip" placeholder="Informe o CEP"/><button type="button"><img src="'+ CDN_PATH + 'search.svg'+'"/></button></div><div><label>Procure por Cidade</label><div class="field"><input type="text" name="apx_city" class="apx_city"/><button type="button"><img src="'+ CDN_PATH + 'search.svg'+'"/></button></div></div></div></div>');
     //el.append(theme.functions.sidePage());
     $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
 };
@@ -929,6 +929,8 @@ theme.build.store = function(){
 theme.pages['pagina-pagina'] = function(){
     let page_title = $('body').find('h1').text().toLowerCase().trim();
     let page_load = false;
+
+    $('.pagina-pagina').attr('data-page',page_title);
     
     let cms_faq = sessionStorage.getItem('cms_faq');
     if(cms_faq){ 
