@@ -95,6 +95,9 @@
     --product_testimonials_rating_f_size:50px;
     --product_testimonials_rating_f_stars:20px;
 
+    --product_title_f_size:40px;
+    --product_sku_f_size:14px;
+
 
     --category_title_f_size:40px;
     --filter_title_f_size:16px;
@@ -1638,6 +1641,210 @@ animation: lds-dual-ring 1.2s linear infinite;
 }
 .testimonials_list .item .gallery  a img{height: 100%;width: 100%;object-fit: cover;}
 .testimonials_list .item strong + small{margin-left: .5rem;}
+
+.listagem.aproveite-tambem .listagem-item .nome-produto{font-weight:normal}
+
+.produto .codigo-produto{border:0}
+.produto .codigo-produto .pull-right,
+.produto .parcelas-produto,
+.produto .disponibilidade{display:none!important}
+.produto .codigo-produto span{
+    color:#979797;
+    font-size: var(--product_sku_f_size);
+    text-transform: uppercase;
+}
+
+.compre-junto .compre-junto__titulo,
+.pagina-produto h1.nome-produto{
+    font-size:var(--product_title_f_size);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 2rem 0 .5rem 0;
+    color: #1e1e1e;
+}
+
+.principal .atributos .atributo-cor{}
+.principal .atributos .atributo-cor .active a{
+    box-shadow: 0px 0px 0px 2px rgba(0,0,0,1);
+}
+.principal .atributos .atributo-cor a{
+    padding: 0;
+    height: 34px;
+    width: 34px;
+    box-shadow: 0px 0px 0px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0!important;
+    border: 0!important;
+}
+.principal .atributos .atributo-cor a span{
+    border-width: 0 0 35px 34px!important;
+}
+
+.acoes-produto[style="display: block;"],
+.acoes-produto:not(.hide){
+    display: flex!important;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.compre-junto{
+    margin: 4rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.compre-junto .compre-junto__titulo{
+    margin: 0 0 2rem 0;
+    width: 100%;
+}
+.compre-junto__atributos--cor .compre-junto__atributo--grade span{}
+.compre-junto__atributos--cores .compre-junto__atributo--grade span{
+    border-width: 0 0 19px 19px;
+}
+.compre-junto__atributos--cor .compre-junto__atributo--grade.compre-junto__atributo--selecionado,
+.compre-junto__atributos--cores .compre-junto__atributo--grade.compre-junto__atributo--selecionado{
+    box-shadow: 0px 0px 0px 1px rgba(0,0,0,1)!important;
+}
+.compre-junto__atributos--cor .compre-junto__atributo--grade,
+.compre-junto__atributos--cores .compre-junto__atributo--grade{
+    border-radius: 50%!important;
+    overflow: hidden;
+    padding: 0;
+    margin: 0 5px 0 0;
+    height: 18px;
+    width: 18px;
+    box-shadow: 0px 0px 0px;
+}
+.compre-junto .compre_junto-cover{}
+.compre-junto .compre-junto__conteudo{
+    flex-direction: row;
+    width: calc(100% - 900px);
+    flex-wrap: wrap;
+    width: 400px;
+    gap: 1rem;
+}
+.compre-junto__selecionar input::before,
+.compre-junto__selecionar input:checked::before{
+    border: 1px solid #000;
+    background: #fff;
+    border-radius: 0;
+    height: 14px;
+    width: 14px;
+}
+.compre-junto__selecionar input:checked::after{
+    border-color: var(--green);
+    top: 0;
+    left: 5px;
+}
+.compre-junto .compre-junto__conteudo .compre-junto__produto .compre-junto__etiqueta:after{
+    content:"Você está vendo esse";
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+}
+.compre-junto .compre-junto__conteudo .compre-junto__produto .compre-junto__etiqueta{
+    background: var(--green);
+    top: 10px;
+    font-size: 0;
+    line-height: 0;
+    width: fit-content;
+    white-space: nowrap;
+    padding: 0 0.5rem;    
+}
+.compre-junto__produto--lista .compre-junto__preco{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.compre-junto__produto--lista .compre-junto__coluna--dados{width: 100%;}
+.compre-junto .compre-junto__conteudo .compre-junto__produto{
+    flex: 0 0 calc(50% - 0.5rem);
+    border: 0;
+    background: #f9f9f9;
+    margin: 0;
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.compre-junto__coluna--dados,
+.compre-junto__coluna--informacoes{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.compre-junto__produto--principal .compre-junto__preco, .compre-junto__produto--grade .compre-junto__preco{margin: 0;}
+.compre-junto__nome a, .compre-junto__nome a:hover, .compre-junto__nome a:focus,
+.compre-junto__produto--principal .compre-junto__nome a, .compre-junto__produto--grade .compre-junto__nome a{
+    font-size:14px;
+    min-height: unset;
+    margin: 0;
+    color: #232020;
+    font-weight: normal;
+    line-height: normal;
+}
+.compre-junto__preco--promocional, .compre-junto__preco--promocional:empty+.compre-junto__preco--regular{
+    font-size: 17px;
+    font-weight: bold;
+    color: #000;
+}
+.compre-junto__preco{min-height: 0;}
+.compre-junto__produto--lista .compre-junto__coluna{
+    margin: 0;
+}
+.compre-junto__produto--lista .compre-junto__imagem img{
+    width:auto;
+    height: auto;
+}
+
+.compre-junto__resumo{
+    flex: 0 0 100%;
+    width: 100%;
+    border: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 1rem 0 0 0;
+    margin-top: .5rem;
+    border-top: 2px solid #d9d9d9;
+    border-radius: 0;
+    
+}
+.compre-junto__resumo .compre-junto__comprar{width:100%;margin-top: 1rem;}
+.compre-junto__preco-total *{line-height: initial;}
+.compre-junto__preco-total{
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+.compre-junto__preco-total--regular{margin-top: 4px;}
+.compre-junto__titulo-total{
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-weight: bold;
+    margin: 0 1rem 0 0;
+}
+.compre-junto__preco-total--promocional, .compre-junto__preco-total--promocional:empty+.compre-junto__preco-total--regular{
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-weight: bold;
+}
+
+.compre-junto__comprar button{
+    font-size: 16px;
+    text-transform: uppercase;
+    background:#1e1e1e
+}
+
 
 
 /* categoria */

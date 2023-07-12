@@ -1178,7 +1178,7 @@ theme.pages['pagina-produto'] = function(){
     $('#buy-together-position1').before('<div apx_load="benefits" class="cdsg_benefits"></div>');    
 
     //testimonials
-    $('#buy-together-position1').before('<div class="cms_product_testimonials"></div>');    
+    $('#blank-product-position4').after('<div class="cms_product_testimonials"></div>');    
 
     let sku = $('.produto .codigo-produto span[itemprop="sku"]').text().trim();
     
@@ -1228,6 +1228,15 @@ theme.pages['pagina-produto'] = function(){
             }
         });
     }
+
+    $(document).ajaxComplete(function(e, data, opt) {
+        if (opt.url.includes('compre_junto')) {
+            $('.compre-junto .compre-junto__conteudo').before('<div class="compre_junto-cover"><img src="https://via.placeholder.com/873x610"/></div>')
+            $('.compre-junto .compre-junto__conteudo .compre-junto__produtos > *').unwrap();
+        }
+    });
+    
+
 };
 
 theme.lang.products.avaliacoes = "Avaliações"
