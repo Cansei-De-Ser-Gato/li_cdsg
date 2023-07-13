@@ -97,7 +97,7 @@
 
     --product_title_f_size:40px;
     --product_sku_f_size:14px;
-
+    --product_price_f_size:25px;
 
     --category_title_f_size:40px;
     --filter_title_f_size:16px;
@@ -1647,13 +1647,15 @@ animation: lds-dual-ring 1.2s linear infinite;
 .produto .codigo-produto{border:0}
 .produto .codigo-produto .pull-right,
 .produto .parcelas-produto,
-.produto .disponibilidade{display:none!important}
+.produto .disponibilidade,
+.produto .estoque{display:none!important}
 .produto .codigo-produto span{
     color:#979797;
     font-size: var(--product_sku_f_size);
     text-transform: uppercase;
 }
 
+.pagina-produto .listagem .titulo,
 .compre-junto .compre-junto__titulo,
 .pagina-produto h1.nome-produto{
     font-size:var(--product_title_f_size);
@@ -1662,7 +1664,7 @@ animation: lds-dual-ring 1.2s linear infinite;
     margin: 2rem 0 .5rem 0;
     color: #1e1e1e;
 }
-
+.pagina-produto .listagem .titulo{margin-bottom: 2rem;}
 .principal .atributos .atributo-cor{}
 .principal .atributos .atributo-cor .active a{
     box-shadow: 0px 0px 0px 2px rgba(0,0,0,1);
@@ -1681,7 +1683,10 @@ animation: lds-dual-ring 1.2s linear infinite;
     border-width: 0 0 35px 34px!important;
 }
 
+body.pagina-produto .acoes-produto[style="display: none;"]{display:none!important}
+
 .acoes-produto[style="display: block;"],
+.acoes-produto[style="display: flex;"],
 .acoes-produto:not(.hide){
     display: flex!important;
     flex-direction: column;
@@ -1832,6 +1837,7 @@ animation: lds-dual-ring 1.2s linear infinite;
     font-weight: bold;
     margin: 0 1rem 0 0;
 }
+.compre-junto__titulo-total:after{content:":"}
 .compre-junto__preco-total--promocional, .compre-junto__preco-total--promocional:empty+.compre-junto__preco-total--regular{
     font-size: 20px;
     text-transform: uppercase;
@@ -1839,13 +1845,73 @@ animation: lds-dual-ring 1.2s linear infinite;
     font-weight: bold;
 }
 
+.acoes-produto .comprar a,
 .compre-junto__comprar button{
     font-size: 16px;
     text-transform: uppercase;
-    background:#1e1e1e
+    background:#1e1e1e;
+    position: relative;
+    border-radius: 10px;
+
+}
+.produto .acoes-produto .comprar{
+    float: none;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+.acoes-produto .comprar a:before,
+.compre-junto__comprar button:before{
+    content: "";
+    background: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/cart_buy.svg);
+    height: 22px;
+    width: 25px;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    translate: 0 -50%;
+}
+.acoes-produto .comprar a i{display:none}
+.acoes-produto .comprar a{
+    line-height: 52px;
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+    padding: 0;
+}
+.produto .acoes-produto .preco-produto .titulo{
+    font-size: var(--product_price_f_size);
+    color: #1e1e1e;
+    font-weight: bold;
 }
 
+.acoes-produto .preco-produto {
+    float: none;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
 
+.cms_tabs{padding: 0!important;}
+.cms_tabs .cms_tabs_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #d9d9d9;
+    padding: .5rem 0;
+}
+.cms_tabs .cms_tabs_header h3{
+    margin: 0;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.cms_tabs .cms_tabs_header button{
+    background: transparent;
+    font-size: 14px;
+}
+.cms_tabs .cms_tabs_header button i{}
+.cms_tabs .cms_tabs_content{padding: 0 0 1.5rem 0;font-size: 14px;display: none;}
+
+.pagina-produto .span12.produto{margin-top: 1rem;}
 
 /* categoria */
 .secao-banners .banner.cheio img{

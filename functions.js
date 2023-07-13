@@ -204,7 +204,7 @@ theme.generateContent.logo_fixed = function(prop, oObj){
 
 theme.generateContent.menu_extra = function(prop, oObj){
     let el = $('<nav class="d-flex align-items-center row"></nav>');
-    el.append('<div class="col px-md-4"><a href="#">Blog</a></div>');
+    el.append('<div class="col px-md-4"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');
     el.append('<div class="col px-md-4"><a href="#">Atendimento</a></div>');
     return el.prop('outerHTML');
 };
@@ -224,6 +224,71 @@ theme.generateContent.contact_hour = function(prop, oObj){
 };
 theme.generateContent.contact_mail = function(prop, oObj){
     return '<a href="">Mande um oi aqui</a>';
+};
+
+theme.generateContent.contact_form = function(prop,oObj){
+    return '<form id="apx_contact_form" action="/contato/popup/" method="post" class="form-horizontal">' +
+    '<div class="row">' +
+        '<div class="col-12">' +
+          '<div class="control-group">' +
+            '<label class="control-label">Nome</label>' +
+            '<div class="controls">' +
+              '<input id="id_nome" maxlength="100" name="nome" type="text">' +
+            '</div>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<label class="control-label">E-mail</label>' +
+            '<div class="controls">' +
+              '<input id="id_email" maxlength="128" name="email" type="text">' +
+            '</div>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<label class="control-label">Telefone</label>' +
+            '<div class="controls">' +
+              '<input class="input-telefone" id="id_telefone" name="telefone" type="text" maxlength="15">' +
+            '</div>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<label class="control-label">Nº do pedido</label>' +
+            '<div class="controls">' +
+              '<input id="id_numero_pedido" name="numero_pedido" type="text">' +
+            '</div>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<label class="control-label">Mensagem</label>' +
+            '<div class="controls">' +
+              '<textarea cols="40" id="id_mensagem" name="mensagem" rows="6"></textarea>' +
+            '</div>' +
+          '</div>' +
+          '<div class="control-group ">' +
+            '<script src="https://www.google.com/recaptcha/api.js?hl=pt"></script>' +
+              '<div class="g-recaptcha" data-sitekey="6LeKDhIUAAAAAA1o_Di799ubZ8yvZY-gmg7fsJRr" data-lang="pt" data-theme="light">' +
+              '</div>' +
+            '<noscript>' +
+              '<div style="width: 302px; height: 352px;">' +
+                '<div style="width: 302px; height: 352px; position: relative;">' +
+                  '<div style="width: 302px; height: 352px; position: absolute;">' +
+                    '<iframe src="https://www.google.com/recaptcha/api/fallback?k=6LeKDhIUAAAAAA1o_Di799ubZ8yvZY-gmg7fsJRr" frameborder="0" scrolling="no" style="width: 302px; height:352px; border-style: none;"></iframe>' +
+                  '</div>' +
+                  '<div style="width: 250px; height: 80px; position: absolute; border-style:none;bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">'+
+                    '<textarea id="g-recaptcha-response" name="g-recaptcha-response" class="recaptcha_challenge_field" style="width: 250px; height: 80px; border: 1px solid #c1c1c1;margin: 0px; padding: 0px; resize: none;" value=""></textarea>' +
+                    '<input type=hidden name="recaptcha_response_field" value="manual_challenge" />' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</noscript>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<input id="id_hostname" name="hostname" type="hidden">' +
+            '<div class="controls">' +
+              '<button type="submit" class="botao principal pull-right">Enviar</button>' +
+              '<a class="botao pull-right" data-dismiss="modal" aria-hidden="true">Fechar</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</form>' 
 };
 
 theme.generateContent.find_where_form = function(prop, oObj){
@@ -902,6 +967,19 @@ theme.build.faq = function(){
 
 }
 
+theme.build.contact_form_page = function(){
+    let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
+    let el = $('<div class="row align-items-start justify-content-between"></div>');
+
+    
+
+    el.append('<div class="col-12 col-md-auto"></div>');
+    el.append('<div class="col-md-5 col-12 cdsg_page_content">'+ currentContent +'</div>');
+    el.append(theme.functions.sidePage());
+    $('#corpo .secao-principal').html('<div class="container"><div class="cdsg_faq_title"><strong>'+ theme.lang.faq.titulo +'</strong></div>'+el.prop('outerHTML')+'</div>');
+
+}
+
 theme.lang.store = [];
 theme.lang.store.title = "Lojas Petz";
 theme.build.store = function(){
@@ -1093,7 +1171,7 @@ theme.pages['pagina-pagina'] = function(){
         });
     }  
 
-    //alert(page_title)
+    
     if(page_title == 'encontre uma loja'){
         let cms_store = sessionStorage.getItem('cms_store');
         if(cms_store){ 
@@ -1109,6 +1187,10 @@ theme.pages['pagina-pagina'] = function(){
                 }
             });
         }   
+    } 
+
+    if(page_title == 'formulário de contato'){
+        theme.build.contact_form_page();                                            
     } 
 };
 
@@ -1201,7 +1283,7 @@ theme.pages['pagina-produto'] = function(){
         theme.functions.productCMSInfo(JSON.parse(cms_product)); 
     }else{
         $.ajax({
-            url: CMS_PATH + "/products?filters[identifier][$eq]="+ sku +"&populate=gallery",   
+            url: CMS_PATH + "/products?filters[identifier][$eq]="+ sku +"&populate=gallery,tabs",   
             method: 'GET'         
         }).done(function(response){
             if(response.data){
@@ -1231,7 +1313,7 @@ theme.pages['pagina-produto'] = function(){
 
     $(document).ajaxComplete(function(e, data, opt) {
         if (opt.url.includes('compre_junto')) {
-            $('.compre-junto .compre-junto__conteudo').before('<div class="compre_junto-cover"><img src="https://via.placeholder.com/873x610"/></div>')
+            $('.compre-junto .compre-junto__conteudo').before('<div class="compre_junto-cover"><img src="https://via.placeholder.com/873x752"/></div>')
             $('.compre-junto .compre-junto__conteudo .compre-junto__produtos > *').unwrap();
         }
     });
@@ -1342,13 +1424,23 @@ theme.functions.productInfo = function(info){
 };
 
 theme.functions.productCMSInfo = function(info){
-    console.log('productCMSInfo',info)
     if(info.gallery && info.gallery.data && info.gallery.data.length > 0){
         $.each(info.gallery.data, function(k_, i_){
             $('.cms_gallery').append('<div class="item"><img src="'+ i_.attributes.url +'"/></div>')
         });
 
         $('.cms_gallery').removeClass('apx_loading');
+    }
+
+    if(info.tabs && info.tabs.length > 0){
+        $.each(info.tabs.reverse(), function(k_, i_){
+            $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>'+ i_.title +'</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ i_.content +'</div></div>')
+        });
+
+        $('body').on('click','.cms_tabs .cms_tabs_header button', function(){
+            $(this).find('i').toggleClass('fa-plus fa-minus');
+            $(this).closest('.cms_tabs').find('.cms_tabs_content').slideToggle();
+        });
     }
 };
 
