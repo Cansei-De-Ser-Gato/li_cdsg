@@ -326,8 +326,8 @@ theme.generateContent.menu_footer = function(prop, oObj){
 theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
     el.append('<div class="col"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
-    el.append('<div class="col"><a href="#"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
-    el.append('<div class="col"><a href="#"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
+    el.append('<div class="col"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
+    el.append('<div class="col"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
     el.append('<div class="col">'+ theme.headerCart +'</a></div>');
     el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
     el.find('.carrinho .icon-shopping-cart').remove();
@@ -362,8 +362,79 @@ theme.generateContent.instafeed = function(prop, oObj){
                 theme.generateContent.instafeed(prop,oObj);
             }
         });
-    }
+    } 
 }
+
+theme.functions.accountWishlist = function(){
+    let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
+    console.log(sessionAccount);
+}
+
+theme.functions.accountData = function(){
+    let account = {};
+
+    let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
+
+    account.isLogged = $.cookie('LI-isUserLogged') == "false" ? false : true;
+    account.userName = $.cookie('LI-UserLoggedName') ? $.cookie('LI-UserLoggedName').split(' ')[0] : 'Visitante';
+    
+    
+    if(account.isLogged){
+        //if(!sessionAccount.gender){
+            $.ajax({
+                url: "/conta/editar",   
+                method: 'GET'         
+            }).done(function(response){
+                let body = $(response);
+                account.gender = body.find('#id_sexo').val().trim();
+                sessionStorage.setItem('account',JSON.stringify(account))
+            });
+        //}
+
+        //if(sessionAccount && !sessionAccount.lastOrder){
+            $.ajax({
+                url: "/conta/pedido/listar",   
+                method: 'GET'         
+            }).done(function(response){
+                let body = $(response);
+                account.lastOrder = body.find('.tabela-pedidos tbody tr:first-child').map(function(i){
+                    return {
+                        numero : $(this).find('td:nth-child(1)').text().trim(),
+                        data : $(this).find('td:nth-child(2)').text().trim(),
+                        situacao : $(this).find('td:nth-child(3)').text().trim(),
+                        valor : $(this).find('td:nth-child(4)').text().trim(),
+                    };
+                }).get();
+                sessionStorage.setItem('account',JSON.stringify(account))
+            });
+        //}
+
+        //if(sessionAccount && !sessionAccount.wishlist){
+            $.ajax({
+                url: "/conta/favorito/listar",   
+                method: 'GET'         
+            }).done(function(response){
+                let body = $(response);
+                account.wishlist = body.find('table.table tbody tr').map(function(i){
+                    return {
+                        nome : $(this).find('td:nth-child(1) img').attr('src').trim(),
+                        imagem : $(this).find('td:nth-child(2) a').text().trim(),
+                        id_produto : $(this).find('td:nth-child(4) a').attr('href').split('/')[5].trim()
+                    };
+                }).get();            
+                sessionStorage.setItem('account',JSON.stringify(account))
+            });
+        //}else{
+            theme.functions.accountWishlist()
+        //}
+    }else{
+        sessionStorage.setItem('account',JSON.stringify(account))
+    }    
+     
+
+    
+}
+
 
 theme.functions.instafeed = function(instafeed){
     //let items = instafeed;
@@ -1143,6 +1214,100 @@ function initMap(){
     }
 }
 
+theme.functions.accountHeader = function(){
+    let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
+    $('.breadcrumbs').after(`<strong class="cdsg_account_header">Olá human${sessionAccount.gender == "m" ? 'o' : 'a'}, ${sessionAccount.userName}!</strong>`)
+    $('.breadcrumbs').remove();
+    $('body').addClass('cdsg_account');
+
+    $('a[href="'+ window.location.href +'"]').addClass('active');
+    $('a[href$="favorito/listar"]').html('Meus Favoritos <img class="mx-2 d-inline-block" src="'+ CDN_PATH + 'wishlist.svg' +'"/>')
+
+}
+
+theme.pages['pagina-conta'] = function(){
+    theme.functions.accountHeader();
+    
+    $('fieldset .botao.principal').each(function(){
+        $(this).appendTo($(this).closest('fieldset').find('legend'));
+    });
+
+    
+    $('.outros-enderecos fieldset').append('<div class="acao-editar"></div>');
+    $('.outros-enderecos legend a').addClass('botao').appendTo('.outros-enderecos .acao-editar');
+    
+
+    $('fieldset legend .botao.principal').text('Editar');
+
+    $('.caixa-dados > div > .span6:nth-child(2) > fieldset:first-child ul li').prependTo('.caixa-dados > div > .span6:nth-child(1) > fieldset ul');
+    $('.caixa-dados > div > .span6:nth-child(2) > fieldset:first-child').remove()
+    $('.outros-enderecos fieldset').insertAfter('.caixa-dados > div > .span6:nth-child(2) > fieldset');
+    $('.outros-enderecos').remove();
+
+    $('.caixa-dados > .row-fluid > .span6').toggleClass('span6 col');
+    $('.caixa-dados > .row-fluid').addClass('gx-5')
+    $('.caixa-dados > .row-fluid').toggleClass('row-fluid row');
+
+}
+
+theme.pages['pagina-pedido-listar'] = function(){
+    theme.functions.accountHeader();
+    $('.caixa-dados').first().remove();
+    $('.caixa-dados h3.titulo').text('Meus Pedidos');
+
+    $('.tabela-pedidos tbody tr').each(function(){
+        $(this).find('td:nth-child(3)').attr('data-status',$(this).find('td:nth-child(3)').text().toLowerCase().trim());
+        let pedido = $(this).find('td:first-child a').attr('href');
+        $(this).find('td:first-child a b').unwrap();
+
+        $(this).append('<td class="action"><button type="button" data-order="'+ pedido +'" onclick="theme.functions.expandOrder(this)" class="expandOrder"><i></i></button></td>');
+    });
+
+    $('.tabela-pedidos tbody tr').after('<tr style="display:none;" class="orderExpandResult"><td style="width:100%;flex:1 1 100%;min-width:100%;"></td></tr>');
+
+    $('h4.titulo').remove();
+
+    $('#formFiltroPedido').prepend('<div><strong>Pedidos realizados</strong></div>')
+
+}
+
+theme.pages['pagina-favorito-listar'] = function(){
+    theme.functions.accountHeader();
+    $('.meus-favoritos img').each(function(){
+        let src = $(this).attr('src');
+        src = src.replace('64x64/','');
+        $(this).attr('src',src);
+    });
+
+    $('h3.titulo').html('Meus Favoritos <img class="mx-2 d-inline-block" src="'+ CDN_PATH + 'wishlist.svg' +'"/>');
+    
+}
+
+theme.functions.expandOrder = function(oObj){
+    $(oObj).toggleClass('active');
+    let order_path = $(oObj).attr('data-order');
+    let box = $(oObj).closest('tr').next('tr.orderExpandResult').find('td');
+    if(order_path){
+        if(box.is(':empty')){
+            $.get(order_path, function(response){
+                console.log(response)
+                let content = $(response).find('.abas-conteudo').prop('outerHTML');
+                box.html(content);
+                box.closest('tr').slideToggle();
+            });
+        }else{
+            box.closest('tr').slideToggle();
+        }
+    }
+}
+
+theme.pages['pagina-pedido'] = function(){
+    theme.functions.accountHeader();
+
+    
+
+}
+
 theme.pages['pagina-pagina'] = function(){
     let page_title = $('body').find('h1').text().toLowerCase().trim();
     let page_load = false;
@@ -1555,6 +1720,7 @@ $(document).ready(function(){
     theme.build.productList();
     theme.build.sideHelp();
     theme.functions.searchAutoComplete();
+    theme.functions.accountData();
     
     
 

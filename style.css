@@ -2,7 +2,7 @@
     --quote: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/quot_start.svg);
 
     --body_f_family:"Arboria";
-    --body_f_size:"14px";
+    --body_f_size:14px;
     
     --header_f_size:15px;
     --header_f_family:"Arboria";
@@ -102,10 +102,24 @@
     --category_title_f_size:40px;
     --filter_title_f_size:16px;
     --filter_option_f_size:14px;
+
+    --account_header_f_size:30px;
+    --account_caixa_header_f_size:28px;
+    --account_box_header_f_size:18px;
 }
 
 
 /* LI RESET */
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{
+    min-height: 33px!important;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px;
+    font-size: var(--body_f_size);
+    box-sizing: border-box!important;
+}
 
 .row:before, .row:after {
 display:none;
@@ -321,10 +335,12 @@ apx_load="menu_extra"
 }
 
 .listagem .listagem-item{margin-left:0;transition:unset;padding:0}
-.listagem-item{
+.listagem-item,
+.meus-favoritos table tr{
     background:#F9F9F9;
     border-radius:10px;
 }
+.meus-favoritos table tr{border: 0;}
 .listagem > ul.row{
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
@@ -337,12 +353,14 @@ apx_load="menu_extra"
 .listagem-item .info-produto{
     padding:15px;
 }
-.listagem-item .info-produto > a.nome-produto{
+.listagem-item .info-produto > a.nome-produto,
+.meus-favoritos tr td:nth-child(2) a{
     font-size:var(--product_list_title_f_size);
     font-family:var(--product_list_f_family);
     color:var(--product_list_title_f_color);
     line-height: initial;
 }
+.meus-favoritos tr td:nth-child(2) a{text-align: left;display: block;}
 .listagem-item .info-produto [data-sell-price]{
     font-size:var(--product_list_price_f_size);
     font-weight: bold;
@@ -2113,4 +2131,436 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     width: fit-content;
     border-radius: 10px;
     line-height: 36px;
+}
+
+
+/* minha conta */
+.cdsg_account_header{
+    font-size:var(--account_header_f_size);
+    font-weight: bold;
+    display: block;
+    margin:3rem 0 3rem 0
+}
+.conta-menu{border:0}
+.conta-menu > span,
+.abas-conta{display: none!important;}
+.conta-menu ul.menu-simples{width: 200px;max-width:100%}
+.conta-menu ul.menu-simples li:first-child a{padding-top: 0!important;}
+.conta-menu ul.menu-simples li:not(:last-child){border-bottom:1px solid #d9d9d9}
+.conta-menu ul.menu-simples li.divisor{display:none }
+.conta-menu ul.menu-simples li a i{display:none}
+.conta-menu ul.menu-simples li a{
+    font-size: var(--body_f_size);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.conta-menu ul.menu-simples li a,
+.conta-menu ul.menu-simples li a:hover{
+    background: transparent;
+    color: #1e1e1e;
+    padding: .8rem 0;
+}
+.conta-menu ul.menu-simples li a.active,
+.conta-menu ul.menu-simples li a:hover{
+    font-weight: 900;
+}
+
+.cdsg_account .abas-conteudo{
+    border:0;
+    padding:0;
+    box-shadow: 0px 0px 0px;
+}
+
+.cdsg_account .caixa-dados fieldset legend i{display:none}
+.cdsg_account .caixa-dados fieldset legend,
+.cdsg_account .cabecalho-interno h3.titulo,
+.pagina-conta form .caixa-dados h3.titulo,
+.pagina-conta-cartoes .titulo + div > div > legend{
+    font-size: var(--account_box_header_f_size);
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #f4f4f4;
+    padding: 1rem 10px 0.5rem 5px;
+    color: #1e1e1e;
+    margin: 0;
+    border-bottom: 1px solid #d9d9d9;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    line-height: initial;
+}
+.cdsg_account .caixa-dados fieldset .caixa-info{
+    box-shadow:unset;
+    background: #fff;
+    border: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 1rem;
+    color:#1e1e1e
+}
+.cdsg_account .caixa-dados fieldset .caixa-info *{color:#1e1e1e}
+.cdsg_account .minha-conta fieldset{}
+.caixa-dados h3 small{display: none;}
+.caixa-dados h3{
+    font-size: var(--account_caixa_header_f_size);
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #1e1e1e;
+    border: 0;
+    margin: 0 0 2rem 0;
+    line-height: initial;
+}
+
+.cdsg_account .caixa-dados{
+    border: 0;
+    padding: 0;
+}
+
+.cdsg_account .caixa-dados fieldset legend .botao.principal{
+    text-transform: uppercase;
+    background: transparent;
+    color: #1e1e1e;
+    border: 0;
+    padding: 0;
+    text-shadow: 0px 0px 0px;
+    border-bottom: 1px solid;
+    border-radius: 0;
+}
+
+.cdsg_account .caixa-dados .acao-editar {display: flex;justify-content: flex-end;}
+.cdsg_account .caixa-dados .acao-editar .botao i,
+.buscar-pedidos .botao i{display: none;}
+.cdsg_account .caixa-dados .acao-editar .botao,
+.buscar-pedidos .botao{
+    float: none;
+    background: #1e1e1e;
+    line-height: 33px;
+    padding: 0 2rem;
+    font-size: var(--body_f_size);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 0;
+    margin:0!important
+}
+
+.cdsg_account .caixa-dados fieldset .span12 > p{padding:0 0 3rem 0;margin:.5rem 0 1rem 0;border-bottom:1px solid #d9d9d9}
+
+.cdsg_account .tabela-pedidos{border: 0;}
+.cdsg_account .tabela-pedidos > thead{display:none}
+.cdsg_account .tabela-pedidos > tbody > tr{
+    display:flex;
+    border: 0;
+    background: #f4f4f4;
+    border-bottom: 3px solid #fff;
+    align-items: center;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td{border: 0;white-space: nowrap;}
+.cdsg_account .tabela-pedidos > tbody > tr:nth-child(1) > td:nth-child(1):before{
+    content:"Último Pedido"!important;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(1){order:1}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(2){order:2}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(3){order:4}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(4){order:3}
+.cdsg_account .tabela-pedidos > tbody > tr:not(.orderExpandResult) > td:nth-child(1):before{
+    content:"Número";
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(2):before{
+    content:"Data";
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(4):before{
+    content:"Valor";
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(3):before{
+    content:"Status";
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action{
+    order: 9999;
+    text-align: right;
+    width: auto;
+    flex: 1 1 auto;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button{
+    background: transparent;
+    height: 80px;
+    border-left: 2px solid #fff;
+    margin: -16px 0;
+    padding: 0 1rem 0 calc(1rem + 16px);
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button.active i:before{display:none}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button.active i:after{rotate: 90deg;}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button i{
+    position: relative;
+    height: 21px;
+    width: 23px;
+    padding: 0;
+    background: transparent;
+    display: block;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button i:before{
+    content:"";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #979797;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td.action button i:after{
+    content:"";
+    transition: .2s;
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background: #979797;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td{text-align: left;}
+.cdsg_account .tabela-pedidos > tbody > tr > td:before{
+    display: block;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td,
+.cdsg_account .tabela-pedidos > tbody > tr > td *{
+    font-size: var(--body_f_size);
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td{
+    min-width: 130px;
+    font-weight: normal;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td:nth-child(3){
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="aguardando pagamento"]{
+    color: #1e1e1e;
+}
+
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="separando no estoque"],
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="pedido entregue"],
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="pedido entregue"] *,
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="em transporte"]{
+    color: var(--green)!important;
+}
+
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="cancelado"],
+.cdsg_account .tabela-pedidos > tbody > tr > td[data-status="cancelado"]{
+    color: #FF7070;
+}
+
+#formFiltroPedido:before,
+#formFiltroPedido:after{display:none}
+#formFiltroPedido{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+    padding: 0 0 0.5rem 0;
+    border: 0;
+}
+#formFiltroPedido > *{
+    width: auto;
+    flex: 0 0 auto;
+    margin: 0!important;
+    padding: 0;
+    float: none;
+    min-width: 0px!important;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    
+}
+#formFiltroPedido > div:first-child{flex: 0 1 100%;}
+#formFiltroPedido > div:first-child strong{
+    font-size: 20px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-top: -3px;
+    display: block;
+}
+#formFiltroPedido label{margin: 0;}
+#formFiltroPedido label span{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: var(--body_f_size);
+}
+#formFiltroPedido input,
+#formFiltroPedido select{width: fit-content;max-width: 130px;}
+
+.cdsg_account .tabela-pedidos tbody tr.orderExpandResult{
+    background: #f7f7f7;
+}
+
+.orderExpandResult .abas-conteudo{}
+.orderExpandResult .abas-conteudo > .caixa-dados:first-child > *:nth-child(1),
+.orderExpandResult .abas-conteudo > .caixa-dados:first-child > *:nth-child(2){display: none;}
+
+.orderExpandResult .abas-conteudo > .caixa-dados legend i{display: none;}
+.orderExpandResult .abas-conteudo > .caixa-dados legend,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child h4{
+    font-size: 15px;
+    font-weight: bold;
+    color: #1e1e1e;
+    text-transform: uppercase;
+}
+
+.orderExpandResult .abas-conteudo > .caixa-dados .caixa-info{
+    background: transparent;
+    padding: 0;
+    box-shadow: 0px 0px 0px;
+    border: 0;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados .caixa-info b{text-transform: uppercase;}
+
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child{}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr:not(:last-child){
+    border-bottom: 1px solid #d9d9d9;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item{border: 0;margin: 0;}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr:last-child{border:0!important}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item thead tr,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr td{
+    border:0
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody td[colspan="2"] *{color: #1e1e1e;}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody td[colspan="2"]{text-align: right;}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody td[colspan="2"]:last-child{
+    text-align: right;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr:last-child td[colspan="2"]:last-child,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody tr:last-child td[colspan="2"]:last-child *{
+    font-size: 18px;   
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody td[colspan="2"]{background:#F4F4F4}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item tbody td[colspan="2"]:last-child *{
+    width: 150px;
+    text-transform: initial;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: initial;
+    text-align: right;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .table-pedido-item thead th{
+    text-transform: uppercase;
+    border: 0;
+    font-size: 12px;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .produto-info > ul > li > span{
+    font-size: 0;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .produto-info > ul > li > span > span{
+
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child tr td,
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child tr td *{color: #1e1e1e;}
+/* .orderExpandResult .abas-conteudo > .caixa-dados:last-child tr .text-align-right{text-align: right!important;} */
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child tr td:not([colspan="2"]){
+    padding:18px;
+}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .produto-info > ul > li > span > span.atributo-cor-carrinho span{height: 20px;width: 20px;border-radius: 50%;}
+.orderExpandResult .abas-conteudo > .caixa-dados:last-child .produto-info > ul > li:last-child{display: none;}
+
+.pagina-conta .caixa-sombreada{border: 0;}
+
+.cdsg_account .cabecalho-interno .titulo{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.cdsg_account .cabecalho-interno small{
+    display: block;
+    color: #1e1e1e;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.cdsg_account  .control-group{
+    display: flex;
+    flex-direction: column;
+}
+.cdsg_account .control-group label{text-align:left;font-weight:bold;width: fit-content!important;text-transform: uppercase;color: #848484;font-size: 14px;}
+.cdsg_account  .control-group .controls{margin: 0;display: flex;flex-direction: column;gap: 5px;}
+.cdsg_account  .controls *:not(p){
+    height: 44px;
+    font-size: 15px;
+    max-width: 100%;
+    width: 234px;
+    padding: 0 .7rem;
+}
+.cdsg_account  .controls p{
+    font-size: 12px;
+}
+.cdsg_account  .acao-editar > *{margin: 0!important;display: flex;width: auto;align-items: center;gap: 3rem;}
+.cdsg_account  .acao-editar button{
+    line-height: 46px;
+    border-radius: 10px;
+    background: #1e1e1e;
+    color: #fff;
+    text-transform: uppercase;
+    border: 0;
+    margin: 0!important;
+    font-weight: bold;
+    padding: 0 2rem;
+}
+.cdsg_account  .acao-editar a{
+    border: 0;
+    border-bottom: 1px solid #000;
+    padding: 0 0 .3rem 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    background: transparent;
+}
+.pagina-conta-cartoes .titulo + div > div > legend i{display: none;}
+.cdsg_account .cabecalho-interno h3.titulo,
+.pagina-conta-cartoes .titulo + div > div > legend{
+    text-align: left;
+    justify-content: flex-start!important;
+    align-items: flex-start;
+}
+.pagina-conta form .caixa-dados h3.titulo{margin-bottom: 1rem;}
+.cdsg_account .cabecalho-interno h3.titulo small{display: none;}
+
+.pagina-favorito-listar .caixa-info{display: none;}
+
+.meus-favoritos table tbody{
+    display: flex;
+}
+.meus-favoritos table tbody tr{
+    flex: 0 0 auto;
+    width: 33.33333333%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.meus-favoritos table tbody tr td{text-align: left;border: 0;width: 100%;}
+.meus-favoritos table tbody tr td:nth-child(4) i,
+.meus-favoritos table tbody tr td:nth-child(3){display: none;}
+.meus-favoritos table tbody tr td:nth-child(4) a:before{
+    content:"Remover da lista";
+    display: block;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.meus-favoritos table tbody tr td img{
+    max-height: unset;
+    max-width: 100%;
+    border: 0;
 }
