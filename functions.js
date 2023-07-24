@@ -1244,6 +1244,10 @@ theme.build.checkoutHeader = function(){
     '</div>');
 };
 
+theme.build.checkoutFooter = function(){
+    $('#rodape').empty();
+};
+
 theme.pages['pagina-carrinho'] = function(){
     //
 
@@ -1252,13 +1256,16 @@ theme.pages['pagina-carrinho'] = function(){
         $('.tabela-carrinho .bg-dark:not(.hidden-phone)').appendTo('#checkout-sidebar');
         
         $('#checkout-sidebar').prepend('<div id="side_subtotal" class="row align-items-center justify-content-between"><div class="col-auto"><strong>Subtotal</strong></div><div class="col-auto place"></div></div>');
-        //$('#checkout-sidebar').append('<div id="side_frete" class="row align-items-center justify-content-between"><div class="col"></div></div>');
-        //$('#checkout-sidebar').append('<div id="side_cupom" class="row align-items-center justify-content-between"><div class="col"></div></div>');
-
-
+        
         let subtotal = $('[data-subtotal-valor]').closest('tr');
         $('[data-subtotal-valor]').appendTo('#side_subtotal .place');
 
+        $('.tabela-carrinho .imagem img').each(function(){
+            let src = $(this).attr('src').replace('64x64','200x200');
+            $(this).attr('src',src)
+        });
+
+        $('.pagina-carrinho .cabecalho-interno h1.titulo').text('Meu Carrinho ('+ ($('[data-produto-id]').length > 0 ? $('[data-produto-id]').length : 0) +')')
     }
     theme.functions.checkoutHeader();
     //$(document).ready(function(){
@@ -1770,16 +1777,20 @@ $(document).ready(function(){
 
     if(theme.currentPage == 'pagina-carrinho'){
         theme.build.checkoutHeader();
+        theme.build.checkoutFooter();
     }else{
         theme.build.header();
         theme.build.topbar();
-    }    
+        theme.build.footer();
+        theme.build.sideHelp();
+        theme.build.productList();
+        theme.functions.searchAutoComplete();
+        theme.functions.accountData();
+    }        
     
-    theme.build.footer();
-    theme.build.productList();
-    theme.build.sideHelp();
-    theme.functions.searchAutoComplete();
-    theme.functions.accountData();
+    
+    
+    
     
     
 

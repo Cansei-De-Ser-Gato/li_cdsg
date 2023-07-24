@@ -2621,8 +2621,29 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
 #checkout-sidebar *{color:#000;}
 #checkout-sidebar .descontos.avista *,
 #checkout-sidebar .descontos.avista{font-size:12px;text-align:center;display:inline-block;vertical-align: middle;}
-#checkout-sidebar .total{font-size:16px;text-align:center;padding:15px 0;}
-#checkout-sidebar .total strong{font-size:20px;}
+#checkout-sidebar tr.bg-dark:last-child{background: transparent!important;}
+#checkout-sidebar tr.bg-dark:last-child td{
+    padding: 0!important;
+}
+#checkout-sidebar .total + .valores-descontos{}
+#checkout-sidebar .total + .valores-descontos *{
+    font-weight: bold;
+    color: #979797;
+}
+#checkout-sidebar .total{
+    text-align: center;
+    padding: 15px 0 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #d9d9d9;    
+}
+#checkout-sidebar .total *{
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/* #checkout-sidebar .total strong{font-size:20px;} */
 #checkout-sidebar .possui-cupom .cupom-valor{
     display: flex;
     background: #f2f2f2;
@@ -2690,7 +2711,8 @@ body form #checkout-sidebar tr{
     background: #F4F4F4!important;
     border: 0!important;
 }
-#checkout-sidebar tr td:contains(&nbsp;){display:none!important;}
+
+#checkout-sidebar tr td:empty{display:none!important;}
 
 #checkout-sidebar tr td *{float:none;margin:0;}
 
@@ -2704,11 +2726,11 @@ body form #checkout-sidebar tr{
     .pagina-carrinho .finalizar-compra .tabela-carrinho{margin:0;}
     .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(1){order:1}
     .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(3){order:2;width:100%;}
-    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(2){order:3;width:calc(75% - 5px);overflow:hidden;height:fit-content;}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(2){order:3;width:calc(70% - 5px);overflow:hidden;height:fit-content;}
     .pagina-carrinho #corpo .secao-principal .tabela-carrinho tbody tr.bg-dark{border-bottom:0;margin-bottom:0;}
     .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) {
         order: 4;
-        width: 25%;
+        width: 30%;
         padding: 0 0 0 30px;
         box-sizing: border-box;
     }
@@ -2752,7 +2774,7 @@ body form #checkout-sidebar tr{
         margin: 0;
     }
 }
-.pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a{display:none!important;}
+
 @media(max-width:990px){
     #checkout-sizebar .valores-descontos{text-align:center;}
     .pagina-carrinho #corpo .finalizar-compra .acao-editar{gap:30px;flex-direction:column}
@@ -2777,7 +2799,279 @@ body form #checkout-sidebar tr{
 }
 
 #side_subtotal > div:first-child strong,
-#checkout-sidebar tr td [for="calcularFrete"] b{
+#checkout-sidebar tr td [for="calcularFrete"] b,
+#checkout-sidebar tr td [for="usarCupom"] b{
     font-size: 13px;
     text-transform: uppercase;
 }
+#checkout-sidebar tr td [for="calcularFrete"],
+#checkout-sidebar tr td [for="usarCupom"]{width: 100%;}
+
+#checkout-sidebar tr td [for="usarCupom"] b:before{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/coupon.svg);
+    height: 18px;
+    width: 21px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+#checkout-sidebar tr td [for="calcularFrete"] b:before{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/shipping.svg);
+    height: 18px;
+    width: 21px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a,
+#checkout-sidebar button:hover{
+    background: #000;
+    color: #fff;
+}
+#checkout-sidebar button,
+.pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a{
+    background: transparent;
+    line-height: 33px;
+    padding: 0;
+    font-weight: bold;
+    border-radius: 10px;
+    margin: 0!important;
+    width: 200px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 0px;
+    border: 1px solid #d9d9d9;
+    color: #000;
+    transition: var(--transition)!important;
+}
+
+#checkout-sidebar .help-inline {
+    margin: 0 0 0 auto;
+    padding: 0;
+    width: 100%;
+    display: block;
+    text-align: right;
+    
+    margin-bottom: 10px;
+}
+#checkout-sidebar .help-inline *{
+    font-size: 10px;
+}
+#checkout-sidebar .formas-envio{
+    margin-bottom: .5rem;
+    margin-top: -1rem;
+}
+#checkout-sidebar .formas-envio li label,
+#checkout-sidebar .formas-envio li label *{
+    font-size: 12px;
+}
+
+.pagina-carrinho .tabela-carrinho{border: 0;}
+.pagina-carrinho .tabela-carrinho thead{}
+.pagina-carrinho .tabela-carrinho thead tr{
+    border: 0;
+}
+.pagina-carrinho .tabela-carrinho thead tr th:first-child{opacity: 0;}
+.pagina-carrinho .tabela-carrinho thead tr th{
+    border: 0;
+    background: transparent;
+    font-size: 12px;
+    text-transform: uppercase;
+    
+}
+.pagina-carrinho .tabela-carrinho thead tr th *{
+    color: #1e1e1e;
+}
+.pagina-carrinho .tabela-carrinho tbody{}
+.pagina-carrinho .tabela-carrinho tbody tr{
+    border: 0;
+    border-bottom: 1px solid #d9d9d9;
+}
+.pagina-carrinho .tabela-carrinho tbody tr.hidden-phone{display:none!important}
+.pagina-carrinho .tabela-carrinho tbody tr > td{border: 0;}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info{}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > a{
+    font-size: 16px;
+    color: #1e1e1e;
+}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul{margin-top: 1rem;}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li:first-child,
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li:nth-child(2){display: none;}
+/* .pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li:nth-child(2+n){
+    font-size: 0;
+} */
+
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li span *{font-size: 14px;}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li span{
+    font-size: 0;
+}
+.pagina-carrinho .tabela-carrinho tbody tr > td .produto-info > ul > li .atributo-cor-carrinho span{
+    background-color: #FFD700;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+}
+
+.tabela-carrinho img {
+    width: 90px;
+    max-height: unset;
+    max-width: unset;
+}
+
+.pagina-carrinho .tabela-carrinho tbody tr > td:nth-child(3){}
+.pagina-carrinho .tabela-carrinho tbody tr > td:nth-child(3) strong,
+.pagina-carrinho .tabela-carrinho tbody tr > td:nth-child(5) strong{
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+
+.pagina-carrinho .tabela-carrinho .quantidade{width:200px;}
+.pagina-carrinho .tabela-carrinho tbody tr > td:nth-child(4) input{
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e1e1e;
+    border: 0;
+    outline: 0;
+    line-height: initial;
+    height: auto;
+    box-shadow: 0px 0px 0px!important;
+    padding: 0;
+    width: 25px;
+}
+.pagina-carrinho .tabela-carrinho tbody tr > td:nth-child(4) a{
+    border: 1px solid #d9d9d9;
+    height: 29px;
+    width: 29px;
+    border-radius: 50%;
+    line-height: 29px;
+    color: #1e1e1e;
+}
+.pagina-carrinho .tabela-carrinho .excluir a:before{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/trash.svg);
+    height: 22px;
+    width: 18px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a{
+    margin: 1rem 0!important;
+    font-size: 15px;
+    width: 100%;
+    line-height: 42px;
+    text-transform: uppercase;
+}
+body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal i{display: none;}
+body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
+    background: var(--green);
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 0px 0px 0px;
+    border: 0;
+    border-radius: 10px;
+    line-height: 48px;
+    padding: 0;
+}
+
+.pagina-carrinho .cabecalho-interno h1.titulo{
+    position: relative;
+    font-size: 24px;
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0 0 0.3rem 0;
+    margin-top: 0;
+    line-height: 40px;
+    border: 0;
+}
+.pagina-carrinho .cabecalho-interno h1.titulo small{display: none;}
+.pagina-carrinho .cabecalho-interno h1.titulo:before{
+    content: "";
+    background: #f4f4f4;
+    height: 100%;
+    width: 300vw;
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    translate: -50% 0;
+    top: 0;
+}
+
+.pagina-carrinho.carrinho-checkout{
+
+}
+
+.carrinho-checkout .conteiner-principal #corpo .conteiner{
+    box-shadow: 0px 0px 0px;
+}
+
+.identificacao .identificacao-title{
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.carrinho-checkout .identificacao hr.sem-margem{border: 0;}
+
+#formularioLogin .email-box{
+    display: flex;
+    align-items: center;
+}
+#formularioLogin .form-horizontal > .controul-group:before,
+#formularioLogin .form-horizontal > .controul-group:after{
+    display: none;
+}
+.carrinho-checkout .identificacao .control-group{
+    display: flex;
+    align-items: center;
+    width: 560px;
+    max-width: unset;
+}
+.identificacao .control-group input{
+    height: 67px;
+    border: 1px solid #1e1e1e;
+    font-size: 21px;
+    box-shadow: 0px 0px 0px;
+    border-radius: 10px 0 0 10px;
+    margin: 0;
+    width: 100%;
+    padding: 0 1rem;
+    font-weight: 400;
+}
+.identificacao .email-box{margin: 0;width: 100%;}
+.identificacao .control-group .submit-email.botao.principal{
+    position: relative;
+    margin: 0;
+    max-width: unset;
+    min-width: unset;
+    background: #1e1e1e;
+    border-radius: 0 10px 10px 0;
+    height: 67px;
+    line-height: 65px;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+}
+.checkout-alerta-seguro .checkout-alerta-seguro-icon{display: none;}
+.checkout-alerta-seguro .checkout-alerta-seguro-tit{
+    font-size: 21px;
+    font-weight: normal;
+    color: #1e1e1e;
+    margin-top: 0;
+}
+.checkout-alerta-seguro{
+    background: #f4f4f4;
+    background-image: unset;
+    max-width: unset;
+    width: 560px;
+    border: 0;
+    padding: 2rem!important;
+}
+.carrinho-checkout .identificacao .control-group{margin-bottom: 0;}
