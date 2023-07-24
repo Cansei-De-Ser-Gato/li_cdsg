@@ -2564,3 +2564,220 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     max-width: 100%;
     border: 0;
 }
+
+#cdsg_checkout_header .cdsg_logo img{
+    max-height: 60px
+}
+
+/*apx_load="checkout_steps"*/
+[apx_load="checkout_steps"]{}
+[apx_load="checkout_steps"] .item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+}
+[apx_load="checkout_steps"] .item:first-child span:before,
+[apx_load="checkout_steps"] .item:last-child span:after{opacity: 0;}
+[apx_load="checkout_steps"] .item span:before,
+[apx_load="checkout_steps"] .item span:after{
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: #000;
+}
+[apx_load="checkout_steps"] .item span{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 2px;
+    margin-bottom: 5px;
+}
+[apx_load="checkout_steps"] .item span i{
+    width: 7px;
+    height: 7px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    display: flex;
+    flex: 1 0 7px;
+}
+[apx_load="checkout_steps"] .item.active span i{
+    border-color: var(--green);
+    background: var(--green);
+}
+[apx_load="checkout_steps"] .item.past span i{
+    border-color: #000;
+    background: #000;
+}
+[apx_load="checkout_steps"] .item strong{
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+
+
+/* resumo carrinho */
+#checkout-sidebar *{color:#000;}
+#checkout-sidebar .descontos.avista *,
+#checkout-sidebar .descontos.avista{font-size:12px;text-align:center;display:inline-block;vertical-align: middle;}
+#checkout-sidebar .total{font-size:16px;text-align:center;padding:15px 0;}
+#checkout-sidebar .total strong{font-size:20px;}
+#checkout-sidebar .possui-cupom .cupom-valor{
+    display: flex;
+    background: #f2f2f2;
+    padding: 10px;
+    justify-content: center;
+    font-size: 11px;
+    border-radius: 3px;
+}
+#checkout-sidebar .possui-cupom .cupom-valor strong{margin-left:5px;}
+#checkout-sidebar .possui-cupom .cupom-sucesso{display:flex;margin-bottom:10px;}
+#checkout-sidebar .possui-cupom .cupom-sucesso > b{width:100%;text-align:left;}
+#checkout-sidebar .control-label{text-align:left;}
+#checkout-sidebar .help-inline i{margin-right:5px;}
+#checkout-sidebar .help-inline{
+    margin: 0 0 0 auto;
+    padding: 0;
+    width: 100%;
+    display: block;
+    text-align: right;
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+#checkout-sidebar .input-append{
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+#checkout-sidebar .controls button{
+    font-size: 11px!important;
+    text-transform: uppercase;
+}
+#checkout-sidebar .controls button i{display:none;}
+#checkout-sidebar .radio input{margin-right:5px;}
+#checkout-sidebar .radio{
+    padding:0;
+    text-align:left;
+    margin-top:5px;
+}
+#checkout-sidebar .input-append input{width:100%;height:35px;box-sizing:border-box;}
+/* #checkout-sidebar{
+    padding:15px;
+    box-sizing:border-box;
+    border-radius:10px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,.1);
+} */
+#checkout-sidebar .subtotal{
+    width: 100%;
+    text-align: center;
+}
+
+#checkout-sidebar tr:last-child{
+    margin-bottom:0;
+    border:0;
+}
+body form #checkout-sidebar tr td{
+    border: 0!important;
+    padding: 0.5rem 1rem!important;
+}
+body form #checkout-sidebar tr{
+    display: flex;
+    flex-direction: column;
+    margin: .5rem 0;
+    padding: 0;
+    border: 0px!important;
+    background: #F4F4F4!important;
+    border: 0!important;
+}
+#checkout-sidebar tr td:contains(&nbsp;){display:none!important;}
+
+#checkout-sidebar tr td *{float:none;margin:0;}
+
+@media(min-width:990px){
+    .pagina-carrinho .acao-editar{padding:0!important;}
+    
+    .pagina-carrinho .secao-principal .finalizar-compra{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .pagina-carrinho .finalizar-compra .tabela-carrinho{margin:0;}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(1){order:1}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(3){order:2;width:100%;}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(2){order:3;width:calc(75% - 5px);overflow:hidden;height:fit-content;}
+    .pagina-carrinho #corpo .secao-principal .tabela-carrinho tbody tr.bg-dark{border-bottom:0;margin-bottom:0;}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) {
+        order: 4;
+        width: 25%;
+        padding: 0 0 0 30px;
+        box-sizing: border-box;
+    }
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12{margin:15px 0 0 0;}
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar{
+        display:flex;
+        flex-wrap:wrap
+    }
+    
+    body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 15px 0;
+        font-size: 16px!important;
+        margin-bottom:15px;
+    }
+    .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .selo-ssl{
+        position:relative;
+        width:100%;
+        text-align:center;
+        justify-content:center;
+    }
+    
+}
+
+.pagina-pedido-finalizado .pedido-finalizado .cabecalho-interno > .span4{display:none;}
+.pagina-pedido-finalizado .pedido-finalizado .cabecalho-interno > .span4 + .span8{
+    margin:0 auto;
+    float:none;
+}
+
+@media(min-width:990px){
+    .pedido-finalizado #box-pagamento-pix{
+        position: fixed;
+        box-shadow: 0px 0px 0 5000px rgba(255,255,255,.8);
+        z-index: 999;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        margin: 0;
+    }
+}
+.pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a{display:none!important;}
+@media(max-width:990px){
+    #checkout-sizebar .valores-descontos{text-align:center;}
+    .pagina-carrinho #corpo .finalizar-compra .acao-editar{gap:30px;flex-direction:column}
+    .pagina-carrinho #corpo .finalizar-compra .acao-editar:before{display:none;}
+    .pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{font-size:18px!important;}
+}
+
+.pagina-carrinho .acao-editar  > div *{
+    margin-left: 0;
+}
+
+#side_subtotal{
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0.7rem 0.5rem;
+    text-transform: uppercase;
+    line-height: initial;
+}
+#side_subtotal .place *{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#side_subtotal > div:first-child strong,
+#checkout-sidebar tr td [for="calcularFrete"] b{
+    font-size: 13px;
+    text-transform: uppercase;
+}

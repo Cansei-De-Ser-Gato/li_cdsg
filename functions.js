@@ -184,6 +184,16 @@ theme.generateContent.logo = function(prop, oObj){
     return el;
 };
 
+theme.generateContent.checkout_steps = function(prop, oObj){
+    el = $('<div class="d-flex align-items-center"></div>')
+    el.append('<div class="item '+ ($('.pagina-carrinho:not(.carrinho-checkout)').length > 0 ? 'active' : 'past') +'"><span><i></i></span><strong>Carrinho</strong></div>');
+    el.append('<div class="item '+ ($('.pagina-carrinho.carrinho-checkout').length > 0 ? 'active' : '') +'"><span><i></i></span><strong>Identificação</strong></div>');
+    el.append('<div class="item "><span><i></i></span><strong>Entrega</strong></div>');
+    el.append('<div class="item "><span><i></i></span><strong>Pagamento</strong></div>');
+    
+    return el;
+};
+
 theme.generateContent.load_img = function(prop, oObj){
     let el = $('<img src="'+ CDN_PATH + prop +'"/>');
 
@@ -386,8 +396,12 @@ theme.functions.accountData = function(){
                 method: 'GET'         
             }).done(function(response){
                 let body = $(response);
-                account.gender = body.find('#id_sexo').val().trim();
-                sessionStorage.setItem('account',JSON.stringify(account))
+                try{
+                    account.gender = body.find('#id_sexo').val().trim();
+                    sessionStorage.setItem('account',JSON.stringify(account))
+                }catch(e){
+                    console.log(e)
+                }
             });
         //}
 
@@ -1214,6 +1228,45 @@ function initMap(){
     }
 }
 
+theme.build.checkoutHeader = function(){
+    $('#cabecalho').html('<div id="cdsg_checkout_header">'+
+        '<div class="container py-md-3 my-md-3">'+
+            '<div class="row align-items-center justify-content-between">'+
+                '<div class="col-2">'+
+                    '<div apx_load="logo" apx_load_prop="" class="cdsg_logo"></div>'+
+                '</div>'+
+                '<div class="col-auto">'+
+                    '<div apx_load="checkout_steps" apx_load_prop="" class="cdsg_checkout_steps"></div>'+
+                '</div>'+
+                '<div class="col-2"></div>'+
+            '</div>'+
+        '</div>'+
+    '</div>');
+};
+
+theme.pages['pagina-carrinho'] = function(){
+    //
+
+    if($('.pagina-carrinho:not(.carrinho-checkout)').length > 0){
+        $('<div id="checkout-sidebar"></div>').insertBefore('.acao-editar');
+        $('.tabela-carrinho .bg-dark:not(.hidden-phone)').appendTo('#checkout-sidebar');
+        
+        $('#checkout-sidebar').prepend('<div id="side_subtotal" class="row align-items-center justify-content-between"><div class="col-auto"><strong>Subtotal</strong></div><div class="col-auto place"></div></div>');
+        //$('#checkout-sidebar').append('<div id="side_frete" class="row align-items-center justify-content-between"><div class="col"></div></div>');
+        //$('#checkout-sidebar').append('<div id="side_cupom" class="row align-items-center justify-content-between"><div class="col"></div></div>');
+
+
+        let subtotal = $('[data-subtotal-valor]').closest('tr');
+        $('[data-subtotal-valor]').appendTo('#side_subtotal .place');
+
+    }
+    theme.functions.checkoutHeader();
+    //$(document).ready(function(){
+        
+        
+    //})
+}
+
 theme.functions.accountHeader = function(){
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
     $('.breadcrumbs').after(`<strong class="cdsg_account_header">Olá human${sessionAccount.gender == "m" ? 'o' : 'a'}, ${sessionAccount.userName}!</strong>`)
@@ -1714,8 +1767,14 @@ theme.functions.headerCategoriesDropdown = function(){
 
 $(document).ready(function(){
     theme.init();
-    theme.build.header();
-    theme.build.topbar();
+
+    if(theme.currentPage == 'pagina-carrinho'){
+        theme.build.checkoutHeader();
+    }else{
+        theme.build.header();
+        theme.build.topbar();
+    }    
+    
     theme.build.footer();
     theme.build.productList();
     theme.build.sideHelp();
