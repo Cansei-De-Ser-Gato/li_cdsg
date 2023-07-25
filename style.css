@@ -2645,12 +2645,10 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
 }
 /* #checkout-sidebar .total strong{font-size:20px;} */
 #checkout-sidebar .possui-cupom .cupom-valor{
-    display: flex;
-    background: #f2f2f2;
-    padding: 10px;
+    padding: 0;
     justify-content: center;
-    font-size: 11px;
-    border-radius: 3px;
+    font-size: 12px;
+    margin: -1rem 0 0.5rem 0;
 }
 #checkout-sidebar .possui-cupom .cupom-valor strong{margin-left:5px;}
 #checkout-sidebar .possui-cupom .cupom-sucesso{display:flex;margin-bottom:10px;}
@@ -2671,11 +2669,13 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     gap: 10px;
     margin: 10px 0;
 }
-#checkout-sidebar .controls button{
+#checkout-sidebar .controls button,
+#exibirFormasEnvio a{
     font-size: 11px!important;
     text-transform: uppercase;
 }
-#checkout-sidebar .controls button i{display:none;}
+#checkout-sidebar .controls button ,
+#exibirFormasEnvio a i{display:none;}
 #checkout-sidebar .radio input{margin-right:5px;}
 #checkout-sidebar .radio{
     padding:0;
@@ -2800,13 +2800,16 @@ body form #checkout-sidebar tr{
 
 #side_subtotal > div:first-child strong,
 #checkout-sidebar tr td [for="calcularFrete"] b,
-#checkout-sidebar tr td [for="usarCupom"] b{
+#checkout-sidebar tr td [for="usarCupom"] b,
+#checkout-sidebar tr.possui-cupom .cupom-sucesso b{
     font-size: 13px;
     text-transform: uppercase;
 }
+#checkout-sidebar tr.possui-cupom .cupom-sucesso a{margin: 3px 0 3px 5px;}
 #checkout-sidebar tr td [for="calcularFrete"],
 #checkout-sidebar tr td [for="usarCupom"]{width: 100%;}
 
+#checkout-sidebar .possui-cupom .cupom-sucesso > b:before,
 #checkout-sidebar tr td [for="usarCupom"] b:before{
     content: "";
     background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/coupon.svg);
@@ -2831,10 +2834,12 @@ body form #checkout-sidebar tr{
 }
 
 .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a,
-#checkout-sidebar button:hover{
+#checkout-sidebar button:hover,
+#exibirFormasEnvio a:hover{
     background: #000;
     color: #fff;
 }
+#exibirFormasEnvio a,
 #checkout-sidebar button,
 .pagina-carrinho .secao-principal .finalizar-compra > *:nth-child(4) .acao-editar .span12 a{
     background: transparent;
@@ -3045,7 +3050,8 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     font-weight: 400;
 }
 .identificacao .email-box{margin: 0;width: 100%;}
-.identificacao .control-group .submit-email.botao.principal{
+.identificacao .control-group .submit-email.botao.principal,
+.carrinho-checkout .identificacao .login-data .control-group button{
     position: relative;
     margin: 0;
     max-width: unset;
@@ -3065,6 +3071,7 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     font-weight: normal;
     color: #1e1e1e;
     margin-top: 0;
+    margin-bottom: 1rem;
 }
 .checkout-alerta-seguro{
     background: #f4f4f4;
@@ -3072,6 +3079,316 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     max-width: unset;
     width: 560px;
     border: 0;
-    padding: 2rem!important;
+    padding: 2rem 3rem!important;
+    border-radius: 10px;
 }
 .carrinho-checkout .identificacao .control-group{margin-bottom: 0;}
+
+.checkout-alerta-seguro .checkout-alerta-seguro-item .icon-ok:before{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/check.svg);
+    height: 9px;
+    width: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+.checkout-alerta-seguro .checkout-alerta-seguro-item{margin-top: .5rem;}
+.checkout-alerta-seguro .checkout-alerta-seguro-item span{
+    font-size: 16px;;
+}
+
+.carrinho-checkout .identificacao .login-data{margin-top: 1rem;}
+.carrinho-checkout .identificacao .login-data .control-group{flex-wrap: wrap;}
+.carrinho-checkout .identificacao .login-data .control-group button{
+    order: -9;
+}
+.carrinho-checkout .identificacao .login-data .control-group .senha-box{
+    order: -10;
+    margin: 0;
+    width: calc(100% - 95px);
+}
+.carrinho-checkout .identificacao .login-data .control-group > a{
+    font-size: 14px;
+    border-bottom: 1px solid #1e1e1e;
+    text-transform: uppercase;
+    margin: 1rem 2rem 0 0;
+}
+.carrinho-checkout .identificacao .login-data .control-group > a i{display:none}
+#formularioLogin .email-box[style="margin-right: 0px;"] input{border-radius: 10px;}
+
+.cdsg_cart_info{
+    display: flex;
+    flex-direction: column;
+    background: #f8f8f8!important;
+    border: 0;
+    padding: 0 1.5rem;
+}
+.cdsg_cart_info tr.hide{display: none;}
+.cdsg_cart_info tr{
+    border: 0;
+    border-bottom: 1px solid #d9d9d9;
+    display: flex;
+    justify-content: space-between;
+    background: #f8f8f8!important;
+    padding: 1rem 0;
+    align-items: center;
+}
+.cdsg_cart_info tr:not(.tr-checkout-total) td:first-child{display:none!important}
+.cdsg_cart_info tr td{
+    background: #f8f8f8!important;
+    border: 0!important;
+    padding: 0;
+    color: #1e1e1e;
+}
+.cdsg_cart_info tr td:last-child{
+    text-align: right;
+}
+.cdsg_cart_info tr td span{
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+.cdsg_cart_info tr td strong{
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
+.cdsg_cart_info tr.tr-checkout-total{
+    display: flex!important;
+    margin: 0;
+    border: 0;
+}
+.cdsg_cart_info tr.tr-checkout-total span{
+    font-size: 18px;
+}
+.cdsg_cart_info tr.tr-checkout-total .total{margin: 0;}
+.cdsg_cart_info tr.tr-checkout-total strong{
+    font-size: 18px;
+    margin: 0;
+}
+.cdsg_cart_info tr.tr-checkout-frete,
+.cdsg_cart_info tr[style="display: table-row;"]{
+    display:flex!important;
+}
+
+.cdsg_cart_info tr .desconto{text-align: right;}
+
+.cdsg_box_title{
+    background: #f4f4f4;
+}
+.cdsg_box_title strong{
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.cdsg_box_title a{
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    color: #1e1e1e;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cdsg_cart_resume{
+    border: 1px solid #d9d9d9;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.cdsg_cart_resume .item{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.cdsg_cart_resume .item .imagem{
+    height: 90px;
+    width: 90px;
+    background: #f9f9f9;
+    padding: .5rem;
+    position: relative;
+    display: block;
+}
+.cdsg_cart_resume .item .imagem img{
+    max-height: 100%;
+    margin: 0 auto;
+    display: block;
+}
+.cdsg_cart_resume .item .imagem .options {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    z-index: 1;
+    display: flex;
+    gap: 0.3rem;
+}
+.cdsg_cart_resume .item .imagem .options span:not(.text){
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: block;
+}
+.cdsg_cart_resume .item .imagem .options span.text{
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 12px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    color:#1e1e1e;
+    text-transform: uppercase;
+    height: 20px;
+    width: 20px;
+    display: block;
+}
+
+.campos-pedido legend{
+    text-transform: uppercase;
+    font-size: 24px;
+    background: #f4f4f4;
+    font-weight: bold;
+    color: #1e1e1e;
+    padding: 0.5rem 1rem 0.8rem 1rem;
+    border: 0;
+    position: relative;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+.campos-pedido legend i{display: none;}
+.campos-pedido .caixa-sombreada, .campos-pedido .acao-editar button:first-child{
+    border: 0;
+}
+
+#formularioCheckout .control-group > label a{
+    color:#1e1e1e;
+    font-weight: bold;
+}
+#formularioCheckout .control-group > label{
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #979797;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#formularioCheckout .control-group{margin-bottom: 1.5rem;}
+#formularioCheckout select,
+#formularioCheckout  textarea, 
+#formularioCheckout input[type="text"], 
+#formularioCheckout input[type="tel"], 
+#formularioCheckout input[type="password"], 
+#formularioCheckout input[type="datetime"], 
+#formularioCheckout input[type="datetime-local"],
+#formularioCheckout input[type="date"], 
+#formularioCheckout input[type="month"],
+#formularioCheckout input[type="time"], 
+#formularioCheckout input[type="week"], 
+#formularioCheckout input[type="number"],
+#formularioCheckout  input[type="email"], 
+#formularioCheckout input[type="url"], 
+#formularioCheckout input[type="search"], 
+#formularioCheckout input[type="tel"], 
+#formularioCheckout input[type="color"], 
+#formularioCheckout .uneditable-input{
+    height: 44px;
+    font-size: 20px;
+    padding: 0 0.7rem;
+}
+
+#formularioCheckout #tipoCadastro:before,
+#formularioCheckout #tipoCadastro:after{display: none;}
+#formularioCheckout #tipoCadastro{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-start;
+    border: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+#formularioCheckout #tipoCadastro *{
+    width: fit-content;
+    min-width: unset;
+    text-transform: uppercase;
+    color: #979797;
+    font-size: 13px;
+}
+
+.campos-pedido .tipo-cadastro li .icon-check:before{
+    content: "";
+    height: 20px;
+    width: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 0px 1px #d9d9d9;
+    background: #d9d9d9;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.campos-pedido .tipo-cadastro li .icon-check-empty:before{
+    content: "";
+    height: 20px;
+    width: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 0px 1px #d9d9d9;
+    background: #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.campos-pedido #id_cep{width: fit-content;}
+.campos-pedido #exibirFormasEnvio a{
+    padding: 0 1rem;
+    width: 100%;
+    height: 44px;
+    line-height: 42px;
+    font-size: 14px!important;
+}
+
+#formas-envio-wrapper .accordion-group{
+    display: block;
+    border: 1px solid #000;
+    border-radius: 0;
+}
+#formas-envio-wrapper .accordion-heading .radio-conteiner{
+    height: 44px;
+    background: var(--violet);
+    width: 38px;
+    text-align: center;
+    vertical-align: middle;
+    float: none;
+}
+#formas-envio-wrapper .accordion-heading{
+    border: 0;
+    display: flex;
+    align-items: center;
+}
+#formas-envio-wrapper .accordion-heading .forma-conteiner .envio-preco {
+    display: inline-block;
+    min-width: 50px;
+    margin-right: 13%;
+    font-size: 15px;
+    font-weight: bold;
+    color: #979797;
+}
+#formas-envio-wrapper .accordion-heading .forma-conteiner .envio-prazo-entrega{
+    font-size: 15px;
+}
+#formas-envio-wrapper .accordion-heading .forma-conteiner .envio-nome{
+    width: 100%;
+    text-align: right;
+    font-weight: bold;
+}
+#formas-envio-wrapper .accordion-heading .forma-conteiner{width: 100%;display: flex;align-items: center;margin: 0;}
+
+.formas.envio+.warning-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #979797;
+}

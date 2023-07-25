@@ -1249,8 +1249,6 @@ theme.build.checkoutFooter = function(){
 };
 
 theme.pages['pagina-carrinho'] = function(){
-    //
-
     if($('.pagina-carrinho:not(.carrinho-checkout)').length > 0){
         $('<div id="checkout-sidebar"></div>').insertBefore('.acao-editar');
         $('.tabela-carrinho .bg-dark:not(.hidden-phone)').appendTo('#checkout-sidebar');
@@ -1266,6 +1264,46 @@ theme.pages['pagina-carrinho'] = function(){
         });
 
         $('.pagina-carrinho .cabecalho-interno h1.titulo').text('Meu Carrinho ('+ ($('[data-produto-id]').length > 0 ? $('[data-produto-id]').length : 0) +')')
+    }else{
+        $('.resumo-compra').hide();
+        $.get('/carrinho/minicart', function(response){
+            let cart = response.carrinho;
+            console.log(cart);
+            $('#formularioCheckout').before('<div class="row"><div class="col-md-8 col-12"><div class="cdsg_box_title d-flex justify-content-between align-items-center px-3 py-2"><strong>Seu Pedido ('+ cart.items.length +')</strong><a href="/carrinho/index">Editar Pedido</a></div><div class="cdsg_cart_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div>')
+            
+            $.each(cart.items, function(k_, i_){
+                let block = $('<div class="options"></div>');
+                if(i_.variationTypes && i_.variationTypes.length > 0){
+                   $.each(i_.variationTypes, function(k__, opt){
+                        if(opt.variations[0].secondaryColor){
+                            block.append('<span style="background: linear-gradient( -45deg, '+ opt.variations[0].color+', '+ opt.variations[0].color+' 50%,  '+ opt.variations[0].secondaryColor+' 50% ); "></span>')
+                        }else if(opt.variations[0].color){
+                            block.append('<span style="background-color:'+ opt.variations[0].color +'"></span>');
+                        }else{
+                            block.append('<span class="text">'+ opt.variations[0].name +'</span>');
+                        }
+                   }) ;
+                }
+                $('.cdsg_cart_resume').append('<div class="col-auto"><div class="item"><span class="imagem" title="'+ i_.name +'"><img src="'+ window.MEDIA_URL + '200x200/'+ i_.images[0].path+'"/>'+ block.prop('outerHTML') +'</span><strong>'+ i_.quantity +'</strong></div></div>')
+            });
+            
+            $('.resumo-compra .bg-dark').appendTo('.cdsg_cart_info');
+            if($('.fazer-login-btn').length > 0){
+                $('.fazer-login-btn').text('Já Tenho Conta');
+                let login = $('.fazer-login-btn').clone();
+                $('.fazer-login-btn').closest('legend').html('Identificação');                
+                $('[for="id_email"]').append(login);
+            }
+
+            $(document).on( "ajaxComplete", function( event, xhr, settings ) {
+                if(settings.url.includes("?envio_id=")){
+                    $('.cdsg_cart_info .tr-checkout-frete .frete-preco .titulo').text(xhr.responseJSON.valor_frete.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+                    $('.cdsg_cart_info .tr-checkout-frete .frete-preco .muted').hide();
+                    $('.cdsg_cart_info .tr-checkout-frete .frete-preco .titulo').show();
+                    
+                }
+            } );
+        });
     }
     theme.functions.checkoutHeader();
     //$(document).ready(function(){
