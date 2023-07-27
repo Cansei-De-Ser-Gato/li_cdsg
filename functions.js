@@ -1228,17 +1228,18 @@ function initMap(){
     }
 }
 
+theme.lang.telefoneCheckout = "(11) 91658-8376"
 theme.build.checkoutHeader = function(){
     $('#cabecalho').html('<div id="cdsg_checkout_header">'+
-        '<div class="container py-md-3 my-md-3">'+
+        '<div class="container-fluid py-md-3 px-5 my-md-3">'+
             '<div class="row align-items-center justify-content-between">'+
-                '<div class="col-2">'+
+                '<div class="col-3">'+
                     '<div apx_load="logo" apx_load_prop="" class="cdsg_logo"></div>'+
                 '</div>'+
                 '<div class="col-auto">'+
                     '<div apx_load="checkout_steps" apx_load_prop="" class="cdsg_checkout_steps"></div>'+
                 '</div>'+
-                '<div class="col-2"></div>'+
+                '<div class="col-3 text-left"><div class="row align-items-center justify-content-end"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div class="mb-1"><b>Dúvidas? '+ theme.lang.telefoneCheckout +'</b></div><div apx_load="contact_hour"></div></div></div></div>'+
             '</div>'+
         '</div>'+
     '</div>');
@@ -1248,6 +1249,93 @@ theme.build.checkoutFooter = function(){
     $('#rodape').empty();
 };
 
+theme.lang.dica_boleto = "Dica: se for imprimir, configure sua impressora para utilizar modo normal de impressão (não utilizar opção rascunho).";
+
+theme.pages['pagina-pedido-finalizado'] = function(){
+    let pedido = [];
+
+    pedido.numero = $('.numero-pedido').first().text().trim();
+
+    $('.caixa-info li b').each(function(){
+        let txt = $(this).text();
+        if(txt == "Seu nome:"){
+            pedido.nome = $(this).next('span').text().trim().split(' ')[0];
+        }
+        if(txt == "Endereço:"){
+            pedido.endereco = $(this).next('span').text().trim();
+        }
+        if(txt == "Bairro:"){
+            pedido.bairro = $(this).next('span').text().trim();
+        }
+        if(txt == "CEP:"){
+            pedido.cep = $(this).next('span').text().trim();
+        }  
+    });
+
+    $('legend').each(function(){
+        let txt = $(this).text();
+        if(txt == "Pagamento"){
+            pedido.pagamento = $(this).next('ul').find('img').attr('alt').trim();
+        }
+        if(txt == "Entrega"){
+            pedido.entrega = $(this).next('ul').find('img').length > 0 ? $(this).next('ul').find('img').attr('alt').trim() : $(this).next('ul').find('span').text().trim();
+        }       
+    });
+
+    //pedido.imagem_pagamento = $('#img-forma-pagamento').prop('outerHTML')
+    pedido.entrega = pedido.entrega.toLowerCase().trim() == "retirar pessoalmente" ? 'Retirada' : pedido.entrega;
+    pedido.imagem_pagamento = `<span class="label-option">${pedido.pagamento}</span>`;
+    pedido.imagem_envio = `<span class="label-option">${pedido.entrega}</span>`;
+    pedido.status = window.pedido_status.replaceAll('_',' ');
+    
+
+    if($('[alt="Boleto Bancário"]').length > 0 && $('#mensagemBoleto #linhaDigitavel').length > 0){
+        pedido.codigo_boleto = `<div class="box_interno"><b class="d-block mb-2">CÓDIGO</b><div class="my-3">${$('#mensagemBoleto #linhaDigitavel').text()}</div><textarea class="d-none" id="codigoBoleto">${$('#mensagemBoleto #linhaDigitavel').text()}</textarea><button class="cdsg_btn copiar_codigo" type="button">Copiar Código</button></div>`;
+        pedido.imprimir_boleto = `<div class="box_interno"><b class="d-block mb-2">IMPRIMIR BOLETO</b><div class="my-3">${theme.lang.dica_boleto}</div><textarea class="d-none" id="codigoBoleto">${$('#mensagemBoleto #linhaDigitavel').text()}</textarea><a class="cdsg_btn" target=_blank href="${window.url_boleto}">Visualizar e Imprimir Boleto</a></div>`;
+
+        $('#box-pagamento-boleto , #iframe-boleto-container').addClass('d-none')
+
+    }else{
+        pedido.codigo_boleto = '';
+        pedido.imprimir_boleto = '';
+    }
+
+    pedido.aviso_cartao = '';
+
+    console.log(pedido)
+
+    $('.pedido-finalizado').prepend('<div id="cdsg_finalizado_header"></div>');
+    $('#cdsg_finalizado_header').html(`<div class="row mt-5"><div class="col-12 col-md-4"><div class="order_info"><div class="px-md-5"><h4>Obrigado por escolher a minha loja, ${pedido.nome}!</h4><p class="mt-3">Você receberá um e-mail com todos os detalhes do seu pedido.</p></div><div class="order_number mt-3"><div class="block_header violet px-5 py-1">Número do pedido</div><div class="apx_order_number px-5 pb-3">${pedido.numero}</div></div><div class="apx_order_status mt-3 px-5 py-3 d-flex align-items-center"><b class="">Status do pedido:</b><span class="ms-1 d-block">${pedido.status}</span></div></div></div><div class="col-md-5 col-12"><div class="order_payment"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Pagamento<span>${pedido.imagem_pagamento}</span></div><div class="apx_info_pagamento box_cdsg">${pedido.codigo_boleto} ${pedido.imprimir_boleto} ${pedido.aviso_cartao}</div></div></div><div class="col-12 col-md-3"><div class="order_shipping"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Envio<span>${pedido.imagem_envio}</span></div><div class="apx_info_envio box_cdsg"><b class="d-block mb-2">ENDEREÇO DO PEDIDO:</b>${pedido.endereco} - ${pedido.bairro} - ${pedido.cep}</div></div></div></div></div>`)
+    $('#cdsg_finalizado_header').after('<div id="cdsg_finalizado_footer"></div>');
+    $('#cdsg_finalizado_footer').html(`<div class="row mt-5"><div class="col-md-8 col-12"><div class="block_header px-3 py-1 mb-1">Seu Pedido</div><div class="cdsg_order_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div><div class="row mt-5 justify-content-end align-items-center cdsg_finalizar_functions"><div class="col-auto"><a href="/">Fazer nova Compra</a></div><div class="col-auto"><a href="/conta/pedido/listar">Ir para Meus Pedidos</a></div></div>`);
+    $('.resumo-compra').appendTo('.cdsg_order_resume');
+    $('.resumo-compra td[colspan="4"]').closest('tr').appendTo('.cdsg_cart_info')
+    
+    if($('[alt="Pix"]').length > 0 && window.pix_qrcode){
+        $('#box-pagamento-pix').appendTo('.apx_info_pagamento')
+    }else{
+        pedido.codigo_pix = '';
+    }
+
+
+    $('.copiar_codigo').click(function(){
+        var t = document.getElementById('codigoBoleto');
+        t.select();
+        try {
+            var successful = document.execCommand('copy')
+            var msg = successful ? 'successfully' : 'unsuccessfully'
+            console.log('text coppied ' + msg);
+            alert('Código copiado');
+        } catch (err) {
+            console.log('Unable to copy text')
+            alert('Erro ao copiar código');
+        }
+    });
+
+    $('.status-pagamento').appendTo('.apx_info_pagamento');
+
+
+};
 theme.pages['pagina-carrinho'] = function(){
     if($('.pagina-carrinho:not(.carrinho-checkout)').length > 0){
         $('<div id="checkout-sidebar"></div>').insertBefore('.acao-editar');
@@ -1269,7 +1357,7 @@ theme.pages['pagina-carrinho'] = function(){
         $.get('/carrinho/minicart', function(response){
             let cart = response.carrinho;
             console.log(cart);
-            $('#formularioCheckout').before('<div class="row"><div class="col-md-8 col-12"><div class="cdsg_box_title d-flex justify-content-between align-items-center px-3 py-2"><strong>Seu Pedido ('+ cart.items.length +')</strong><a href="/carrinho/index">Editar Pedido</a></div><div class="cdsg_cart_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div>')
+            $('#formularioCheckout').before('<div class="row mb-5"><div class="col-md-8 col-12"><div class="cdsg_box_title d-flex justify-content-between align-items-center px-3 py-2"><strong>Seu Pedido ('+ cart.items.length +')</strong><a href="/carrinho/index">Editar Pedido</a></div><div class="cdsg_cart_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div>')
             
             $.each(cart.items, function(k_, i_){
                 let block = $('<div class="options"></div>');
@@ -1304,6 +1392,48 @@ theme.pages['pagina-carrinho'] = function(){
                 }
             } );
         });
+        $('#formularioCheckout .caixa-sombreada').closest('.span4').addClass('checkout-step-block');
+        $('.dados-cadastro').closest('.span4').append('<button type="button" class="nextStep">Ir para Entrega</button>');
+        $('#formularioEndereco').closest('.caixa-sombreada').closest('.span4').append('<button type="button" class="nextStep">Ir para Pagamento</button>');
+
+        $('.checkout-step-block .caixa-info .cliente-editar-dados-link').appendTo($('.cliente-editar-dados-link').closest('.checkout-step-block').find('fieldset > legend'));
+        $('.checkout-step-block #listaEndereco .cliente-editar-dados-link').appendTo($('.checkout-step-block #listaEndereco .cliente-editar-dados-link').closest('fieldset').find('legend'))
+
+        $('.nextStep').click(function(){
+            theme.functions.checkoutSteps(this);            
+        });
+
+        $('.checkout-step-block').first().find('input').first().each(function(){
+            let me = $(this).closest('.checkout-step-block');
+            if(theme.functions.validaStep(this) > 0){
+                me.find('.nextStep').slideUp();
+            }else{
+                me.find('.nextStep').slideDown();
+            }
+        })
+        
+
+        // $('#formularioCheckout input').focusout(function(){
+        //     let me = $(this).closest('.checkout-step-block');
+        //     if(theme.functions.validaStep(this) > 0){
+        //         me.find('.nextStep').slideUp();
+        //     }else{
+        //         me.find('.nextStep').slideDown();
+        //     }
+        // });
+        $('[name="endereco_principal"]').change(function(){
+            setTimeout(() => {
+                //$('#id_cep').focusout();
+            }, 1000);
+        });
+        $('body').on('change','#formularioCheckout input',function(){            
+            let me = $(this).closest('.checkout-step-block');
+            if(theme.functions.validaStep(this) > 0){
+                me.find('.nextStep').slideUp();
+            }else{
+                me.find('.nextStep').slideDown();
+            }
+        })
     }
     theme.functions.checkoutHeader();
     //$(document).ready(function(){
@@ -1311,6 +1441,57 @@ theme.pages['pagina-carrinho'] = function(){
         
     //})
 }
+theme.functions.validaStep = function(oObj){
+    let me = $(oObj).closest('.checkout-step-block');
+    let error = me.find('.required.error').length;
+    let empty = 0;
+    me.find('.required input, #formas-envio-wrapper input').each(function(){        
+        if(($(this).closest('.tab-pane').length > 0 && $(this).closest('.tab-pane.active').length == 0)
+        || ($(this).closest('#userNewAddressInfo').length > 0 && $(this).closest('#userNewAddressInfo').attr('style') != "display: block;")){
+            console.log('n valida',$(this).attr('name'))
+        }else{
+            console.log('valida',$(this).attr('name'))
+            if($(this).attr('type') == "radio"){
+                console.log('[name="'+ $(this).attr('name') +'"]:checked')
+                if($('[name="'+ $(this).attr('name') +'"]:checked').val() == undefined){
+                    empty = empty + 1
+                    console.log('vazio mesmo')
+                }
+            }
+            // if($(this).attr('name','cep') && $(this).val().length == 0 && $('[name="endereco_principal"]:checked').val() != 0){
+            //     console.log('test')
+            // }        
+            empty = empty + ($(this).val().length  == 0 ? 1 : 0);
+        
+            
+            $(this).val().length == 0 ? console.log('empty',$(this)) : '';
+        }
+        
+    });
+    console.log(error, empty)
+    return error + empty;
+    
+}
+theme.functions.checkoutSteps = function(oObj){
+    let me = $(oObj).closest('.checkout-step-block');
+    if(theme.functions.validaStep(oObj) == 0){
+        me.addClass('validated');
+        $(oObj).slideUp();
+        me.next('.checkout-step-block').addClass('available');
+        
+        let me_ = me.next('.checkout-step-block');
+        setTimeout(() => {            
+            
+            if(theme.functions.validaStep(me_.find('input').first()) > 0){
+                me_.find('.nextStep').slideUp();
+            }else{
+                me_.find('.nextStep').slideDown();
+            }            
+        }, 1000);
+        
+        
+    }
+};
 
 theme.functions.accountHeader = function(){
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
@@ -1454,6 +1635,10 @@ theme.pages['pagina-pagina'] = function(){
 
     if(page_title == 'formulário de contato'){
         theme.build.contact_form_page();                                            
+    } 
+
+    if(page_title == 'quem somos'){
+        $('.conteudo').load('http://127.0.0.1:5500/quem_somos.html');                                          
     } 
 };
 
@@ -1813,7 +1998,8 @@ theme.functions.headerCategoriesDropdown = function(){
 $(document).ready(function(){
     theme.init();
 
-    if(theme.currentPage == 'pagina-carrinho'){
+    if(theme.currentPage == 'pagina-carrinho' ||
+    theme.currentPage == 'pagina-pedido-finalizado'){
         theme.build.checkoutHeader();
         theme.build.checkoutFooter();
     }else{

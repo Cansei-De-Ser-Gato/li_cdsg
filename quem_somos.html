@@ -1,0 +1,119 @@
+<div id="origem" class="pb-5">
+    <div class="row mb-5 pb-5">
+        <div class="col-12 col-md-7 position-relative pt-4">
+            <h1 class="mx-md-5 px-md-5 mt-md-5 pt-md-5">A Origem</h1>
+            <div class="box px-5 py-4">
+                <div class="px-5 py-5">
+                    <p>Tudo começou com uma fantasia de unicório que eu, Chico, ganhei de presente. As minhas humanas resolveram tirar uma foto e postar no Facebook com a frase "Cansei de ser gato, virei unicórnio".</p>
+                    <p>Desde então, eu me tornei centenas de personagens amados pelos humanos e pelos gatos, que puderam se transformar também com as minhas fantasias.</p>
+                    <p>E assim começou a minha carreira de influenciador e CEO.</p>
+                </div>
+            </div>
+            <div class="floating d-flex flex-column align-items-center">
+                <img src="https://via.placeholder.com/538x518"/>
+                <div class="row align-items-start mt-4">
+                    <div class="col-auto">
+                        <div class="d-flex flex-column align-items-center">
+                            <img src="https://via.placeholder.com/53x53"/>
+                            <strong>Tudo pensado milimetricamente para felinos</strong>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-flex flex-column align-items-center">
+                            <img src="https://via.placeholder.com/53x53"/>
+                            <strong>Estilo e funcionalidade em um só produto</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="historia" class="mt-5 pt-5 mb-5 pb-5">
+    
+    <div class="historia_main">
+        <img src="https://via.placeholder.com/1440x575"/>
+        <img src="https://via.placeholder.com/1440x575"/>
+        <img src="https://via.placeholder.com/1440x575"/>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-5 position-relative">
+            <div class="floating">
+                <h2 class="historia_header">
+                    História
+                </h2>
+                <div class="historia_nav">
+                    <div class="item py-5">
+                        <strong>2013</strong>
+                        <p>A página Cansei de ser gato é criada no Facebook e eu faço o meu primeiro post: cansei de ser gato, virei leão.</p>
+                    </div>
+                    <div class="item py-5">
+                        <strong>20132</strong>
+                        <p>A página Cansei de ser gato é criada no Facebook e eu faço o meu primeiro post: cansei de ser gato, virei leão.</p>
+                    </div>
+                    <div class="item py-5">
+                        <strong>20133</strong>
+                        <p>A página Cansei de ser gato é criada no Facebook e eu faço o meu primeiro post: cansei de ser gato, virei leão.</p>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.historia_main').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        dots:false,
+        asNavFor: '.historia_nav'
+    });
+    $('.historia_nav').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        asNavFor: '.historia_main',
+        dots: true,
+        arrows:true,
+        prevArrow: '<button type="button" class="apx_arrow prev"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>',
+        nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>'    });
+</script>
+
+<div id="testimonials">
+    <div apx_load="testimonials" apx_load_prop="store" class="cdsg_testimonials"></div>
+</div>
+
+
+<div id="dmf">
+    <div class="dmf_main">
+        <img src="https://via.placeholder.com/1440x400"/>
+    </div>
+    <div class="row justify-content-around align-items-center">
+        <div class="col-md-5 col-12 offset-md-1">
+            <h2>DMF</h2>
+            <p>
+                O movimento da Dominação Mundial Felina é a busca pelo conforto absoluto de todos os gatos. Como líder do movimento, há mais de 10 anos eu espalho a palavra felina para recrutar agentes rumo à dominação mundial.
+            </p>
+            <p>Já são mais de 10 mil agentes oficiais cadastrados por todo o Brasil. O cadastro é feito durante os chamados oficiais, que são eventos promovidos pelo líder (eu mesmo), em que convido os humanos doutrinados a cadastrarem seus gatos.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="dmf_block">
+                <strong class="mb-5 d-block">
+                    + de<br>
+                    <b>10 mil</b>
+                    agentes oficiais cadastrados
+                </strong>
+                <p>Rumo à dominação mundial para conquistar o conforto absoluto para todos os gatos do mundo.</p>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <h4>Vantagens DMF</h4>
+        </div>
+    </div>
+</div>
+<div apx_load="benefits" apx_prop="dmf" class="cdsg_benefits mt-3"></div>
