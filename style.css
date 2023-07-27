@@ -3809,3 +3809,9 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     gap: 1rem;
     align-items: flex-end;
 }
+
+[data-page="quem somos"] [apx_load="benefits"] p{
+    max-width: 140px;
+    margin-left: auto;
+    margin-right: auto;
+}

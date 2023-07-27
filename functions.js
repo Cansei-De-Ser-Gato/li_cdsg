@@ -541,28 +541,167 @@ theme.functions.testimonials = function(cms_testimonials){
 
 theme.generateContent.benefits = function(prop, oObj){
     let el = $('<div class="container"></div>');
-    let cms_benefits = sessionStorage.getItem('cms_benefits');
-    if(cms_benefits){    
-        cms_benefits = JSON.parse(cms_benefits);   
-        console.log('local benefits', cms_benefits)     
-        el.get(0).style.setProperty('--cms_benefits_text_color', cms_benefits.attributes.text_color);
-        el.get(0).style.setProperty('--cms_benefits_background_color', cms_benefits.attributes.background_color);
-        el.append(theme.functions.benefits(cms_benefits));        
+    if(prop == "dmf"){
+        let dmf = {attributes: {
+            background_color: "#1E1E1E",
+            text_color: "#FFFFFF",
+            createdAt: "2023-06-24T01:23:39.978Z",
+            updatedAt: "2023-06-28T21:54:17.927Z",
+            publishedAt: "2023-06-24T01:23:47.056Z",
+            benefits: [
+                {
+                    id: 2,
+                    text: "Acesso a informações secretas da DMF",
+                    image: {
+                        data: {
+                            id: 6,
+                            attributes: {
+                                name: "stripe_2.png",
+                                alternativeText: null,
+                                caption: null,
+                                width: 53,
+                                height: 53,
+                                formats: null,
+                                hash: "stripe_2_cd90cf106a",
+                                ext: ".png",
+                                mime: "image/png",
+                                size: 0.71,
+                                url: CDN_PATH + "dmf_1.svg",
+                                previewUrl: null,
+                                provider: "cloudinary",
+                                provider_metadata: {
+                                    public_id: "stripe_2_cd90cf106a",
+                                    resource_type: "image"
+                                },
+                                createdAt: "2023-06-23T22:05:35.897Z",
+                                updatedAt: "2023-06-23T22:05:35.897Z"
+                            }
+                        }
+                    }
+                },
+                {
+                    id: 3,
+                    text: "Presentes especiais do Cansei de ser gato",
+                    image: {
+                        data: {
+                            id: 9,
+                            attributes: {
+                                name: "stripe_3.png",
+                                alternativeText: null,
+                                caption: null,
+                                width: 61,
+                                height: 38,
+                                formats: null,
+                                hash: "stripe_3_d3a7fcdb0c",
+                                ext: ".png",
+                                mime: "image/png",
+                                size: 0.8,
+                                url: CDN_PATH + "dmf_2.svg",
+                                previewUrl: null,
+                                provider: "cloudinary",
+                                provider_metadata: {
+                                    public_id: "stripe_3_d3a7fcdb0c",
+                                    resource_type: "image"
+                                },
+                                createdAt: "2023-06-23T22:05:36.152Z",
+                                updatedAt: "2023-06-23T22:06:01.101Z"
+                            }
+                        }
+                    }
+                },
+                {
+                    id: 4,
+                    text: "Desconto exclusivo no meu site e na minha loja física",
+                    image: {
+                        data: {
+                            id: 7,
+                            attributes: {
+                                name: "stripe_4.png",
+                                alternativeText: null,
+                                caption: null,
+                                width: 48,
+                                height: 38,
+                                formats: null,
+                                hash: "stripe_4_b60a13f05a",
+                                ext: ".png",
+                                mime: "image/png",
+                                size: 0.41,
+                                url: CDN_PATH + "dmf_3.svg",
+                                previewUrl: null,
+                                provider: "cloudinary",
+                                provider_metadata: {
+                                    public_id: "stripe_4_b60a13f05a",
+                                    resource_type: "image"
+                                },
+                                createdAt: "2023-06-23T22:05:36.035Z",
+                                updatedAt: "2023-06-23T22:05:36.035Z"
+                            }
+                        }
+                    }
+                },
+                {
+                    id: 6,
+                    text: "Acesso em primeira mão aos meus lançamentos",
+                    image: {
+                        data: {
+                            id: 10,
+                            attributes: {
+                                name: "stripe_5.png",
+                                alternativeText: null,
+                                caption: null,
+                                width: 50,
+                                height: 41,
+                                formats: null,
+                                hash: "stripe_5_49cd511560",
+                                ext: ".png",
+                                mime: "image/png",
+                                size: 0.39,
+                                url: CDN_PATH + "dmf_4.svg",
+                                previewUrl: null,
+                                provider: "cloudinary",
+                                provider_metadata: {
+                                    public_id: "stripe_5_49cd511560",
+                                    resource_type: "image"
+                                },
+                                createdAt: "2023-06-23T22:05:36.234Z",
+                                updatedAt: "2023-06-23T22:05:36.234Z"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+        };
+        el.get(0).style.setProperty('--cms_benefits_text_color', dmf.attributes.text_color);
+        el.get(0).style.setProperty('--cms_benefits_background_color', dmf.attributes.background_color);
+        el.append(theme.functions.benefits(dmf));        
         oObj.html(el.prop('outerHTML'));
+        
     }else{
-        $.ajax({
-            url: CMS_PATH + "/benefit-stripe?populate=deep",   
-            method: 'GET'         
-        }).done(function(response){
-            console.log(response.data);
-            if(response.data){
-                cms_benefits = response.data;
-                sessionStorage.setItem('cms_benefits',JSON.stringify(cms_benefits));
-                console.log('ixi boy')
-                theme.generateContent.benefits(prop,oObj);
-            }
-        });
-    } 
+        let cms_benefits = sessionStorage.getItem('cms_benefits');
+        if(cms_benefits){    
+            cms_benefits = JSON.parse(cms_benefits);   
+            console.log('local benefits', cms_benefits)     
+            el.get(0).style.setProperty('--cms_benefits_text_color', cms_benefits.attributes.text_color);
+            el.get(0).style.setProperty('--cms_benefits_background_color', cms_benefits.attributes.background_color);
+            el.append(theme.functions.benefits(cms_benefits));        
+            oObj.html(el.prop('outerHTML'));
+        }else{
+            $.ajax({
+                url: CMS_PATH + "/benefit-stripe?populate=deep",   
+                method: 'GET'         
+            }).done(function(response){
+                console.log(response.data);
+                if(response.data){
+                    cms_benefits = response.data;
+                    sessionStorage.setItem('cms_benefits',JSON.stringify(cms_benefits));
+                    console.log('ixi boy')
+                    theme.generateContent.benefits(prop,oObj);
+                }
+            });
+        } 
+    }
+    
 };
 
 theme.functions.benefits = function(cms_benefits){
