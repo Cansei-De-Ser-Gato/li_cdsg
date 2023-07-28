@@ -1,3 +1,30 @@
+<div id="navegacao" class="py-4">
+    <div class="row justify-content-center">
+        <div class="col-auto mx-5">
+            <a href="#origem">A Origem</a>
+        </div>
+        <div class="col-auto mx-5">
+            <a href="#historia">História</a>
+        </div>
+        <div class="col-auto mx-5">
+            <a href="#dmf">DMF</a>
+        </div>
+    </div>
+</div>
+<script>
+    $('#navegacao a').click(function(event) {
+        event.preventDefault();
+
+        var target = $($(this).attr('href'));
+        if (target.length) {
+          var offset = target.offset().top;
+
+          $('html, body').animate({
+            scrollTop: offset - 200
+          }, 800);
+        }
+      });
+</script>
 <div id="origem" class="pb-5">
     <div class="row mb-5 pb-5">
         <div class="col-12 col-md-7 position-relative pt-4">
@@ -10,17 +37,21 @@
                 </div>
             </div>
             <div class="floating d-flex flex-column align-items-center">
-                <img src="https://via.placeholder.com/538x518"/>
+                <img src="https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/dmf_origem.png"/>
                 <div class="row align-items-start mt-4">
                     <div class="col-auto">
                         <div class="d-flex flex-column align-items-center">
-                            <img src="https://via.placeholder.com/53x53"/>
+                            <div class="ico">
+                                <img src="https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/dmf_ico_gato.svg"/>
+                            </div>
                             <strong>Tudo pensado milimetricamente para felinos</strong>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="d-flex flex-column align-items-center">
-                            <img src="https://via.placeholder.com/53x53"/>
+                            <div class="ico">
+                                <img src="https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/mdf_ico_prato.svg"/>
+                            </div>
                             <strong>Estilo e funcionalidade em um só produto</strong>
                         </div>
                     </div>

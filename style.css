@@ -3698,6 +3698,11 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     left: calc(100% - 2.5rem);
     top: 0;
 }
+[data-page="quem somos"] #origem .floating .ico{
+    display: flex;
+    align-items: center;
+    height:60px;
+}
 [data-page="quem somos"] #origem .floating img{max-width: unset;}
 [data-page="quem somos"] #origem .floating strong{
     max-width: 130px;
@@ -3814,4 +3819,27 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
     max-width: 140px;
     margin-left: auto;
     margin-right: auto;
+}
+
+[data-page="quem somos"] #navegacao:before{
+    content: "";
+    width: 300vw;
+    height: 100%;
+    background: var(--green);
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    left: 50%;
+    translate: -50% 0;
+}
+[data-page="quem somos"] #navegacao{
+    background: var(--green);
+    position: sticky;
+    top: 82px;
+    z-index: 3;
+}
+[data-page="quem somos"] #navegacao a{
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 18px;
 }
