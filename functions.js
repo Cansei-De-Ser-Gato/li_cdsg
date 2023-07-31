@@ -836,23 +836,6 @@ theme.functions.topbar = function(cms_topbar){
 theme.build.header = function(){
     $('#cabecalho').html(''+
     '<div id="cdsg_header">'+
-        '<div id="cdsg_header_fixed">' +
-            '<div class="container py-md-3">' +
-                '<div class="row d-flex align-items-center">' +
-                    '<div class="col-5">' +
-                        '<div apx_load="menu" class="cdsg_menu invert"></div>' +
-                    '</div>' +
-                    '<div class="col-2 justify-content-center d-flex">' +
-                        '<div apx_load="logo" apx_load_prop="fixed" class="cdsg_logo"></div>' +
-                    '</div>' +
-                    '<div class="col-5 justify-content-end d-flex align-items-center">' +
-                        '<div apx_load="menu_extra" class="cdsg_menu invert me-md-5"></div>' +
-                        '<div apx_load="functions" apx_load_prop="invert" class="cdsg_functions ' +'invert"></div>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-        '</div>' +
-
         '<div id="cdsg_header_default">' +
             '<div class="container py-md-4">' +
                 '<div class="row d-flex align-items-center">' +
@@ -871,17 +854,39 @@ theme.build.header = function(){
         '</div>'+
     '</div>');
 
-    let header = $('#cdsg_header_default');
-    let header_fixed = $('#cdsg_header_fixed');
+    if(!theme.isMobile){
+        $('#cabecalho').prepend(''+
+        '<div id="cdsg_header_fixed">' +
+            '<div class="container py-md-3">' +
+                '<div class="row d-flex align-items-center">' +
+                    '<div class="col-5">' +
+                        '<div apx_load="menu" class="cdsg_menu invert"></div>' +
+                    '</div>' +
+                    '<div class="col-2 justify-content-center d-flex">' +
+                        '<div apx_load="logo" apx_load_prop="fixed" class="cdsg_logo"></div>' +
+                    '</div>' +
+                    '<div class="col-5 justify-content-end d-flex align-items-center">' +
+                        '<div apx_load="menu_extra" class="cdsg_menu invert me-md-5"></div>' +
+                        '<div apx_load="functions" apx_load_prop="invert" class="cdsg_functions ' +'invert"></div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>');
 
-    $(window).on('resize scroll', function() {
-        if (header.isInViewport()) {
-            header_fixed.removeClass('visible');
-            header_fixed.find('[apx_load="search"]').removeClass('visible');
-        } else {
-            header_fixed.addClass('visible');
-        }
-    });
+        let header = $('#cdsg_header_default');
+        let header_fixed = $('#cdsg_header_fixed');
+
+        $(window).on('resize scroll', function() {
+            if (header.isInViewport()) {
+                header_fixed.removeClass('visible');
+                header_fixed.find('[apx_load="search"]').removeClass('visible');
+            } else {
+                header_fixed.addClass('visible');
+            }
+        });
+    }
+
+    
 
     $(window).load(function(){
         theme.functions.headerCategoriesDropdown();
@@ -990,20 +995,6 @@ theme.build.footer = function(){
 
 theme.build.sliders = function(){
     $('.cdsg_list_side_banner').next('div').find('[data-produtos-linha]:not(.slick-slider)').slick({
-        responsive: [
-            {
-                breakpoint: 990,
-                settings: {
-                    infinite: true,
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    dots: false,
-                    arrows: true,
-                    autoplay: true,
-                    autoplaySpeed: 3000
-                }
-            }
-        ],
         infinite: true,
         slidesToShow: 2,
         slidesToScroll: 1,
@@ -1012,28 +1003,28 @@ theme.build.sliders = function(){
         autoplay: true,
         autoplaySpeed: 3000,
         prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
-        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>"
+        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+        responsive: [
+            {
+                breakpoint: 990,
+                settings: {
+                    infinite: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    autoplay: true,
+                    autoplaySpeed: 3000
+                }
+            }
+        ]
     });
 
     //$('[data-produtos-linha].slick-slider .nome-produto').css('height','auto');
         
 
     $('.pagina-inicial').find('[data-produtos-linha]:not(.slick-slider)').slick({
-        responsive: [
-            {
-                breakpoint: 990,
-                settings: {
-                    infinite: true,
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    dots: false,
-                    arrows: true,
-                    autoplay: true,
-                    autoplaySpeed: 3000
-                }
-            }
-        ],
         infinite: true,
+        //slidesToShow: theme.isMobile ? 2 : 4,
         slidesToShow: 4,
         slidesToScroll: 1,
         dots: true,
@@ -1041,7 +1032,18 @@ theme.build.sliders = function(){
         autoplay: true,
         autoplaySpeed: 3000,
         prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
-        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>"
+        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+        responsive: [
+            {
+                breakpoint: 600,
+                settings: {
+                    infinite: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: true
+                }
+            }
+        ]
     });
 
     $('.slick-me:not(.slick-slider)').each(function(){
@@ -1163,7 +1165,7 @@ theme.lang.nao_encontrado.texto = "Você pode verificar o endereço acessado ou 
 // }
 
 theme.functions.sidePage = function(){
-    return `<div class="col-12 col-md-auto cdsg_side_page_bar"><b class="d-block mb-1">Ficou com alguma dúvida? Fale comigo!</b><br><p class="d-block mb-3">Compre ou tire suas dúvidas por WhatsApp</p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><div class="row mt-4"> <div class="col-12"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_email.svg"></div></div><div class="col-auto"> <div apx_load="contact_mail"></div></div></div></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`;
+    return `<div class="col-12 col-md-auto cdsg_side_page_bar ms-auto"><b class="d-block mb-1">Ficou com alguma dúvida? Fale comigo!</b><br><p class="d-block mb-3">Compre ou tire suas dúvidas por WhatsApp</p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><div class="row mt-4"> <div class="col-12"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_email.svg"></div></div><div class="col-auto"> <div apx_load="contact_mail"></div></div></div></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`;
 }
 
 theme.lang.faq = [];
@@ -1191,19 +1193,91 @@ theme.build.faq = function(){
 
 }
 
+theme.lang.contato = [];
+theme.lang.contato.titulo = "Formulário de Contato";
+theme.lang.contato.outras_formas_titulo = "OUTRAS FORMAS DE CONTATO";
+theme.lang.contato.outras_formas = "Você pode mandar um e-mail também para <a href='mailto:loja@canseidesergato.com'><u><b>loja@canseidesergato.com</b></u></a>";
+theme.lang.contato.parceria_titulo = "OUTRAS FORMAS DE CONTATO";
+theme.lang.contato.parceria = "Se você quer fazer uma parceria e falar sobre publicidade, esse é o meu contato:<br><br><a href='mailto:marketing@canseidesergato.com'><u><b>marketing@canseidesergato.com</b></u></a>";
 theme.build.contact_form_page = function(){
     let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
-    let el = $('<div class="row align-items-start justify-content-between"></div>');
+    let el = $('<div class="row align-items-start justify-content-start"></div>');
 
     
 
-    el.append('<div class="col-12 col-md-auto"></div>');
-    el.append('<div class="col-md-5 col-12 cdsg_page_content">'+ currentContent +'</div>');
-    el.append(theme.functions.sidePage());
-    $('#corpo .secao-principal').html('<div class="container"><div class="cdsg_faq_title"><strong>'+ theme.lang.faq.titulo +'</strong></div>'+el.prop('outerHTML')+'</div>');
+    el.append('<div class="col-12 col-md-3 cdsg_page_side_left">'+ currentContent +'</div>');
+    el.append('<div class="col-md-4 col-12 cdsg_page_content contact mt-4"><strong>Sobre o que deseja conversar?</strong><div apx_load="contact_form"></div></div>');
+    el.append( `<div class="col-12 col-md-3 cdsg_side_page_bar ms-auto" style="min-width:27.5%"><b class="d-block mb-2">${theme.lang.contato.outras_formas_titulo}</b><p class="mb-2">${theme.lang.contato.outras_formas}</p><hr></hr><p class="d-block mb-3">Compre ou tire suas dúvidas por <b>WhatsApp</b></p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><hr></hr><div class="row mt-4"> <div class="col-12"><b class="d-block mb-3">${theme.lang.contato.parceria_titulo}</b><p>${theme.lang.contato.parceria}</p></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`);
+    $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+
+    $(".contact").on("submit", "form", function(F) {
+        F.preventDefault();
+        F = $(this);
+        var N = F.parents(".contact"),
+            H = {};
+        F.find("#id_hostname").val(location.hostname);
+        H.nome = F.find("#id_nome").val();
+        H.email = F.find("#id_email").val();
+        H.telefone = F.find("#id_telefone").val();
+        H.numero_pedido = F.find("#id_numero_pedido").val();
+        H.mensagem = F.find("#id_mensagem").val();
+        H.hostname = F.find("#id_hostname").val();
+        H.politica_privacidade = F.find("#id_politica_privacidade").is(":checked");
+        var x = N.find("#g-recaptcha-response").val(),
+            M = function(ba, ra) {
+                $("<div>").addClass("alert alert-" + ba).html(ra).insertAfter(N.find("form"))
+            },
+            W = function(ba) {
+                console.log('aaa')
+                M("error", ba)
+            };
+        N.find(".alert").remove();
+        H.nome && H.email && H.mensagem ? F.find("#id_politica_privacidade").length && !H.politica_privacidade ? (msg = "Voc\u00ea n\u00e3o aceitou as pol\u00edticas de privacidade.", W(msg)) : x ? (H.json = !0, H["g-recaptcha-response"] = x, $.post("/contato/popup/", H, function(ba) {
+            if("SUCESSO" == ba.estado){
+                M("success", 'Mensagem enviada com sucesso! Em breve te responderei, humano.');
+                N.find("form").addClass('sended');
+                //limpar_form(N)
+            }else{
+                $.each(ba.errors, function(ra, ia) {
+                    $("#id_" + ra).parents(".control-group").addClass("error")
+                });
+                W(ba.mensagem)
+            }
+        }, "json")) : (msg = "Marque a verifica\u00e7\u00e3o reCAPTCHA.", W(msg)) : (msg = "Nome, E-mail e Mensagem s\u00e3o campos obrigat\u00f3rios.", W(msg))
+    }); 
 
 }
+theme.build.contact_page = function(){
+    let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
+    let el = $('<div class="row align-items-start justify-content-start"></div>');
 
+    let cms_faq = sessionStorage.getItem('cms_faq');
+    let faq = $('<ul id="cdsg_faq"></ul>');
+    if(cms_faq){
+        cms_faq = JSON.parse(cms_faq);        
+        $.each(cms_faq, function(k_, i_){
+            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
+            if(page){
+                faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
+            }
+        })
+    }
+
+    //el.append('<div class="col-12 col-md-auto"></div>');
+
+    
+
+    el.append('<div class="col-12 col-md-3 cdsg_page_side_left">'+ currentContent +'</div>');
+    el.append(`<div class="col-md-9 col-12 cdsg_page_content contact_main mt-4"><div class="row align-items-start"><div class="col-12 col-md-4"><strong>Whatsapp</strong><p class="d-block mb-3">Você pode comprar por aqui também =)</p><div class="row align-items-center"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-12 col-md-4"><strong>E-mail</strong><a href="/pagina/formulario-de-contato.html" class="cdsg_btn">Formulário de Contato</a><p class="d-block mb-3">Ou você pode mandar um e-mail para<a href="mailto:loja@canseidesergato.com"><u><b>loja@canseidesergato.com</b></u></a></p></div><div class="col-12 col-md-4"><strong>FAQ - Chico Responde</strong><p class="mb-2">Já conhece a sessão Chico responde?<br>Aqui eu respondo dúvidas sobre:</p>${faq.prop('outerHTML')}</div></div></div>`);
+    //el.append( `<div class="col-12 col-md-3 cdsg_side_page_bar ms-auto" ><b class="d-block mb-2">${theme.lang.contato.outras_formas_titulo}</b><p class="mb-2">${theme.lang.contato.outras_formas}</p><hr></hr><p class="d-block mb-3">Compre ou tire suas dúvidas por <b>WhatsApp</b></p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><hr></hr><div class="row mt-4"> <div class="col-12"><b class="d-block mb-3">${theme.lang.contato.parceria_titulo}</b><p>${theme.lang.contato.parceria}</p></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`);
+    $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
+    $('#corpo .secao-principal').append(`<div class="container  pt-5 mt-5 contact_row_publi"><div class="row justify-content-between align-items-center"><div class="col-12 col-md-3 text-center"><img src="${CDN_PATH + 'ball.svg'}"></div><div class="col-12 col-md-3"><div class="box-publi p-4"><b class="d-block mb-2">PARCERIA E PUBLICIDADE</b><p>${theme.lang.contato.parceria}</p></div></div></div></div>`);
+
+   
+}
+theme.functions.contactOk = function(){
+
+}
 theme.lang.store = [];
 theme.lang.store.title = "Lojas Petz";
 theme.build.store = function(){
@@ -1727,7 +1801,7 @@ theme.pages['pagina-pedido'] = function(){
 }
 
 theme.pages['pagina-pagina'] = function(){
-    let page_title = $('body').find('h1').text().toLowerCase().trim();
+    let page_title = $('body').find('h1.titulo').text().toLowerCase().trim();
     let page_load = false;
 
     $('.pagina-pagina').attr('data-page',page_title);
@@ -1776,8 +1850,46 @@ theme.pages['pagina-pagina'] = function(){
         theme.build.contact_form_page();                                            
     } 
 
+    if(page_title == 'contato'){
+        theme.build.contact_page();                                            
+    } 
+
     if(page_title == 'quem somos'){
-        $('.conteudo').load('http://127.0.0.1:5500/quem_somos.html');                                          
+        //$('.conteudo').load('http://127.0.0.1:5500/quem_somos.html');                                          
+        let html = $('.conteudo .quem_somos').html();
+        $('.conteudo').html(html)
+
+
+        $('#navegacao a').click(function(event) {
+            event.preventDefault();
+
+            var target = $($(this).attr('href'));
+            if (target.length) {
+            var offset = target.offset().top;
+
+            $('html, body').animate({
+                scrollTop: offset - 200
+            }, 800);
+            }
+        });
+
+        $('.historia_main').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            dots:false,
+            asNavFor: '.historia_nav'
+        });
+        $('.historia_nav').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            asNavFor: '.historia_main',
+            dots: true,
+            arrows:true,
+            prevArrow: '<button type="button" class="apx_arrow prev"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>',
+            nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>'    
+        });
     } 
 };
 
@@ -2032,7 +2144,7 @@ theme.functions.productCMSInfo = function(info){
 };
 
 theme.pages['pagina-inicial'] = function(){    
-    $('#corpo').prepend('<div class="container" class="cdsg_home-categoryIconList"><div class="row cdsg_categoryIconListHeader"><div class="col-md-8"><h3>Para Gatos</h3></div><div class="col-md-4"><h3>Para Humanos</h3></div></div><div class="row"><div class="col-md-8"><div apx_load="categoryIconList" apx_load_prop="PARA GATOS" class="cdsg_categoryIconList"></div></div><div class="col-md-4"><div apx_load="categoryIconList" apx_load_prop="PARA HUMANOS" class="cdsg_categoryIconList"></div></div></div><hr></hr></div>');
+    $('#corpo').prepend('<div class="container" class="cdsg_home-categoryIconList"><div class="row cdsg_categoryIconListHeader"><div class="col-md-8 col-6"><h3>Para Gatos</h3></div><div class="col-md-4 col-6"><h3>Para Humanos</h3></div></div><div class="row"><div class="col-md-8"><div apx_load="categoryIconList" apx_load_prop="PARA GATOS" class="cdsg_categoryIconList"></div></div><div class="col-md-4"><div apx_load="categoryIconList" apx_load_prop="PARA HUMANOS" class="cdsg_categoryIconList"></div></div></div><hr></hr></div>');
 
     $('.vitrine-mas-vendido, .vitrine-mas-vendido + ul').wrapAll('<div class="box-mais-vendidos"></div>');
     $('.box-mais-vendidos').appendTo('#listagemProdutos');
