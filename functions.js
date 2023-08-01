@@ -335,12 +335,18 @@ theme.generateContent.menu_footer = function(prop, oObj){
 
 theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
-    el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
-    el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
-    el.append('<div class="col"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
-    el.append('<div class="col">'+ theme.headerCart +'</a></div>');
-    el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
-    el.find('.carrinho .icon-shopping-cart').remove();
+
+    if(prop == "mobile"){
+        el.append('<div class="col-auto"><button class="cdsg_menu_trigger" type="button"><img src="'+ CDN_PATH + 'hamburg.svg' +'"/></button></div>');
+        el.append('<div class="col-auto"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
+    }else{
+        el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
+        el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
+        el.append('<div class="col"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
+        el.append('<div class="col">'+ theme.headerCart +'</a></div>');
+        el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
+        el.find('.carrinho .icon-shopping-cart').remove();
+    }
     return el.prop('outerHTML');
 };
 
@@ -730,7 +736,7 @@ theme.build.sideHelp = function(){
 }
 
 theme.build.topbar = function(){
-    $('#cdsg_header_default').prepend('<div class="cdsg_topbar py-md-3"></div>');
+    $('#cdsg_header_default').prepend('<div class="cdsg_topbar py-md-3 py-2"></div>');
     let el = $('<div class="container"></div>');
     let items = false;
     let cms_topbar = sessionStorage.getItem('cms_topbar');
@@ -823,7 +829,7 @@ theme.functions.topbar = function(cms_topbar){
     let list = $('<div class="slick-me" data-md-cols="1" data-md-infinite="true" data-md-delay="3000" data-md-arrows="true" data-md-dots="false" data-sm-cols="1" data-sm-arrows="true" data-sm-dots="false" data-sm-delay="3000" data-sm-infinite="true" data-sm-slidesToScroll="1" data-md-slidesToScroll="1" data-sm-slidesToShow="1" data-md-slidesToShow="1" data-arrow-image="'+ CDN_PATH + 'topbar_arrow_l.svg' + '"></div>');
     $.each(items, function(k_, i_){
         let item = $('<div class="item"></div>');
-        i_.icon != null && i_.icon.data != null ? item.append('<img src="'+ i_.icon.data.attributes.url +'"/>') : false;
+        i_.icon != null && i_.icon.data != null ? item.append('<img class="d-md-block d-none" src="'+ i_.icon.data.attributes.url +'"/>') : false;
         i_.text != null ? item.append('<span class="d-md-block d-none">'+ i_.text +'</span>') : false;
         i_.short_text != null ? item.append('<span class="d-block d-md-none">'+ i_.short_text +'</span>') : false;
         i_.url != null ? item.innerWrap('<a href="'+ i_.url +'"></a>') : false;
@@ -996,6 +1002,33 @@ theme.build.footer = function(){
 };
 
 theme.build.sliders = function(){
+    $('.banner.cheio .flexslider').addClass('unflexedSlider');
+    theme.functions.flexDestroy($('.banner.cheio .flexslider'));
+
+    $('.banner.cheio .unflexedSlider .slides').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_white_l.svg\"/></button>",
+        nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_white_l.svg\"/></button>",
+        responsive: [
+            {
+                breakpoint: 990,
+                settings: {
+                    infinite: true,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    autoplay: true,
+                    autoplaySpeed: 3000
+                }
+            }
+        ]
+    });
+
     $('.cdsg_list_side_banner').next('div').find('[data-produtos-linha]:not(.slick-slider)').slick({
         infinite: true,
         slidesToShow: 2,
@@ -1020,9 +1053,6 @@ theme.build.sliders = function(){
             }
         ]
     });
-
-    //$('[data-produtos-linha].slick-slider .nome-produto').css('height','auto');
-        
 
     $('.pagina-inicial').find('[data-produtos-linha]:not(.slick-slider)').slick({
         infinite: true,
@@ -1895,6 +1925,30 @@ theme.pages['pagina-pagina'] = function(){
     } 
 };
 
+theme.functions.flexDestroy = function(oObj){
+    var $els = $(oObj);
+    $els.each(function() {
+        var $el = $(this);
+        var $elClean = $el.clone();
+    
+        $elClean.find('.flex-viewport').children().unwrap();
+        $elClean
+        .removeClass('flexslider')
+        .find('.clone, .flex-direction-nav, .flex-control-nav')
+            .remove()
+            .end()
+        .find('*').removeAttr('style').removeClass(function (index, css) {
+            // If element is SVG css has an Object inside (?)
+            if (typeof css === 'string') {
+            return (css.match(/\bflex\S+/g) || []).join(' ');
+            }
+        });
+    
+        $elClean.insertBefore($el);
+        $el.remove();
+    });
+}
+
 theme.pages['pagina-categoria'] = function(){
     $('.secao-banners').prependTo('#corpo');
     $('.breadcrumbs').prependTo('#corpo');
@@ -2154,7 +2208,7 @@ theme.pages['pagina-inicial'] = function(){
     $('.secao-secundaria').append('<div class="container"><div apx_load="benefits" class="cdsg_benefits"></div></div>');
     $('.secao-secundaria').append('<div class="container"><div class="row"><div class="col-12 col-md-8"><div apx_load="blog" class="cdsg_blog"></div></div><div class="col-12 col-md-4"><div apx_load="podcast" class="cdsg_podcast"></div></div></div></div>');
     $('.secao-secundaria').append('<div class="container"><div apx_load="" class="cdsg_benefits"></div></div>');
-    $('#rodape').before('<div class="container mt-3 mb-5 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-auto col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-auto col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
+    $('#rodape').before('<div class="container mt-3 mb-md-5 mb-2 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-auto col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-auto col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
     
 };
 
