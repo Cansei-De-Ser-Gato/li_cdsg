@@ -748,6 +748,7 @@ apx_load="menu_extra"
     border: 3px solid #fff;
     border-radius: 50%;
 }
+.slick-dots:after{display: none;}
 .secao-banners .slick-dots button{background: #1e1e1e;}
 .secao-banners .slick-dots li:not(.slick-active) button{
     border: 0;
@@ -3982,6 +3983,11 @@ margin-top: 2rem;
 .contact_row_publi .box-publi >  b{font-weight: 900;font-size: 16px;}
 .contact_row_publi img{height: 170px;}
 
+#cdsg_header_fixed .menu.superior > ul > li > a{
+    margin: -15px 0;
+    padding: 15px 0;
+}
+#cdsg_header_fixed > .container{position: relative;}
 
 @media(max-width:990px){
     body,
@@ -4241,4 +4247,6 @@ margin-top: 2rem;
     }
     .secao-banners .apx_arrow.prev{left: 2rem;}
     .secao-banners .apx_arrow.next{right: 2rem;}
+
+    .gatoxinha img{margin: 0 auto;display: block;}
 }

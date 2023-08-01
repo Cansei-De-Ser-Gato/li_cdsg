@@ -997,7 +997,8 @@ theme.build.footer = function(){
                 `<div apx_load="footer_secure"></div>` +
             `</div>` +
         `</div>` +
-    `</div>`);
+    `</div>`+
+    `<div apx_load="load_img" apx_load_prop="gatoxinha.png" class="d-block d-md-none gatoxinha"></div>`);
    
 };
 
@@ -1005,7 +1006,7 @@ theme.build.sliders = function(){
     $('.banner.cheio .flexslider').addClass('unflexedSlider');
     theme.functions.flexDestroy($('.banner.cheio .flexslider'));
 
-    $('.banner.cheio .unflexedSlider .slides').slick({
+    $('.banner.cheio .unflexedSlider .slides:not(.slick-slider)').slick({
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
