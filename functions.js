@@ -335,8 +335,8 @@ theme.generateContent.menu_footer = function(prop, oObj){
 
 theme.generateContent.functions = function(prop, oObj){
     let el = $('<div class="row align-items-center"></div>');
-    el.append('<div class="col"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
-    el.append('<div class="col"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
+    el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
+    el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
     el.append('<div class="col"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
     el.append('<div class="col">'+ theme.headerCart +'</a></div>');
     el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
@@ -725,7 +725,7 @@ theme.functions.benefits = function(cms_benefits){
 theme.build = [];
 
 theme.build.sideHelp = function(){
-    let el = $('<div class="cdsg_sideHelp"> <div class="triggers"> <div> <button type="button"><i></i><span> Ajuda? </span> </button> <div class="cdsg_sideHelp-menu"> <div> <div> <div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b> </div><button type="button" class="close"> </div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div><a href="#"> <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a> </div></div>');
+    let el = $('<div class="cdsg_sideHelp"> <div class="triggers"> <div> <button type="button"><i></i><span> Ajuda? </span> </button> <div class="cdsg_sideHelp-menu"> <div> <div> <div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b> </div><button type="button" class="close"> </div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div><a href="#" class="d-md-block d-none"> <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a> </div></div>');
     el.appendTo('body');
 }
 
@@ -824,7 +824,8 @@ theme.functions.topbar = function(cms_topbar){
     $.each(items, function(k_, i_){
         let item = $('<div class="item"></div>');
         i_.icon != null && i_.icon.data != null ? item.append('<img src="'+ i_.icon.data.attributes.url +'"/>') : false;
-        i_.text != null ? item.append('<span>'+ i_.text +'</span>') : false;
+        i_.text != null ? item.append('<span class="d-md-block d-none">'+ i_.text +'</span>') : false;
+        i_.short_text != null ? item.append('<span class="d-block d-md-none">'+ i_.short_text +'</span>') : false;
         i_.url != null ? item.innerWrap('<a href="'+ i_.url +'"></a>') : false;
 
         list.append(item);      
@@ -837,16 +838,17 @@ theme.build.header = function(){
     $('#cabecalho').html(''+
     '<div id="cdsg_header">'+
         '<div id="cdsg_header_default">' +
-            '<div class="container py-md-4">' +
+            '<div class="container py-md-4 py-3">' +
                 '<div class="row d-flex align-items-center">' +
-                    '<div class="col-5">' +
+                    '<div class="col-md-5 col-4">' +
+                        '<div apx_load="functions" apx_load_prop="mobile" class="cdsg_functions d-block d-md-none"></div>' +
                         '<div apx_load="menu" class="cdsg_menu"></div>' +
                     '</div>' +
-                    '<div class="col-2 justify-content-center d-flex">' +
+                    '<div class="col-md-2  col-4 justify-content-center d-flex">' +
                         '<div apx_load="logo" class="cdsg_logo"></div>' +
                     '</div>' +
-                    '<div class="col-5 justify-content-end d-flex align-items-center">' +
-                        '<div apx_load="menu_extra" class="cdsg_menu me-md-5"></div>' +
+                    '<div class="col-md-5  col-4 justify-content-end d-flex align-items-center">' +
+                        '<div apx_load="menu_extra" class="cdsg_menu me-md-5 d-none d-md-block"></div>' +
                         '<div apx_load="functions" class="cdsg_functions"></div>' +
                     '</div>' +
                 '</div>' +
@@ -929,22 +931,22 @@ theme.build.footer = function(){
     $('#barraNewsletter .interno-conteudo').append('<div apx_load="social" class="cdsg_social"></div>');
     $('#barraNewsletter .componente').prepend('<img src="'+ CDN_PATH + 'newsletter.png'+'"/>');
     //$('#cdsg_footer').load('http://127.0.0.1:5500/footer.html');
-    $('#cdsg_footer').html(`<div class="container mt-5">` +
+    $('#cdsg_footer').html(`<div class="container mt-md-5">` +
         `<div class="row align-items-start justify-content-between">` +
-            `<div class="col-auto">` +
-                `<h4>${theme.lang.footer.duvidas}</h4>` +
+            `<div class="col-md-auto col-12">` +
+                `<h4>${theme.lang.footer.duvidas} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="menu_footer" apx_load_prop="DÚVIDAS?"></div>` +
             `</div>` +
-            `<div class="col-auto">` +
-                `<h4>${theme.lang.footer.institucional}</h4>` +
+            `<div class="col-md-auto col-12">` +
+                `<h4>${theme.lang.footer.institucional} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="menu_footer" apx_load_prop="O CANSEI DE SER GATO"></div>` +
-                `<h4>Onde encontrar nossos produtos</h4>` +
-                `<div apx_load="find_where_form"></div>` +
+                `<div class="d-md-block d-none"><h4>Onde encontrar nossos produtos <i class="d-md-none d-block expand"></i></h4>` +
+                `<div apx_load="find_where_form"></div></div>` +
                 
             `</div>` +
-            `<div class="col-auto">` +
-                `<h4>${theme.lang.footer.fale_conosco}</h4>` +
-                `<p>${theme.lang.footer.fale_conosco_text}</p>` +
+            `<div class="col-md-auto col-12">` +
+                `<h4>${theme.lang.footer.fale_conosco} <i class="d-md-none d-block expand"></i></h4>` +
+                `<div><p>${theme.lang.footer.fale_conosco_text}</p>` +
                 `<div class="row align-items-center">` +
                     `<div class="col-auto">` +
                         `<div class="row align-items-center">` +
@@ -973,19 +975,19 @@ theme.build.footer = function(){
                             `</div>` +
                         `</div>` +
                     `</div>` +
-                `</div>` +
+                `</div></div>` +
             `</div>` +
         `</div>` +
     `</div>` +
     `<hr></hr>` +
     `<div class="container footer_bottom pb-4">` +
         `<div class="row align-items-center justify-content-between">` +
-            `<div class="col-auto d-flex align-items-center">` +
-                `<h4 class="me-md-4">${theme.lang.footer.pagamento}</h4>` +
+            `<div class="col-md-auto col-12 d-flex align-items-center">` +
+                `<h4 class="me-md-4">${theme.lang.footer.pagamento} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="footer_payments"></div>` +
             `</div>` +
-            `<div class="col-auto d-flex align-items-center">` +
-                `<h4 class="me-md-4">${theme.lang.footer.seguranca}</h4>` +
+            `<div class="col-md-auto col-12 d-flex align-items-center">` +
+                `<h4 class="me-md-4">${theme.lang.footer.seguranca} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="footer_secure"></div>` +
             `</div>` +
         `</div>` +
@@ -2152,7 +2154,7 @@ theme.pages['pagina-inicial'] = function(){
     $('.secao-secundaria').append('<div class="container"><div apx_load="benefits" class="cdsg_benefits"></div></div>');
     $('.secao-secundaria').append('<div class="container"><div class="row"><div class="col-12 col-md-8"><div apx_load="blog" class="cdsg_blog"></div></div><div class="col-12 col-md-4"><div apx_load="podcast" class="cdsg_podcast"></div></div></div></div>');
     $('.secao-secundaria').append('<div class="container"><div apx_load="" class="cdsg_benefits"></div></div>');
-    $('#rodape').before('<div class="container mt-3 mb-5 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-12 col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-12 col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
+    $('#rodape').before('<div class="container mt-3 mb-5 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-auto col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-auto col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
     
 };
 
