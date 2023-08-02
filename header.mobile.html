@@ -43,9 +43,36 @@
         </div>
     </div>
     <div class="menu">
-
+        <div apx_load="menu" class="cdsg_menu"></div>
     </div>
     <div class="social">
-        
+        <div apx_load="social" class="cdsg_social"></div>
     </div>
 </div>
+
+
+
+<div class="cdsg_sideHelp">
+    <div class="triggers">
+      <div>
+        <button type="button" class="cdsg_sideHelp_trigger">
+          <i></i>
+          <span> Ajuda? </span>
+        </button>
+        <div class="cdsg_sideHelp-menu">
+          <div>
+            <div>
+                <img src="${CDN_PATH + 'ball.svg'}"/>
+              <b>Rastrear Pedido</b>
+            </div>
+            <button type="button" class="cdsg_sideHelp_trigger"></button>
+          </div>
+        </div>
+        <div apx_load="form_rastreio"></div>
+        <div apx_load="side_options"></div>
+      </div>
+      <a href="#" class="d-md-block d-none">
+        <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div>
+      </a>
+    </div>
+  </div>

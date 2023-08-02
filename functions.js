@@ -126,6 +126,16 @@ theme.init = function(){
 
 theme.generateContent = [];
 
+theme.generateContent.side_options = function(prop,oObj){
+    let el = $(`<div class="d-flex flex-wrap"> <div class="col-4 px-1"> <a href="/conta/pedidos/listar"> <div class="image"> <img src="${CDN_PATH + 'ajuda_pedidos.svg'}"/> </div><b>Meus pedidos</b> </a> </div><div class="col-4 px-1"> <a href="/pagina/encontre-uma-loja.html"> <div class="image"> <img src="${CDN_PATH + 'ajuda_loja.svg'}"/> </div><b>Encontrar loja</b> </a> </div><div class="col-4 px-1"> <a href="https://wa.me/5511916588376" target="_blank"> <div class="image"> <img src="${CDN_PATH + 'ajuda_whats.svg'}"/> </div><b>Whats Chico</b> </a> </div><div class="col-4 px-1"> <a href="/pagina/envio-entregas-e-frete.html"> <div class="image"> <img src="${CDN_PATH + 'ajuda_entrega.svg'}"/> </div><b>Entrega e frete</b> </a> </div><div class="col-4 px-1"> <a href="/pagina/trocas-e-devolucoes.html"> <div class="image"> <img src="${CDN_PATH + 'ajuda_troca.svg'}"/> </div><b>Trocas e devoluções</b> </a> </div><div class="col-4 px-1"> <a href="/pagina/contato.html"> <div class="image"> <img src="${CDN_PATH + 'ajuda_email.svg'}"/> </div><b>Mande um oi</b> </a> </div><div class="col-4 px-1"> <a href="/pagina/pagamento.html"> <div class="image"> <img src="${CDN_PATH + 'ajuda_pagamento.svg'}"/> </div><b>Pagamento</b> </a> </div></div>`);
+    return el.prop('outerHTML');
+}
+
+theme.generateContent.form_rastreio = function(prop,oObj){
+    let el = $(`<form action="" class="cdsg_form_rastreio"><input type="text" placeholder="Digite o código de rastreio..."><button type="submit">Buscar</button></form>`);
+    return el.prop('outerHTML');
+}
+
 theme.generateContent.categoryIconList = function(prop, oObj){
     let cms_categories = sessionStorage.getItem('cms_categories');
     
@@ -744,8 +754,12 @@ theme.functions.benefits = function(cms_benefits){
 theme.build = [];
 
 theme.build.sideHelp = function(){
-    let el = $('<div class="cdsg_sideHelp"> <div class="triggers"> <div> <button type="button"><i></i><span> Ajuda? </span> </button> <div class="cdsg_sideHelp-menu"> <div> <div> <div apx_load="load_img" apx_load_prop="ball.svg"></div><b>Rastrear Pedido</b> </div><button type="button" class="close"> </div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div><a href="#" class="d-md-block d-none"> <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a> </div></div>');
+    let el = $(`<div class="cdsg_sideHelp"> <div class="triggers"> <div> <button type="button" class="cdsg_sideHelp_trigger"> <i></i> <span> Ajuda? </span> </button></div><a href="https://wa.me/5511916588376" target="_blank" class="d-md-block d-none"> <div apx_load="load_img" apx_load_prop="side_whatsapp.svg"></div></a> </div><div class="help-content"><div class="cdsg_sideHelp-menu"> <div class="d-flex justify-content-between align-items-center mb-3"> <div> <img src="${CDN_PATH + 'ball.svg'}"/> <b>Rastrear Pedido</b> </div><button type="button" class="cdsg_sideHelp_trigger"></button> </div></div><div apx_load="form_rastreio"></div><div apx_load="side_options"></div></div></div>`);
     el.appendTo('body');
+
+    $('body').on('click','.cdsg_sideHelp .cdsg_sideHelp_trigger',function(){
+        $('.cdsg_sideHelp').toggleClass('visible');
+    });
 }
 
 theme.build.topbar = function(){
@@ -909,7 +923,13 @@ theme.build.header = function(){
         });
     }
 
-    
+    $('body').on('click','.cdsg_menu_trigger',function(){
+        $('#cdsg_mobile_menu').toggleClass('visible');
+    });
+    $('body').on('click','#cdsg_mobile_menu .com-filho > i',function(){
+        $(this).closest('li').toggleClass('open');
+        $(this).prev('ul').slideToggle();
+    })
 
     $(window).load(function(){
         theme.functions.headerCategoriesDropdown();
@@ -1653,7 +1673,6 @@ theme.pages['pagina-carrinho'] = function(){
             method: 'GET'         
         }).done(function(response){
             if(response.data){
-                //console.log(response.data)
                 if(response.data && response.data.length > 0){
                     let product_ids = []
                     $.each(response.data, function(k_, i_){
@@ -1664,7 +1683,6 @@ theme.pages['pagina-carrinho'] = function(){
 
                     let limit = 0;
                     $.each(product_ids, function(k_, i_){
-                        //console.log(i_)
                         $.ajax({
                             url: window.API_PRODUCT_PUBLIC_URL + "/" + i_,
                             headers: {
@@ -1690,6 +1708,9 @@ theme.pages['pagina-carrinho'] = function(){
                             
                         });
                     });
+                }else{
+                    $('#apx_upsell').addClass('d-none')
+                    $('#apx_upsell').removeClass('apx_loading');                                    
                 }
                 // sessionStorage.setItem('cms_faq',JSON.stringify(response.data.attributes.pages));
                 // if(response.data.attributes.pages.find(el => el.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
@@ -1844,7 +1865,8 @@ theme.functions.checkoutSteps = function(oObj){
 
 theme.functions.accountHeader = function(){
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
-    $('.breadcrumbs').after(`<strong class="cdsg_account_header">Olá human${sessionAccount.gender == "m" ? 'o' : 'a'}, ${sessionAccount.userName}!</strong>`)
+    //$('.breadcrumbs').after(`<strong class="cdsg_account_header">Olá human${sessionAccount.gender == "m" ? 'o' : 'a'}, ${sessionAccount.userName}!</strong>`)
+    $('.breadcrumbs').after(`<strong class="cdsg_account_header">Olá, ${sessionAccount.userName.toUpperCase()}!</strong>`)
     $('.breadcrumbs').remove();
     $('body').addClass('cdsg_account');
 
@@ -2119,6 +2141,8 @@ theme.pages['pagina-produto'] = function(){
     //video
     $('#buy-together-position1').before('<div class="apx_product_video"></div>');    
 
+    
+
     //DMF - benefits
     $('#buy-together-position1').before('<div apx_load="benefits" class="cdsg_benefits"></div>');    
 
@@ -2145,6 +2169,7 @@ theme.pages['pagina-produto'] = function(){
 
     //PRODUCT_CMS
     let cms_product = sessionStorage.getItem('cms_product_'+window.PRODUTO_ID);
+    cms_product = cms_product == "false" ? false : cms_product;
     if(cms_product){
         theme.functions.productCMSInfo(JSON.parse(cms_product)); 
     }else{
@@ -2152,10 +2177,14 @@ theme.pages['pagina-produto'] = function(){
             url: CMS_PATH + "/products?filters[identifier][$eq]="+ window.PRODUTO_ID +"&populate=gallery,tabs",   
             method: 'GET'         
         }).done(function(response){
-            if(response.data){
+            //alert(response.data.length)
+            if(response.data.length > 0){
                 cms_product = response.data && response.data[0] && response.data[0].attributes;
                 sessionStorage.setItem('cms_product_' + window.PRODUTO_ID,JSON.stringify(cms_product));
                 theme.functions.productCMSInfo(cms_product);
+            }else{
+                sessionStorage.setItem('cms_product_' + window.PRODUTO_ID,false);
+                $('.cms_gallery').removeClass('apx_loading')
             }
         });
     }
@@ -2276,7 +2305,9 @@ theme.functions.productInfo = function(info){
         });
 
         if(info.description.youtube_url){
-            $('.apx_gallery').append('<button type="button" class="apx_youtube_vid"></button>');
+            console.log(info.description.youtube_url);
+            $('.apx_gallery').append(`<button onclick="theme.functions.scrollTo('.apx_product_video')" type="button" class="apx_youtube_vid"></button>`);
+            $('.apx_product_video').html(`<iframe src="https://www.youtube.com/embed/${info.description.youtube_url.split('?v=')[1]}" controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`)
         }
 
         $('.apx_gallery').append('<a class="apx_add_wishlist" href="/conta/favorito/'+ window.PRODUTO_ID+'/adicionar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a>')
@@ -2288,7 +2319,16 @@ theme.functions.productInfo = function(info){
 
     $('.apx_product_left').removeClass('apx_loading');
 };
+theme.functions.scrollTo = function(target){
+    var target = $(target);
+    if (target.length) {
+    var offset = target.offset().top;
 
+    $('html, body').animate({
+        scrollTop: offset - 100
+    }, 800);
+    }  
+};
 theme.functions.productCMSInfo = function(info){
     if(info.gallery && info.gallery.data && info.gallery.data.length > 0){
         $.each(info.gallery.data, function(k_, i_){
@@ -2299,9 +2339,14 @@ theme.functions.productCMSInfo = function(info){
     }
 
     if(info.tabs && info.tabs.length > 0){
+        $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Frete e Prazo de Entrega</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content cep_"></div></div>')
         $.each(info.tabs.reverse(), function(k_, i_){
             $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>'+ i_.title +'</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ i_.content +'</div></div>')
         });
+
+        $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Detalhes do Produto</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ $('#descricao').html() +'</div></div>');
+        $('.abas-custom').remove();
+        $('.cep').appendTo('.cms_tabs_content.cep_');
 
         $('body').on('click','.cms_tabs .cms_tabs_header button', function(){
             $(this).find('i').toggleClass('fa-plus fa-minus');
@@ -2425,7 +2470,107 @@ theme.functions.headerCategoriesDropdown = function(){
     }
 };
 
+theme.functions.pools = function(){
+    let cms_pools = sessionStorage.getItem('cms_pools');
+    if(cms_pools){   
+        cms_pools = JSON.parse(cms_pools);
+        $.each(cms_pools, function(k_, i_){
+            let pool = i_.attributes;
+            if(($('.'+ pool.show_on).length > 0 || pool.show_on == "anywhere") && !sessionStorage.getItem(`pool_${i_.id}`)){
+                let container = $(`<div class="cdsg_pool" data-show_when="${pool.show_when}" style="--text_color:${pool.text_color};--background_color:${pool.background_color};"><button onclick="$(this).closest('.cdsg_pool').addClass('closed').hide();" class="close_"></button></div>`);
+                let el = $(`<div class="step_question"><img src="${pool.corner_image.data.attributes.url}" class="corner"/></div>`);
+                el.append(`<b class="title">${pool.title}</b>`);
+                el.append(`<p class="description">${pool.description}</p>`);
 
+                let answers = $(`<form data-id="${i_.id}"></form>`);
+                $.each(pool.answers.data, function(k__, i__){
+                    let answer = $(`<div><label><input type="radio" name="answer" value="${i__.id}"/>${i__.attributes.title}</label><small>${i__.attributes.description != null ? i__.attributes.description : ''}</small></div>`)
+                    i__.attributes.has_comments == true ? answer.append('<textarea name="answer_text" placeholder="Por favor, descreva aqui o motivo..."></textarea>') : false;
+                    answers.append(answer);
+                });
+                answers.append('<button type="submit">Enviar</button>');
+                el.append(answers);
+                
+
+                container.append(el);
+
+                el = $('<div class="step_thanks"></div>');
+                el.append(`<div><b>${pool.thanks_text}</b><img src="${pool.thanks_image.data.attributes.url}"/></div>`)
+
+                container.append(el);
+                container.wrapInner('<div></div>');
+                container.appendTo('body');
+            }
+        });
+
+        $('.cdsg_pool input').change(function(){
+            let pool = $(this).closest('.cdsg_pool');
+            pool.find('.selected').removeClass('selected')
+            $(this).closest('div').addClass('selected')
+        });
+
+        $('.cdsg_pool form').submit(function(e){
+            e.preventDefault();
+            let pool = $(this).closest('.cdsg_pool');
+            let value = pool.find('.selected input:checked').val();
+            let obs = pool.find('.selected textarea').val();
+            let _id = $(this).attr('data-id');
+
+            if(value && _id){
+                $.ajax({
+                    url: CMS_PATH + "/pool-results",   
+                    method: 'post',
+                    data : {data :{
+                        answer: value,
+                        comments: obs || '',
+                        pool: _id,                    
+                        }
+                    }         
+                }).done(function(response){
+                    pool.find('.step_question').remove();
+                    pool.find('.step_thanks').show();
+                    sessionStorage.setItem(`pool_${_id}`,true);
+                    setTimeout(() => {
+                        console.log("Delayed for 1 second.");
+                        pool.addClass('closed').fadeOut();
+                    }, "2000");
+                });
+            }else{
+                alert('Verifique as opções do formulário e tente novamente, humano.');
+            }
+            
+        });
+    }else{
+        $.ajax({
+            url: CMS_PATH + "/pools?populate=deep",   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                cms_pools = response.data;
+                sessionStorage.setItem('cms_pools',JSON.stringify(cms_pools));
+                theme.functions.pools();
+            }
+        });
+    }
+
+    $(window).load(function(){
+        setTimeout(() => {
+            theme.functions.addEvent(document, 'mouseout', function(evt) {
+                if (evt.toElement == null && evt.relatedTarget == null) {
+                    $('[data-show_when="exit"]:not(.closed)').show();
+                };
+            });
+        }, "5000");
+    })
+    
+}
+theme.functions.addEvent = function (obj, evt, fn) {
+    if (obj.addEventListener) {
+        obj.addEventListener(evt, fn, false);
+    } else if (obj.attachEvent) {
+        obj.attachEvent("on" + evt, fn);
+    }
+}
 $(document).ready(function(){
     $('.menu [title="OCULTAR"]').closest('li').prev().nextAll().remove();
     $('a[href$="ocultar.html"]').closest('li').prev().nextAll().remove();
@@ -2443,8 +2588,9 @@ $(document).ready(function(){
         theme.build.sideHelp();
         theme.build.productList();
         theme.functions.searchAutoComplete();
-        
-    }        
+    }       
+    
+    theme.functions.pools();
     
     
     
