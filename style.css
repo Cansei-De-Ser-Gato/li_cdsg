@@ -4775,6 +4775,7 @@ margin-top: 2rem;
 
     .menu.superior .nivel-um, .menu.lateral .nivel-um{border: 0;}
     
+    .cdsg_sideHelp .triggers > div > button{margin-left: -63px;}
 }
 .slick-dots li:first-child:last-child{display: none;}
 .acoes-flutuante{display: none!important;}
