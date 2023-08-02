@@ -169,7 +169,9 @@ theme.generateContent.categoryIconList = function(prop, oObj){
 };
 
 theme.generateContent.menu = function(prop, oObj){
-    return theme.headerMenu;
+    let menu = $(theme.headerMenu);
+    menu.find('.com-filho').append('<i></i>');
+    return menu.prop('outerHTML');
 };
 
 theme.generateContent.logo = function(prop, oObj){
@@ -201,7 +203,7 @@ theme.generateContent.load_img = function(prop, oObj){
 };
 
 theme.generateContent.social = function(prop, oObj){
-    let el = $('<div>Nos acompanhe <div>'+ theme.socialIcons +'</div></div>');
+    let el = $('<div>'+ (prop == "mobile" ? '' : 'Nos acompanhe ')+'<div>'+ theme.socialIcons +'</div></div>');
     return el;
 };
 
@@ -213,9 +215,18 @@ theme.generateContent.logo_fixed = function(prop, oObj){
 };
 
 theme.generateContent.menu_extra = function(prop, oObj){
-    let el = $('<nav class="d-flex align-items-center row"></nav>');
-    el.append('<div class="col px-md-4"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');
-    el.append('<div class="col px-md-4"><a href="#">Atendimento</a></div>');
+    let el;
+    if(prop == 'mobile'){
+        el = $('<nav class="d-flex flex-column"></nav>');
+        el.append('<div class="col"><a href="/pagina/dmf.html" target=_blank>Dúvidas?</a></div>');
+        el.append('<div class="col"><a href="/pagina/quem-somos.html" target=_blank>Quem Somos</a></div>');
+        el.append('<div class="col"><a href="/pagina/contato.html">Atendimento</a></div>');
+        el.append('<div class="col"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');        
+    }else{
+        el = $('<nav class="d-flex align-items-center row"></nav>');
+        el.append('<div class="col px-md-4"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');
+        el.append('<div class="col px-md-4"><a href="/pagina/contato.html">Atendimento</a></div>');
+    }
     return el.prop('outerHTML');
 };
 
@@ -359,7 +370,7 @@ theme.generateContent.search = function(prop, oObj){
     return el.prop('outerHTML');
 };
 
-
+theme.settings.instagramToken = "IGQVJYZAVZAvaU85MjM0ZAFZA5aFR6YTVVckRzUnVjX1dHN3dzSm1ncjVrbjB0ZA0ZAsMm5zcnpGTG96eTBVM2p2cm1OZAk94b2JrVk1VdDU5czhCM0kydHJGcFpaSTM1N0FucDZAvRWpCcHhYeHB6Rk1BTlE2YgZDZD";
 theme.generateContent.instafeed = function(prop, oObj){
     let el = $('<div class=""></div>');
     let instafeed = sessionStorage.getItem('instafeed');
@@ -368,7 +379,9 @@ theme.generateContent.instafeed = function(prop, oObj){
         el.append(theme.functions.instafeed(instafeed));
         oObj.html(el.prop('outerHTML'));
     }else{
+        
         $.ajax({
+            //url: 'https://graph.instagram.com/me/media?access_token='+ theme.settings.instagramToken +'&fields=media_url,media_type,caption,permalink',   
             url: CMS_PATH + "/testimonials",   
             method: 'GET'         
         }).done(function(response){
@@ -385,7 +398,7 @@ theme.functions.accountWishlist = function(){
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
     console.log(sessionAccount);
 }
-
+theme.account;
 theme.functions.accountData = function(){
     let account = {};
 
@@ -451,7 +464,7 @@ theme.functions.accountData = function(){
         sessionStorage.setItem('account',JSON.stringify(account))
     }    
      
-
+    theme.account = account;
     
 }
 
@@ -787,7 +800,7 @@ theme.functions.searchAutoComplete = function(){
                     response.meta.total.resources > 0 ? count.append('<div class="col-auto"><a href="/buscar?q='+ q +'">ver tudo</a></div>') : false;
                     
                     $.each(response.data, function(k_, i_){
-                        let box = $('<div class="col-12 col-md-2"></div></div>');
+                        let box = $('<div class="col-6 col-md-2 px-md-2 px-1 mb-md-0 mb-2"></div></div>');
                         let item = $('<div class="item"></div>');
 
                         item.append('<button type="button" class="add-wishlist"><img src="'+ CDN_PATH + 'wishlist.svg' + '"/></button>');
@@ -861,6 +874,8 @@ theme.build.header = function(){
             '</div>' +
         '</div>'+
     '</div>');
+
+    $('#cabecalho').append(`<div id="cdsg_mobile_menu"> <div class="account d-flex align-items-center justify-content-between"> <a href="/conta/index"> <img src="${CDN_PATH + 'user.svg'}"/> <div class="d-flex flex-column"> <span>Olá, ${theme.account.userName}.</span> <u class="text-uppercase">Acesse sua conta</u> </div></a><button type="button" class="cdsg_menu_trigger"></button></div><div class="actions d-flex align-items-center justify-content-between text-center px-0 py-3 my-3"> <div class="item col"> <a href=""> <div class="image"> <img src="${CDN_PATH + 'wishlist.svg'}"/> </div><span>Meus<br>Favoritos</span> </a> </div><div class="item col"> <a href=""> <div class="image"> <img src="${CDN_PATH + 'box_pedido.svg'}"/> </div><span>Rastrear<br>pedido</span> </a> </div><div class="item col"> <a href=""> <div class="image"> <img src="${CDN_PATH + 'ajuda_loja.svg'}"/> </div><span>Encontrar<br>loja</span> </a> </div><div class="item col"> <a href=""> <div class="image"> <img src="${CDN_PATH + 'ajuda_whats.svg'}"/> </div><span>Whats<br>Chico</span> </a> </div></div><div class="menu"> <div apx_load="menu" class="cdsg_menu"></div><div apx_load="menu_extra" apx_load_prop="mobile"></div></div><div class="social"> <div apx_load="social" apx_load_prop="mobile" class="cdsg_social"></div></div></div>`);
 
     if(!theme.isMobile){
         $('#cabecalho').prepend(''+
@@ -988,21 +1003,41 @@ theme.build.footer = function(){
     `<hr></hr>` +
     `<div class="container footer_bottom pb-4">` +
         `<div class="row align-items-center justify-content-between">` +
-            `<div class="col-md-auto col-12 d-flex align-items-center">` +
+            `<div class="col-md-auto col-12 d-flex flex-md-row flex-column align-items-center">` +
                 `<h4 class="me-md-4">${theme.lang.footer.pagamento} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="footer_payments"></div>` +
             `</div>` +
-            `<div class="col-md-auto col-12 d-flex align-items-center">` +
+            `<div class="col-md-auto col-12 d-flex flex-md-row flex-column align-items-center">` +
                 `<h4 class="me-md-4">${theme.lang.footer.seguranca} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="footer_secure"></div>` +
             `</div>` +
         `</div>` +
     `</div>`+
     `<div apx_load="load_img" apx_load_prop="gatoxinha.png" class="d-block d-md-none gatoxinha"></div>`);
+
+    if(theme.isMobile){
+        $('#rodape #cdsg_footer h4 i').click(function(){
+            $(this).closest('h4').toggleClass('open');
+            $(this).closest('h4').next().slideToggle();
+        })
+    }
    
 };
 
 theme.build.sliders = function(){
+    if(theme.isMobile){
+        $('.pagina-categoria .cdsg_categoryIconList[apx_load="categoryIconList"] .items:not(.slick-slider)').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: true,
+            prevArrow: '<button type="button" class="apx_arrow prev"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg' + '"/></button>',
+            nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg' + '"/></button>',
+            autoplay:true,
+            autoplaySpeed:3000
+            
+        });
+    }
+
     $('.banner.cheio .flexslider').addClass('unflexedSlider');
     theme.functions.flexDestroy($('.banner.cheio .flexslider'));
 
@@ -1212,7 +1247,7 @@ theme.build.faq = function(){
     if(cms_faq){
         cms_faq = JSON.parse(cms_faq);        
         $.each(cms_faq, function(k_, i_){
-            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
+            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.title.toLowerCase().trim());
             if(page){
                 faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
             }
@@ -1220,7 +1255,7 @@ theme.build.faq = function(){
     }
 
     el.append('<div class="col-12 col-md-auto">'+faq.prop('outerHTML')+'</div>');
-    el.append('<div class="col-md-5 col-12 cdsg_faq_content">'+ currentContent +'</div>');
+    el.append('<div class="col-md-5 col-12 cdsg_faq_content ps-md-5">'+ currentContent +'</div>');
     el.append(theme.functions.sidePage());
     $('#corpo .secao-principal').html('<div class="container"><div class="cdsg_faq_title"><strong>'+ theme.lang.faq.titulo +'</strong></div>'+el.prop('outerHTML')+'</div>');
 
@@ -1261,7 +1296,7 @@ theme.build.contact_form_page = function(){
                 $("<div>").addClass("alert alert-" + ba).html(ra).insertAfter(N.find("form"))
             },
             W = function(ba) {
-                console.log('aaa')
+                //console.log('aaa')
                 M("error", ba)
             };
         N.find(".alert").remove();
@@ -1289,7 +1324,7 @@ theme.build.contact_page = function(){
     if(cms_faq){
         cms_faq = JSON.parse(cms_faq);        
         $.each(cms_faq, function(k_, i_){
-            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.attributes.title.toLowerCase().trim());
+            let page = theme.resources.json.pages.find(el => el.name.toLowerCase().trim() == i_.title.toLowerCase().trim());
             if(page){
                 faq.append(`<li><a href="${page.url}">${page.name}</a></li>`);
             }
@@ -1582,6 +1617,12 @@ theme.pages['pagina-pedido-finalizado'] = function(){
 
 
 };
+
+theme.lang.aproveite_e_leve_tambem = "Aproveite e leve também";
+
+theme.functions.formatMoney = function(string){
+    return string.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+}
 theme.pages['pagina-carrinho'] = function(){
     if($('.pagina-carrinho:not(.carrinho-checkout)').length > 0){
         $('<div id="checkout-sidebar"></div>').insertBefore('.acao-editar');
@@ -1598,6 +1639,68 @@ theme.pages['pagina-carrinho'] = function(){
         });
 
         $('.pagina-carrinho .cabecalho-interno h1.titulo').text('Meu Carrinho ('+ ($('[data-produto-id]').length > 0 ? $('[data-produto-id]').length : 0) +')')
+        $('.tabela-carrinho').after(`<div id="apx_upsell" class="apx_loading mt-5"><h4 class="my-4">${theme.lang.aproveite_e_leve_tambem}</h4><div class="list row mx-0"></div></div>`);
+
+        let filter_string = "";
+        $('[data-produto-id]').each(function(k_,i_){
+            let id = sessionStorage.getItem('main_id_' + $(this).attr('data-produto-id')) ? sessionStorage.getItem('main_id_' + $(this).attr('data-produto-id')) : $(this).attr('data-produto-id');
+            
+            filter_string = filter_string + (filter_string == "" ? '' : '&') + 'filters[identifier][$in]['+k_+']='+id;
+        });
+        
+        $.ajax({
+            url: CMS_PATH + "/products?populate=related_products&" + filter_string,   
+            method: 'GET'         
+        }).done(function(response){
+            if(response.data){
+                //console.log(response.data)
+                if(response.data && response.data.length > 0){
+                    let product_ids = []
+                    $.each(response.data, function(k_, i_){
+                        $.each(i_.attributes.related_products, function(k__, i__){
+                            product_ids.push(i__.main_product_id);
+                        })
+                    });
+
+                    let limit = 0;
+                    $.each(product_ids, function(k_, i_){
+                        //console.log(i_)
+                        $.ajax({
+                            url: window.API_PRODUCT_PUBLIC_URL + "/" + i_,
+                            headers: {
+                                "x-store-id": window.LOJA_ID
+                            }            
+                        }).done(function(response){
+                            if(response.data){
+                                product = response.data;            
+                                console.log(product)
+                                
+                                if(product.status="active" && product.is_available && $('[data-produto-id] a[href$="'+product.canonical_url.path+'"]').length == 0){
+                                    $(`<div class="col-6 col-md-2 px-md-1"><div class="item"><div class="image"><img src="${window.MEDIA_URL + '200x200'+ product.images[0].url }"/></div><a href="${product.canonical_url.path}">${product.name}</a><div><strong>${theme.functions.formatMoney(product.selected_sku.price.sell)}</strong></div><a href="/carrinho/produto/${product.id}/adicionar" class="btn-buy"></a></div></div>`).appendTo('#apx_upsell .list');
+                                    limit++;
+                                }
+                                
+                                if(limit == 6 || k_ == product_ids.length - 1){
+                                    if(limit == 0){
+                                        $('#apx_upsell').addClass('d-none')
+                                    }
+                                    $('#apx_upsell').removeClass('apx_loading');                                    
+                                } 
+                            }
+                            
+                        });
+                    });
+                }
+                // sessionStorage.setItem('cms_faq',JSON.stringify(response.data.attributes.pages));
+                // if(response.data.attributes.pages.find(el => el.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+                //     page_load = true;
+                //     theme.build.faq();
+                // }                
+            }
+        });
+        
+
+
     }else{
         $('.resumo-compra').hide();
         $.get('/carrinho/minicart', function(response){
@@ -1842,18 +1945,18 @@ theme.pages['pagina-pagina'] = function(){
     let cms_faq = sessionStorage.getItem('cms_faq');
     if(cms_faq){ 
         cms_faq = JSON.parse(cms_faq);
-        if(cms_faq.find(el => el.attributes.title.toLowerCase().trim() == page_title)){
+        if(cms_faq.find(el => el.title.toLowerCase().trim() == page_title)){
             page_load = true;
             theme.build.faq()
         }
     }else{  
         $.ajax({
-            url: CMS_PATH + "/faqs?sort=order",   
+            url: CMS_PATH + "/faq?populate=pages",   
             method: 'GET'         
         }).done(function(response){
             if(response.data){
-                sessionStorage.setItem('cms_faq',JSON.stringify(response.data));
-                if(response.data.find(el => el.attributes.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
+                sessionStorage.setItem('cms_faq',JSON.stringify(response.data.attributes.pages));
+                if(response.data.attributes.pages.find(el => el.title.toLowerCase().trim() == $('body').find('h1').text().toLowerCase().trim())){
                     page_load = true;
                     theme.build.faq();
                 }                
@@ -1962,7 +2065,7 @@ theme.pages['pagina-categoria'] = function(){
 
     $('h1').wrap('<div class="apx_categoryTitle"></div>');
     $('.apx_categoryTitle').prependTo($('.apx_categoryTitle').closest('.conteiner'));
-    $('.apx_categoryTitle').after('<div class="apx_filters row align-items-center justify-content-between"><div class="filterBy col-auto"></div><div class="sortBy col-auto"><div class="filter" data-type="sort"><button type="button">Ordenar Por</button></div></div></div>')
+    $('.apx_categoryTitle').after('<div class="apx_filters row align-items-center justify-content-between"><div class="filterBy col-md-auto col"></div><div class="sortBy col-md-auto col"><div class="filter" data-type="sort"><button type="button">Ordenar Por</button></div></div></div>')
 
     $('.filtro-coluna.faceta-preco').remove(); 
     $('.filtro-coluna').each(function(){
@@ -1989,6 +2092,10 @@ theme.pages['pagina-categoria'] = function(){
 
     $('.ordenar-listagem, .coluna.span3').remove();
     $('.conteudo.span9').toggleClass('span9 span12');
+
+    
+    
+
 }
 
 theme.pages['pagina-404'] = function(){
@@ -2030,21 +2137,24 @@ theme.pages['pagina-produto'] = function(){
         if(response.data){
             let product = response.data;  
             theme.functions.productInfo(product); 
+            $.each(product.skus, function(k_, i_){
+                sessionStorage.setItem('main_id_'+i_.id,window.PRODUTO_ID);
+            })            
         }
     });
 
     //PRODUCT_CMS
-    let cms_product = sessionStorage.getItem('cms_product_'+sku);
+    let cms_product = sessionStorage.getItem('cms_product_'+window.PRODUTO_ID);
     if(cms_product){
         theme.functions.productCMSInfo(JSON.parse(cms_product)); 
     }else{
         $.ajax({
-            url: CMS_PATH + "/products?filters[identifier][$eq]="+ sku +"&populate=gallery,tabs",   
+            url: CMS_PATH + "/products?filters[identifier][$eq]="+ window.PRODUTO_ID +"&populate=gallery,tabs",   
             method: 'GET'         
         }).done(function(response){
             if(response.data){
                 cms_product = response.data && response.data[0] && response.data[0].attributes;
-                sessionStorage.setItem('cms_product_' + sku,JSON.stringify(cms_product));
+                sessionStorage.setItem('cms_product_' + window.PRODUTO_ID,JSON.stringify(cms_product));
                 theme.functions.productCMSInfo(cms_product);
             }
         });
@@ -2211,6 +2321,17 @@ theme.pages['pagina-inicial'] = function(){
     $('.secao-secundaria').append('<div class="container"><div apx_load="" class="cdsg_benefits"></div></div>');
     $('#rodape').before('<div class="container mt-3 mb-md-5 mb-2 cdsg_instafeed_home"><div class="row align-items-center justify-content-between"><div class="col-auto col-md-auto"><img src="'+ CDN_PATH + 'ico_insta.svg' +'"/></div><div class="col-auto col-md-auto"><b>@canseidesergato</b></div></div><div apx_load="instafeed" class="mt-3"></div></div>');
     
+    if(theme.isMobile){
+        $('body').on('click','.cdsg_categoryIconListHeader h3',function(){
+            let text = $(this).text().trim().toUpperCase();
+            $('.cdsg_categoryIconListHeader h3').removeClass('active');
+            $(this).addClass('active');
+            console.log(text);
+            $('.cdsg_categoryIconListHeader + div .cdsg_categoryIconList').removeClass('active');
+            $('.cdsg_categoryIconListHeader + div .cdsg_categoryIconList[apx_load_prop="'+text+'"]').addClass('active');
+        });
+        $('.cdsg_categoryIconListHeader h3').first().click();
+    }
 };
 
 
@@ -2241,52 +2362,54 @@ theme.functions.headerCategoriesDropdown = function(){
 
                     q ? me.prepend(`<div class="image"><img src="${q.attributes.icon && q.attributes.icon.data && q.attributes.icon.data[0].attributes.url || 'https://via.placeholder.com/111x111'}"/></div>`) : me.prepend(`<div class="image"><img src="https://via.placeholder.com/111x111"/></div>`)
                 });
+                
+                if($(this).closest('#cdsg_mobile_menu').length == 0){
+                    $(this).find('.nivel-dois').wrap('<div class="cdsg_dropdown_box container justify-content-between align-items-center"></div>');
 
-                $(this).find('.nivel-dois').wrap('<div class="cdsg_dropdown_box container justify-content-between align-items-center"></div>');
+                    let me = $(this);
+                    let txt = $(this).find('.titulo').text().toLowerCase().trim();
+                    let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
 
-                let me = $(this);
-                let txt = $(this).find('.titulo').text().toLowerCase().trim();
-                let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
+                    if(q){
+                        if(q.attributes.dropdown_left_banner && q.attributes.dropdown_left_banner.Image && q.attributes.dropdown_left_banner.Image.data){
+                            let el = $('<div class="dropdown_left_banner col-auto"></div>');                        
+                            let box;
+                            if(q.attributes.dropdown_left_banner.url != ""){
+                                box = $('<a href="'+ q.attributes.dropdown_left_banner.url +'"></a>');
+                            }else{
+                                box = $('<div></div>');
+                            }
 
-                if(q){
-                    if(q.attributes.dropdown_left_banner && q.attributes.dropdown_left_banner.Image && q.attributes.dropdown_left_banner.Image.data){
-                        let el = $('<div class="dropdown_left_banner col-auto"></div>');                        
-                        let box;
-                        if(q.attributes.dropdown_left_banner.url != ""){
-                            box = $('<a href="'+ q.attributes.dropdown_left_banner.url +'"></a>');
-                        }else{
-                            box = $('<div></div>');
+                            q.attributes.dropdown_left_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_left_banner.Image.data.attributes.url}"/>`) : false;
+                            q.attributes.dropdown_left_banner.title ? box.append(`<strong>${q.attributes.dropdown_left_banner.title}</strong>`) : false;
+                            q.attributes.dropdown_left_banner.button_text ? box.append(`<button>${q.attributes.dropdown_left_banner.button_text}</button>`) : false;
+
+                            el.append(box);
+                            me.children('.cdsg_dropdown_box').prepend(el)
                         }
 
-                        q.attributes.dropdown_left_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_left_banner.Image.data.attributes.url}"/>`) : false;
-                        q.attributes.dropdown_left_banner.title ? box.append(`<strong>${q.attributes.dropdown_left_banner.title}</strong>`) : false;
-                        q.attributes.dropdown_left_banner.button_text ? box.append(`<button>${q.attributes.dropdown_left_banner.button_text}</button>`) : false;
+                        if(q.attributes.dropdown_right_banner && q.attributes.dropdown_right_banner.Image && q.attributes.dropdown_right_banner.Image.data){
+                            let el = $('<div class="dropdown_right_banner col-auto"></div>');                        
+                            let box;
+                            if(q.attributes.dropdown_right_banner.url != ""){
+                                box = $('<a href="'+ q.attributes.dropdown_right_banner.url +'"></a>');
+                            }else{
+                                box = $('<div></div>');
+                            }
 
-                        el.append(box);
-                        me.children('.cdsg_dropdown_box').prepend(el)
-                    }
+                            q.attributes.dropdown_right_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_right_banner.Image.data.attributes.url}"/>`) : false;
+                            q.attributes.dropdown_right_banner.title ? box.append(`<strong>${q.attributes.dropdown_right_banner.title}</strong>`) : false;
+                            q.attributes.dropdown_right_banner.button_text ? box.append(`<button>${q.attributes.dropdown_right_banner.button_text}</button>`) : false;
 
-                    if(q.attributes.dropdown_right_banner && q.attributes.dropdown_right_banner.Image && q.attributes.dropdown_right_banner.Image.data){
-                        let el = $('<div class="dropdown_right_banner col-auto"></div>');                        
-                        let box;
-                        if(q.attributes.dropdown_right_banner.url != ""){
-                            box = $('<a href="'+ q.attributes.dropdown_right_banner.url +'"></a>');
-                        }else{
-                            box = $('<div></div>');
+                            el.append(box);
+                            me.children('.cdsg_dropdown_box').append(el)
                         }
-
-                        q.attributes.dropdown_right_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_right_banner.Image.data.attributes.url}"/>`) : false;
-                        q.attributes.dropdown_right_banner.title ? box.append(`<strong>${q.attributes.dropdown_right_banner.title}</strong>`) : false;
-                        q.attributes.dropdown_right_banner.button_text ? box.append(`<button>${q.attributes.dropdown_right_banner.button_text}</button>`) : false;
-
-                        el.append(box);
-                        me.children('.cdsg_dropdown_box').append(el)
                     }
                 }
-            })
-            $.each(theme.resources.json.categories, function(k_, i_){
-                console.log(i_);
             });
+            // $.each(theme.resources.json.categories, function(k_, i_){
+            //     console.log(i_);
+            // });
         }
     }else{
         $.ajax({
@@ -2304,8 +2427,11 @@ theme.functions.headerCategoriesDropdown = function(){
 
 
 $(document).ready(function(){
+    $('.menu [title="OCULTAR"]').closest('li').prev().nextAll().remove();
+    $('a[href$="ocultar.html"]').closest('li').prev().nextAll().remove();
+    
     theme.init();
-
+    theme.functions.accountData();
     if(theme.currentPage == 'pagina-carrinho' ||
     theme.currentPage == 'pagina-pedido-finalizado'){
         theme.build.checkoutHeader();
@@ -2317,7 +2443,7 @@ $(document).ready(function(){
         theme.build.sideHelp();
         theme.build.productList();
         theme.functions.searchAutoComplete();
-        theme.functions.accountData();
+        
     }        
     
     
