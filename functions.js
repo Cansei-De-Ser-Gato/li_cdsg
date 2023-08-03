@@ -1045,6 +1045,7 @@ theme.build.footer = function(){
 };
 
 theme.build.sliders = function(){
+    
     if(theme.isMobile){
         $('.pagina-categoria .cdsg_categoryIconList[apx_load="categoryIconList"] .items:not(.slick-slider)').slick({
             slidesToShow: 3,
@@ -1133,6 +1134,39 @@ theme.build.sliders = function(){
             }
         ]
     });
+
+    if(theme.isMobile){
+        $('.pagina-produto').find('.aproveite-tambem > ul:not(.slick-slider)').addClass('row');
+        $('.pagina-produto').find('.aproveite-tambem > ul:not(.slick-slider) li.span3').attr('class','col-12 col-md-6 px-0');
+        $('.pagina-produto').find('.aproveite-tambem > ul:not(.slick-slider)').attr('data-produtos-linha',4);
+        $('.pagina-produto').find('.aproveite-tambem > ul:not(.slick-slider)').slick({
+            infinite: true,
+            //slidesToShow: theme.isMobile ? 2 : 4,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            dots: true,
+            arrows: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            prevArrow: "<button type=\"button\" class=\"apx_arrow prev\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+            nextArrow: "<button type=\"button\" class=\"apx_arrow next\"><img src=\"https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/arrow_slider_black_l.svg\"/></button>",
+            responsive: [
+                {
+                    breakpoint: 600,
+                    settings: {
+                        infinite: true,
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        arrows: true
+                    }
+                }
+            ]
+        });
+
+        let h = $('.listagem-item .imagem-produto').first().innerWidth() * theme.settings.imageRatio;
+        $('.listagem-item .imagem-produto').css('--ratio',theme.settings.imageRatio);
+        $('.listagem-item .imagem-produto').css('height',h + 'px'); 
+    }
 
     $('.slick-me:not(.slick-slider)').each(function(){
         let oObj = $(this);
@@ -1532,15 +1566,15 @@ function initMap(){
 theme.lang.telefoneCheckout = "(11) 91658-8376"
 theme.build.checkoutHeader = function(){
     $('#cabecalho').html('<div id="cdsg_checkout_header">'+
-        '<div class="container-fluid py-md-3 px-5 my-md-3">'+
+        '<div class="container-fluid py-md-3 pt-3 px-md-5 px-2 my-md-3">'+
             '<div class="row align-items-center justify-content-between">'+
-                '<div class="col-3">'+
+                '<div class="col-md-3 col-auto">'+
                     '<div apx_load="logo" apx_load_prop="" class="cdsg_logo"></div>'+
                 '</div>'+
-                '<div class="col-auto">'+
+                '<div class="col-md-auto col-12">'+
                     '<div apx_load="checkout_steps" apx_load_prop="" class="cdsg_checkout_steps"></div>'+
                 '</div>'+
-                '<div class="col-3 text-left"><div class="row align-items-center justify-content-end"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div class="mb-1"><b>Dúvidas? '+ theme.lang.telefoneCheckout +'</b></div><div apx_load="contact_hour"></div></div></div></div>'+
+                '<div class="col-3 d-none d-md-block text-left"><div class="row align-items-center justify-content-end"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div class="mb-1"><b>Dúvidas? '+ theme.lang.telefoneCheckout +'</b></div><div apx_load="contact_hour"></div></div></div></div>'+
             '</div>'+
         '</div>'+
     '</div>');
@@ -1606,9 +1640,9 @@ theme.pages['pagina-pedido-finalizado'] = function(){
     console.log(pedido)
 
     $('.pedido-finalizado').prepend('<div id="cdsg_finalizado_header"></div>');
-    $('#cdsg_finalizado_header').html(`<div class="row mt-5"><div class="col-12 col-md-4"><div class="order_info"><div class="px-md-5"><h4>Obrigado por escolher a minha loja, ${pedido.nome}!</h4><p class="mt-3">Você receberá um e-mail com todos os detalhes do seu pedido.</p></div><div class="order_number mt-3"><div class="block_header violet px-5 py-1">Número do pedido</div><div class="apx_order_number px-5 pb-3">${pedido.numero}</div></div><div class="apx_order_status mt-3 px-5 py-3 d-flex align-items-center"><b class="">Status do pedido:</b><span class="ms-1 d-block">${pedido.status}</span></div></div></div><div class="col-md-5 col-12"><div class="order_payment"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Pagamento<span>${pedido.imagem_pagamento}</span></div><div class="apx_info_pagamento box_cdsg">${pedido.codigo_boleto} ${pedido.imprimir_boleto} ${pedido.aviso_cartao}</div></div></div><div class="col-12 col-md-3"><div class="order_shipping"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Envio<span>${pedido.imagem_envio}</span></div><div class="apx_info_envio box_cdsg"><b class="d-block mb-2">ENDEREÇO DO PEDIDO:</b>${pedido.endereco} - ${pedido.bairro} - ${pedido.cep}</div></div></div></div></div>`)
+    $('#cdsg_finalizado_header').html(`<div class="row mt-md-5"><div class="col-12 col-md-4"><div class="order_info"><div class="px-md-5"><h4>Obrigado por escolher a minha loja, ${pedido.nome}!</h4><p class="mt-3">Você receberá um e-mail com todos os detalhes do seu pedido.</p></div><div class="order_number mt-3"><div class="block_header violet px-md-5 px-md-0 px-3 py-md-1 py-2">Número do pedido</div><div class="apx_order_number px-md-5 px-3 pb-3">${pedido.numero}</div></div><div class="apx_order_status mt-3 px-5 py-3 d-flex align-items-center"><b class="">Status do pedido:</b><span class="ms-1 d-block">${pedido.status}</span></div></div></div><div class="col-md-5 col-12"><div class="order_payment"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Pagamento<span>${pedido.imagem_pagamento}</span></div><div class="apx_info_pagamento box_cdsg">${pedido.codigo_boleto} ${pedido.imprimir_boleto} ${pedido.aviso_cartao}</div></div></div><div class="col-12 col-md-3"><div class="order_shipping"><div class="block_header px-3 py-1 d-flex align-items-center justify-content-between">Envio<span>${pedido.imagem_envio}</span></div><div class="apx_info_envio box_cdsg"><b class="d-block mb-2">ENDEREÇO DO PEDIDO:</b>${pedido.endereco} - ${pedido.bairro} - ${pedido.cep}</div></div></div></div></div>`)
     $('#cdsg_finalizado_header').after('<div id="cdsg_finalizado_footer"></div>');
-    $('#cdsg_finalizado_footer').html(`<div class="row mt-5"><div class="col-md-8 col-12"><div class="block_header px-3 py-1 mb-1">Seu Pedido</div><div class="cdsg_order_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div><div class="row mt-5 justify-content-end align-items-center cdsg_finalizar_functions"><div class="col-auto"><a href="/">Fazer nova Compra</a></div><div class="col-auto"><a href="/conta/pedido/listar">Ir para Meus Pedidos</a></div></div>`);
+    $('#cdsg_finalizado_footer').html(`<div class="row mt-5"><div class="col-md-8 col-12"><div class="block_header px-3 py-1 mb-1">Seu Pedido</div><div class="cdsg_order_resume"></div></div><div class="col-md-4 col-12"><div class="cdsg_cart_info"></div></div></div><div class="row mt-md-5 mt-4 justify-content-end align-items-center cdsg_finalizar_functions"><div class="col-md-auto col-12"><a href="/">Fazer nova Compra</a></div><div class="col-md-auto col-12"><a href="/conta/pedido/listar">Ir para Meus Pedidos</a></div></div>`);
     $('.resumo-compra').appendTo('.cdsg_order_resume');
     $('.resumo-compra td[colspan="4"]').closest('tr').appendTo('.cdsg_cart_info')
     
@@ -1643,6 +1677,37 @@ theme.lang.aproveite_e_leve_tambem = "Aproveite e leve também";
 theme.functions.formatMoney = function(string){
     return string.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
 }
+
+theme.functions.relatedAjax = function(product_ids, limit, i){
+    $.ajax({
+        url: window.API_PRODUCT_PUBLIC_URL + "/" + product_ids[i],
+        headers: {
+            "x-store-id": window.LOJA_ID
+        }            
+    }).done(function(response){
+        if(response.data){
+            product = response.data;            
+            console.log(product)
+            
+            if(product.status="active" && product.is_available && $('[data-produto-id] a[href$="'+product.canonical_url.path+'"]').length == 0){
+                $(`<div class="col-6 col-md-2 px-md-1"><div class="item"><div class="image"><img src="${window.MEDIA_URL + '200x200'+ product.images[0].url }"/></div><a href="${product.canonical_url.path}">${product.name}</a><div><strong>${theme.functions.formatMoney(product.selected_sku.price.sell)}</strong></div><a href="/carrinho/produto/${product.id}/adicionar" class="btn-buy"></a></div></div>`).appendTo('#apx_upsell .list');
+                limit++;
+            }
+            
+            if(limit == 6 || i == product_ids.length - 1){
+                if(limit == 0){
+                    $('#apx_upsell').addClass('d-none')
+                }
+                $('#apx_upsell').removeClass('apx_loading');                                    
+            }else{
+                i++;
+                theme.functions.relatedAjax(product_ids, limit,i);
+            }
+        }
+        
+    });
+}
+
 theme.pages['pagina-carrinho'] = function(){
     if($('.pagina-carrinho:not(.carrinho-checkout)').length > 0){
         $('<div id="checkout-sidebar"></div>').insertBefore('.acao-editar');
@@ -1659,7 +1724,7 @@ theme.pages['pagina-carrinho'] = function(){
         });
 
         $('.pagina-carrinho .cabecalho-interno h1.titulo').text('Meu Carrinho ('+ ($('[data-produto-id]').length > 0 ? $('[data-produto-id]').length : 0) +')')
-        $('.tabela-carrinho').after(`<div id="apx_upsell" class="apx_loading mt-5"><h4 class="my-4">${theme.lang.aproveite_e_leve_tambem}</h4><div class="list row mx-0"></div></div>`);
+        $('.tabela-carrinho').after(`<div id="apx_upsell" class="apx_loading mt-md-5 mb-md-0 my-3"><h4 class="my-4">${theme.lang.aproveite_e_leve_tambem}</h4><div class="list row mx-0"></div></div>`);
 
         let filter_string = "";
         $('[data-produto-id]').each(function(k_,i_){
@@ -1682,33 +1747,12 @@ theme.pages['pagina-carrinho'] = function(){
                     });
 
                     let limit = 0;
-                    $.each(product_ids, function(k_, i_){
-                        $.ajax({
-                            url: window.API_PRODUCT_PUBLIC_URL + "/" + i_,
-                            headers: {
-                                "x-store-id": window.LOJA_ID
-                            }            
-                        }).done(function(response){
-                            if(response.data){
-                                product = response.data;            
-                                console.log(product)
-                                
-                                if(product.status="active" && product.is_available && $('[data-produto-id] a[href$="'+product.canonical_url.path+'"]').length == 0){
-                                    $(`<div class="col-6 col-md-2 px-md-1"><div class="item"><div class="image"><img src="${window.MEDIA_URL + '200x200'+ product.images[0].url }"/></div><a href="${product.canonical_url.path}">${product.name}</a><div><strong>${theme.functions.formatMoney(product.selected_sku.price.sell)}</strong></div><a href="/carrinho/produto/${product.id}/adicionar" class="btn-buy"></a></div></div>`).appendTo('#apx_upsell .list');
-                                    limit++;
-                                }
-                                
-                                if(limit == 6 || k_ == product_ids.length - 1){
-                                    if(limit == 0){
-                                        $('#apx_upsell').addClass('d-none')
-                                    }
-                                    $('#apx_upsell').removeClass('apx_loading');                                    
-                                } 
-                            }
-                            
-                        });
-                    });
+                    theme.functions.relatedAjax(product_ids, limit,0);
+                    // $.each(product_ids, function(k_, i_){
+                        
+                    // });
                 }else{
+                    alert('deu ruim');
                     $('#apx_upsell').addClass('d-none')
                     $('#apx_upsell').removeClass('apx_loading');                                    
                 }
@@ -2151,6 +2195,11 @@ theme.pages['pagina-produto'] = function(){
 
     let sku = $('.produto .codigo-produto span[itemprop="sku"]').text().trim();
     
+    if(theme.isMobile){
+        $('.breadcrumbs').prependTo('#corpo');
+        $('.cms_gallery').insertBefore($('.parcelas-produto').first());
+    }
+
     //PRODUCT
     $.ajax({
         url: window.API_PRODUCT_PUBLIC_URL + "/" + window.PRODUTO_ID,
@@ -2231,7 +2280,7 @@ theme.functions.productTestimonials = function(testimonials){
 
         $.each(testimonials.data, function(k_, i_){
             let row = $('<div class="row align-items-center item"></div>');
-            let col = $('<div class="col-2"></div>');
+            let col = $('<div class="col-3 col-md-2"></div>');
             col.append(`<b>${i_.attributes.rating}</b><div class="rating-stars"></div>`);
 
             for(let i = 1; i<= 5; i++){
@@ -2250,7 +2299,7 @@ theme.functions.productTestimonials = function(testimonials){
             
             row.append(col);
 
-            col = $('<div class="col-10"></div>');
+            col = $('<div class="col-md-10 col-9"></div>');
             i_.attributes.content ? col.append(`<p>${i_.attributes.content}</p>`) : false;
             
             if(i_.attributes.gallery && i_.attributes.gallery.data && i_.attributes.gallery.data.length > 0){
@@ -2262,7 +2311,7 @@ theme.functions.productTestimonials = function(testimonials){
                 col.append(gallery);
             }
 
-            i_.attributes.order && i_.attributes.order.data ? col.append(`<div><strong>${i_.attributes.order.data.attributes.client_name}</strong><small>${theme.functions.formatData(i_.attributes.createdAt)}</small></div>`) : false;
+            i_.attributes.order && i_.attributes.order.data ? col.append(`<div><strong>${i_.attributes.order.data.attributes.client_name.split(' ')[0]}</strong><small>${theme.functions.formatData(i_.attributes.createdAt)}</small></div>`) : false;
 
             row.append(col);
             $('.cms_product_testimonials .testimonials_list').append(row);
@@ -2645,8 +2694,7 @@ $(window).load(function(){
 theme.build.afterLoad = function(){
     $('[data-produtos-linha]:not(.slick-slider)').each(function(){
         $(this).find('.nome-produto').equalHeights();
-    });
-    
+    });    
 }
 
 
