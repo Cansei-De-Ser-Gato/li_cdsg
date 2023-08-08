@@ -1,0 +1,45 @@
+<div id="cdsg_pop_cart">
+    <button type="button" class="cdsg_close trigger_close"></button>
+    <div class="empty">
+        <div class="hint">
+            <div>${theme.minicart.dica}</div>
+        </div>
+        <div class="default">
+            <img src="${CDN_PATH + 'minicart_empty.svg'}"/>
+            <strong>Seu carrinho está vazio</strong>
+            <p>Seu gato não vai gostar de saber disso, humano.</p>
+            <button type="button" class="trigger_close cdsg_btn">Ir às compras</button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="heading">
+            <b>Minha Sacola (${minicart.carrinho.item.length})</b>
+        </div>
+        <div class="list">
+            <div class="row">
+                <div class="col-3">
+                    <img src="${window.MEDIA_URL + '200x200/' + item.images[0].path}"/>
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-8">
+                            <a href="${item.url}">
+                                ${item.name}
+                            </a>
+                            <div class="options">
+                                ${variation.color ? '<span class="color" style="background-color:'+ variant.color+'"></span>'}
+                                ${variation.secondaryColor ? '<span class="color" style="background-color:'+ variant.secondaryColor+'"></span>'}
+                                ${!variation.color && !variant.secondaryColor ? '<span class="text">' + variant.name + '</span>'}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            ${item.price.promotionalPrice > 0 ? '<s>' + theme.functions.formatMoney(item.price.promotionalPrice) + '</s>'}
+                            <b>${theme.functions.formatMoney(item.price.sellingPrice)}</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -2622,10 +2622,44 @@ theme.functions.addEvent = function (obj, evt, fn) {
     }
 }
 
+theme.lang.minicart = [];
+theme.lang.minicart.dica = "Aproveite o cupom <b>PrimeiraCompra</b>";
 theme.functions.popFunctions = function(){
+    $('body').append(`<div id="cdsg_pop_cart">`+
+    `<button type="button" class="cdsg_close trigger_minicart"></button>`+
+        `<div class="empty">`+
+            `<div class="hint">`+
+                `<div>${theme.lang.minicart.dica}</div>`+
+            `</div>`+
+            `<div class="default">`+
+                `<img src="${CDN_PATH + 'minicart_empty.svg'}"/>`+
+                `<strong>Seu carrinho está vazio</strong>`+
+                `<p>Seu gato não vai gostar de saber disso, humano.</p>`+
+                `<button type="button" class="trigger_minicart cdsg_btn">Ir às compras</button>`+
+            `</div>`+
+        `</div>`+
+        `<div class="content">`+
+            `<div class="heading">`+
+                `<b>Minha Sacola (<span class="cart_quantity">0</span>)</b>`+
+            `</div>`+
+            `<div class="list">`+
+                
+            `</div>`+
+        `</div>`+    
+    `</div>`);
 
-    $('body').append('<div id="load"></div>');
-    $('#load').load('http://127.0.0.1:5500/popfunctions.html')
+    $('body').on('click','.trigger_minicart, #cabecalho .carrinho a', function(e){
+        e.preventDefault();
+        $('#cdsg_pop_cart').toggleClass('visible');
+    })
+
+    // $.each(function(k_, item){
+    //     let block = $('<div class="row"> <div class="col-3 figure"> </div><div class="col-9"> <div class="row"> <div class="col-8"> <a href="${item.url}"> ${item.name}</a> <div class="options"> </div></div><div class="col-4"> ${item.price.promotionalPrice > 0 ? '<s>' + theme.functions.formatMoney(item.price.promotionalPrice) + '</s>'}<b>${theme.functions.formatMoney(item.price.sellingPrice)}</b> </div></div></div></div>');
+        
+    //     item.
+    // })
+    // $('body').append('<div id="load"></div>');
+    // $('#load').load('http://127.0.0.1:5500/popfunctions.html')
 }
 $(document).ready(function(){
     $('.menu [title="OCULTAR"]').closest('li').prev().nextAll().remove();
