@@ -409,12 +409,12 @@ theme.functions.accountWishlist = function(){
     console.log(sessionAccount);
 }
 theme.account;
-theme.functions.accountData = function(){
+theme.functions.sessionData = function(){
     let account = {};
 
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
 
-    account.isLogged = $.cookie('LI-isUserLogged') == "false" ? false : true;
+    account.isLogged = $.cookie('LI-isUserLogged') === "false" ? false : true;
     account.userName = $.cookie('LI-UserLoggedName') ? $.cookie('LI-UserLoggedName').split(' ')[0] : 'Visitante';
     
     
@@ -475,6 +475,7 @@ theme.functions.accountData = function(){
     }    
      
     theme.account = account;
+    
     
 }
 
@@ -1752,7 +1753,7 @@ theme.pages['pagina-carrinho'] = function(){
                         
                     // });
                 }else{
-                    alert('deu ruim');
+                    //alert('deu ruim');
                     $('#apx_upsell').addClass('d-none')
                     $('#apx_upsell').removeClass('apx_loading');                                    
                 }
@@ -2620,12 +2621,19 @@ theme.functions.addEvent = function (obj, evt, fn) {
         obj.attachEvent("on" + evt, fn);
     }
 }
+
+theme.functions.popFunctions = function(){
+
+    $('body').append('<div id="load"></div>');
+    $('#load').load('http://127.0.0.1:5500/popfunctions.html')
+}
 $(document).ready(function(){
     $('.menu [title="OCULTAR"]').closest('li').prev().nextAll().remove();
     $('a[href$="ocultar.html"]').closest('li').prev().nextAll().remove();
     
     theme.init();
-    theme.functions.accountData();
+    theme.functions.sessionData();
+    theme.functions.popFunctions();
     if(theme.currentPage == 'pagina-carrinho' ||
     theme.currentPage == 'pagina-pedido-finalizado'){
         theme.build.checkoutHeader();
