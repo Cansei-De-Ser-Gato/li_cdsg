@@ -1587,6 +1587,14 @@ theme.build.checkoutFooter = function(){
 
 theme.lang.dica_boleto = "Dica: se for imprimir, configure sua impressora para utilizar modo normal de impressão (não utilizar opção rascunho).";
 
+theme.pages['pagina-login'] = function(){
+    $('#corpo > .conteiner').prepend('<div class="row cdsg_login"><div class="col-12 col-md-4 cadastro_left"></div><div class="col-12 col-md-8 cadastro_right"></div></div>');
+    $('.cadastro').appendTo('.cadastro_right');
+    $('h1').appendTo('.cadastro_left');
+    $('.cadastro_left').appendTo(`<img src="${CDN_PATH + 'login_page.svg' }"/>`);
+
+};
+
 theme.pages['pagina-pedido-finalizado'] = function(){
     let pedido = [];
 
