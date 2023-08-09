@@ -2525,17 +2525,25 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     font-size: 16px;
 }
 
+.pagina-cadastro .control-group,
+.cadastro-logar .control-group,
 .cdsg_page_content.contact form .control-group,
 .cdsg_account  .control-group{
     display: flex;
     flex-direction: column;
 }
+#modalRecuperarSenha form label,
+form[action$="/conta/criar"] label,
+.cadastro-logar .control-group label,
 .cdsg_page_content.contact form .control-group label,
 .cdsg_account .control-group label{text-align:left;font-weight:bold;width: fit-content!important;text-transform: uppercase;color: #848484;font-size: 14px;}
+
+.pagina-cadastro .control-group .controls,
+.cadastro-logar .control-group .controls,
 .cdsg_page_content.contact form .control-group .controls,
 .cdsg_account  .control-group .controls{margin: 0;display: flex;flex-direction: column;gap: 5px;}
 
-
+.pagina-cadastro select,
 .cdsg_account  .controls *:not(p){
     height: 44px;
     font-size: 15px;
@@ -2543,22 +2551,32 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     width: 234px;
     padding: 0 .7rem;
 }
-
+.pagina-cadastro select,
+#modalRecuperarSenha form input,
+.cadastro-logar .control-group input,
 .cdsg_page_content.contact form .control-group input,
 .cdsg_page_content.contact form .control-group textarea{
     font-size: 15px;
     width: 100%;
     padding: 0 .7rem;
 }
+.cadastro-logar .control-group textarea,
 .cdsg_page_content.contact form .control-group textarea{height: auto;}
 .cdsg_page_content.contact form .control-group .controls p,
 .cdsg_account  .controls p{
     font-size: 12px;
 }
 
+#modalRecuperarSenha .modal-footer button,
+form[action$="/conta/criar"] button,
+.cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls a,
 .cdsg_account  .acao-editar > *{margin: 0!important;display: flex;width: auto;align-items: center;gap: 3rem;}
+
+#modalRecuperarSenha .modal-footer button,
+form[action$="/conta/criar"] button,
+.cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
 .cdsg_account  .acao-editar button{
     line-height: 46px;
@@ -5529,3 +5547,282 @@ margin-top: 2rem;
     position: relative;
     pointer-events: none;
 }
+
+.title_cdsg{}
+.title_cdsg h1{
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 32px;
+}
+.pagina-login .title_cdsg h1 small:before{
+    content: "Olá humano,";
+    display: block;
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+.title_cdsg h1 small{
+    display: block;
+    text-transform: initial;
+    color: #1e1e1e;
+    font-size: 18px;
+    max-width: 320px;
+    margin: 1.5rem 0;
+}
+
+.cadastro legend{
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-weight: bold;
+    font-size: 20px;
+    border: 0;
+}
+.cadastro legend i{display: none;}
+.caixa-sombreada.borda-principal{
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+form[action$="/conta/criar"] input{margin-bottom: calc(1rem + 5px)!important;}
+.cadastro-logar .control-group .controls button{
+    margin-top: 1rem!important;
+    display: block;
+}
+
+.cadastro-logar .recuperar-senha{
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: fit-content;
+    border-bottom: 1px solid;
+    padding-bottom: 5px;
+    margin-top: 1.5rem;
+}
+.cadastro-logar .recuperar-senha i{display: none;}
+form[action$="/conta/criar"] input,
+.cadastro-logar .control-group input{height: 40px;}
+
+form[action$="/conta/criar"] button{
+    background: #1e1e1e!important;
+    margin-top: 1rem;
+}
+
+form[action$="/conta/criar"] input,
+form[action$="/conta/criar"] button{
+    width: 100%!important;
+    max-width: 100%;
+    display: block;
+    opacity: 1;
+}
+
+.row-fluid [class*="span"]:first-child{min-height: 0;}
+
+#modalRecuperarSenha[style="display: block;"]{
+    display: flex!important;
+}
+#modalRecuperarSenha{
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/forgot_password.png);
+    background-size: cover;
+    background-position: center right;
+    width: 634px;
+    height: 480px;
+    margin-left: 0;
+    translate: -50% -50%;
+    top: 50%;
+    align-items: center;
+}
+#modalRecuperarSenha > div{
+    width: 270px;
+    border-radius: 10px;
+    margin: 2rem;
+    background: #fff;
+    padding: 1rem 0;
+}
+#modalRecuperarSenha > div .modal-header{border: 0;}
+#modalRecuperarSenha > div .modal-header button:after,
+#modalRecuperarSenha > div .modal-header button:before{
+    background: #1e1e1e;
+    width: 2px;
+}
+#modalRecuperarSenha > div .modal-header button {
+    font-size: 0;
+    position: absolute;
+    opacity: 1;
+    top: 1.5rem;
+    right: 1.5rem;
+    height: 32px;
+    width: 32px;
+}
+#modalRecuperarSenha > div .modal-header .titulo{
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 23px;
+}
+#modalRecuperarSenha .modal-body{border: 0;}
+#modalRecuperarSenha  .conteudoRecuperarSenha p{
+    font-size: 16px;
+    margin-bottom: 1.5rem;
+    
+}
+#modalRecuperarSenha .modal-footer{
+    background: transparent;
+    border: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    padding-top: 0;
+}
+#modalRecuperarSenha .modal-footer a{
+    width: fit-content;
+    background: transparent;
+    border: 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    color: #1e1e1e;
+    padding: 0 0 5px 0;
+    border-radius: 0;
+    margin: 1rem auto 0 auto;
+}
+#modalRecuperarSenha .modal-footer button{
+    display: block;
+}
+
+.cadastro_left [src="https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/claw.svg"]{
+    position: sticky;
+    top: calc(100% - 388px);
+    margin: 0!important;
+}
+
+.pagina-cadastro .formulario-cadastro-cliente{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+/* @media(min-width:990px){
+    .pagina-cadastro .formulario-cadastro-cliente > *{
+        flex: 0 0 auto;
+        width: calc(33.33333333% - 1rem);
+    }
+} */
+/* 
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar{width: 100%;}
+.pagina-cadastro .dados-pessoais:before,
+.pagina-cadastro .dados-pessoais:after{display: none;}
+.pagina-cadastro .dados-pessoais{
+    display: flex;
+    flex-direction: column;
+}
+ */
+
+
+ .pagina-cadastro #corpo > .conteiner{
+    display:flex
+ }
+
+ /* .pagina-cadastro .formulario-cadastro-cliente{
+    display: grid;
+    grid-template-areas: "a b b"
+    "a c c"
+    "a c c"
+    "a c c";
+    grid-template-columns: 33% 33% 33%;
+ }
+ .pagina-cadastro .formulario-cadastro-cliente .dados-acesso{
+    grid-area: a;
+ }
+ .pagina-cadastro .formulario-cadastro-cliente .tipo-cadastro{
+    grid-area: b;
+ }
+ .pagina-cadastro .formulario-cadastro-cliente .dados-pessoais:before,
+ .pagina-cadastro .formulario-cadastro-cliente .dados-pessoais:after{display: none;}
+ .pagina-cadastro .formulario-cadastro-cliente .dados-pessoais{
+    grid-area: c;
+ } */
+ .pagina-cadastro .formulario-cadastro-cliente .caixa-sombreada{
+    border-radius: 0;
+    border: 0;
+    background-color: #fff;
+    padding: 0 1.5rem;
+ }
+ .pagina-cadastro .formulario-cadastro-cliente .caixa-sombreada legend{
+    padding: 0.5rem 1rem!important;
+    text-align: left;
+    font-size: 16px;
+    background: var(--violet);
+    margin: 0 -1.5rem 1.5rem -1.5rem;
+    width: calc(100% + 3rem);
+    box-sizing: border-box;
+}
+.pagina-cadastro .formulario-cadastro-cliente .caixa-sombreada label i{display: none;}
+
+.pagina-cadastro .formulario-cadastro-cliente .tipo-cadastro li{
+    margin-right: 2rem;
+    margin-left: 0;
+}
+.pagina-cadastro .cadastro .tipo-cadastro  ul{padding: 0;margin: 0;}
+.pagina-cadastro .cadastro .tipo-cadastro  input{height: 16px;margin: 0!important;}
+.pagina-cadastro .cadastro .tipo-cadastro label{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+}
+.pagina-cadastro .cadastro .control-group{margin: 0;}
+.pagina-cadastro .cadastro .control-group.span6{margin: 0;padding: 0 15px;}
+.pagina-cadastro .dados-acesso .caixa-sombreada .row-fluid{margin-left: -15px;margin-right: -15px;}
+.pagina-cadastro select{margin-bottom: 1rem;}
+
+.pagina-cadastro .formulario-cadastro-cliente {
+    position: relative;
+    margin-bottom: 6rem;
+}
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar{
+    position: absolute;
+    top: 100%;
+    padding: 1rem;
+    right: 0;
+    background: #f2f2f2;
+    display: flex;
+}
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar:before{
+    position: absolute;
+    top:-1px;
+    height: 100%;
+    border-top: 1px solid #d9d9d9;
+    width: 200vw;
+    right: -50vw;
+    background: #f2f2f2;
+    z-index: -1;
+}
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar .span3{
+    margin: 0 0 0 auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    z-index: 2;
+}
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar a{
+    font-size: 16px;
+    border: 0;
+    border-bottom: 2px solid;
+    color: #1e1e1e;
+    background: transparent;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0 0 5px 0;
+    display: flex;
+    height: auto;
+    min-height: unset;
+    line-height: initial;
+}
+.pagina-cadastro .formulario-cadastro-cliente .acao-editar button{font-size: 16px;}
+.pagina-cadastro .title_cdsg {    padding-bottom: 6rem;}
+.pagina-cadastro #corpo{margin: 3rem 0;}

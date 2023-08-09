@@ -1585,7 +1585,38 @@ theme.build.checkoutFooter = function(){
     $('#rodape').empty();
 };
 
+theme.lang.cadastro_titulo = "Cadastre-se";
+theme.lang.cadastro_desc = "Preencha os dados para criar seu cadastro.";
+theme.pages['pagina-cadastro'] = function(){
+    $('#corpo > .conteiner').prepend('<div class=" col-md-4 col-12 cadastro_left title_cdsg"></div>');
+    //$('#corpo > .conteiner').prepend('<div class="row cdsg_login my-md-5"><div class="col-12 col-md-4 cadastro_left title_cdsg"></div><div class="col-12 col-md-8 cadastro_right"></div></div>');
+    //$('.formulario-cadastro-cliente').appendTo('.cadastro_right');
+    $('h1').appendTo('.cadastro_left');
+    
+    $('h1').html(theme.lang.cadastro_titulo + `<small>${theme.lang.cadastro_desc}</small>`);
+    $('.cadastro_left').append(`<img class="d-none d-md-block mt-5" src="${CDN_PATH + 'claw.svg' }"/>`);
+    //$('.formulario-cadastro-cliente .span6').toggleClass('span6 col-12');
+    
+}
+
+theme.lang.esqueceu_a_senha = "Esqueceu a senha?";
+theme.lang.esqueceu_a_senha_desc = "Eu sei que humanos são esquecidos, então vou te ajudar. Informe o seu e-mail abaixo e receba o link para criar uma nova senha.";
+theme.pages['pagina-login'] = function(){
+    $('#modalRecuperarSenha').wrapInner('<div></div>');
+    $('#modalRecuperarSenha .modal-footer a').remove();
+    $('#modalRecuperarSenha .modal-header button').addClass('cdsg_close');
+    $('#modalRecuperarSenha .modal-header span').text(theme.lang.esqueceu_a_senha);
+    $('#modalRecuperarSenha .modal-body .conteudoRecuperarSenha p').text(theme.lang.esqueceu_a_senha_desc);
+    $('#corpo > .conteiner #modalRecuperarSenha').before('<div class="row cdsg_login my-md-5"><div class="col-12 col-md-4 cadastro_left title_cdsg"></div><div class="col-12 col-md-8 cadastro_right"></div></div>');
+    $('.cadastro').appendTo('.cadastro_right');
+    $('h1').appendTo('.cadastro_left');
+    $('.cadastro_left').append(`<img class="d-none d-md-block mt-5" src="${CDN_PATH + 'login_page.svg' }"/>`);
+
+};
+
+
 theme.lang.dica_boleto = "Dica: se for imprimir, configure sua impressora para utilizar modo normal de impressão (não utilizar opção rascunho).";
+
 
 theme.pages['pagina-pedido-finalizado'] = function(){
     let pedido = [];
