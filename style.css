@@ -2525,13 +2525,18 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     font-size: 16px;
 }
 
+.cadastro-logar .control-group,
 .cdsg_page_content.contact form .control-group,
 .cdsg_account  .control-group{
     display: flex;
     flex-direction: column;
 }
+form[action$="/conta/criar"] label,
+.cadastro-logar .control-group label,
 .cdsg_page_content.contact form .control-group label,
 .cdsg_account .control-group label{text-align:left;font-weight:bold;width: fit-content!important;text-transform: uppercase;color: #848484;font-size: 14px;}
+
+.cadastro-logar .control-group .controls,
 .cdsg_page_content.contact form .control-group .controls,
 .cdsg_account  .control-group .controls{margin: 0;display: flex;flex-direction: column;gap: 5px;}
 
@@ -2543,22 +2548,28 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     width: 234px;
     padding: 0 .7rem;
 }
-
+.cadastro-logar .control-group input,
 .cdsg_page_content.contact form .control-group input,
 .cdsg_page_content.contact form .control-group textarea{
     font-size: 15px;
     width: 100%;
     padding: 0 .7rem;
 }
+.cadastro-logar .control-group textarea,
 .cdsg_page_content.contact form .control-group textarea{height: auto;}
 .cdsg_page_content.contact form .control-group .controls p,
 .cdsg_account  .controls p{
     font-size: 12px;
 }
 
+form[action$="/conta/criar"] button,
+.cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls a,
 .cdsg_account  .acao-editar > *{margin: 0!important;display: flex;width: auto;align-items: center;gap: 3rem;}
+
+form[action$="/conta/criar"] button,
+.cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
 .cdsg_account  .acao-editar button{
     line-height: 46px;
@@ -5529,3 +5540,76 @@ margin-top: 2rem;
     position: relative;
     pointer-events: none;
 }
+
+.title_cdsg{}
+.title_cdsg h1{
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 32px;
+}
+.pagina-login .title_cdsg h1 small:before{
+    content: "Olá humano,";
+    display: block;
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+.title_cdsg h1 small{
+    display: block;
+    text-transform: initial;
+    color: #1e1e1e;
+    font-size: 18px;
+    max-width: 320px;
+    margin: 1.5rem 0;
+}
+
+.cadastro legend{
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-weight: bold;
+    font-size: 20px;
+    border: 0;
+}
+.cadastro legend i{display: none;}
+.caixa-sombreada.borda-principal{
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+form[action$="/conta/criar"] input{margin-bottom: calc(1rem + 5px)!important;}
+.cadastro-logar .control-group .controls button{
+    margin-top: 1rem!important;
+    display: block;
+}
+
+.cadastro-logar .recuperar-senha{
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: fit-content;
+    border-bottom: 1px solid;
+    padding-bottom: 5px;
+    margin-top: 1.5rem;
+}
+.cadastro-logar .recuperar-senha i{display: none;}
+form[action$="/conta/criar"] input,
+.cadastro-logar .control-group input{height: 40px;}
+
+form[action$="/conta/criar"] button{
+    background: #1e1e1e!important;
+    margin-top: 1rem;
+}
+
+form[action$="/conta/criar"] input,
+form[action$="/conta/criar"] button{
+    width: 100%!important;
+    max-width: 100%;
+    display: block;
+    opacity: 1;
+}
+
+.row-fluid [class*="span"]:first-child{min-height: 0;}
