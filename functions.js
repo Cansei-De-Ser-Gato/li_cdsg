@@ -363,7 +363,7 @@ theme.generateContent.functions = function(prop, oObj){
     }else{
         el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
         el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
-        el.append('<div class="col position-relative"><a href="/conta/index" class="functions-account"><img src="'+ CDN_PATH + 'user.svg' +'"/></a><ul><li><div>Olá <span class="username">humano</span></div><div class="logged_out mt-2">Você já tem uma conta?<div class="row mt-3"><div class="col-auto"><a class="cdsg_btn bg_green" href="/conta/login">Entrar</a></div><div class="col ps-0"><a class="cdsg_btn" href="/conta/criar?email=%20">Cadastre-se</a></div></div></div></li></ul></div>');
+        el.append('<div class="col position-relative functions-account"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a><ul><li><div>Olá <span class="username">humano</span></div><div class="logged_out mt-2">Você já tem uma conta?<div class="row mt-3"><div class="col-auto"><a class="cdsg_btn bg_green" href="/conta/login">Entrar</a></div><div class="col ps-0"><a class="cdsg_btn" href="/conta/criar?email=%20">Cadastre-se</a></div></div></div></li></ul></div>');
         el.append('<div class="col">'+ theme.headerCart +'</a></div>');
         el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
         el.find('.carrinho .icon-shopping-cart').remove();
@@ -2710,6 +2710,17 @@ theme.functions.popFunctions = function(){
         })
         //theme.functions.loadPopCart();        
     });
+
+    $(window).load(function(){
+        $('.functions-account .username').text(theme.account.userName);
+        if(theme.account.isLogged){
+            $('.functions-account .logged_in').show();
+            $('.functions-account .logged_out').hide();
+        }else{
+            $('.functions-account .logged_in').hide();
+            $('.functions-account .logged_out').show();
+        }
+    })
 
     // $.each(function(k_, item){
     //     let block = $('<div class="row"> <div class="col-3 figure"> </div><div class="col-9"> <div class="row"> <div class="col-8"> <a href="${item.url}"> ${item.name}</a> <div class="options"> </div></div><div class="col-4"> ${item.price.promotionalPrice > 0 ? '<s>' + theme.functions.formatMoney(item.price.promotionalPrice) + '</s>'}<b>${theme.functions.formatMoney(item.price.sellingPrice)}</b> </div></div></div></div>');

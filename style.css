@@ -5437,27 +5437,45 @@ margin-top: 2rem;
 }
 
 
-.functions-account + ul{
+.functions-account > ul{
     position: absolute;
     top: 100%;
-    right: 0;
+    right: -3rem;
     background: #f2f2f2;
     box-shadow: 0px 4px 4px rgba(0,0,0,.25);
     width: 320px;
     padding: 1.5rem;
     z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+    margin-top: 3rem;
+}
+.functions-account > ul:before{
+    content: "";
+    position: absolute;
+    border-bottom: 12px solid #f2f2f2;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: 100%;
+    right: 3.85rem;
+}
+.functions-account:hover > ul{
+    opacity: 1;
+    pointer-events: all;
+    margin-top: 0;
 }
 
-.functions-account + ul > li:first-child{
+.functions-account > ul > li:first-child{
 
 }
-.functions-account + ul > li:first-child > div:first-child,
-.functions-account + ul > li:first-child > div:first-child *{
+.functions-account > ul > li:first-child > div:first-child,
+.functions-account > ul > li:first-child > div:first-child *{
     font-size: 23px;
     font-weight: bold;
     color: #1e1e1e;
 }
-.functions-account + ul > li:first-child > div a{
+.functions-account > ul > li:first-child > div a{
     font-size: 14px;
     height: 37px;
     line-height: 37px;
@@ -5465,13 +5483,23 @@ margin-top: 2rem;
     text-align: center;
     justify-content: center;
 }
-.bg_green{background-color: var(--green);}
+.bg_green,
+.bg_green:hover{background-color: var(--green);}
 
-.functions-account + ul .logged_out{
+.functions-account > ul .logged_out{
     position: relative;
 }
-.functions-account + ul .logged_out:after{
+.functions-account > ul .logged_out:after{
     content: "";
     background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/logged_out.svg);
+    display: block;
+    width: 127px;
+    height: 80px;
+    margin: -10px -1rem -2.5rem auto;
+}
+
+[apx_load="functions"] > div > div > a{
+    padding: 1rem 0;
+    display: block;
 }
 
