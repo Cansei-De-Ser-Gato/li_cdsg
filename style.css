@@ -5445,7 +5445,7 @@ margin-top: 2rem;
     box-shadow: 0px 4px 4px rgba(0,0,0,.25);
     width: 320px;
     padding: 1.5rem;
-    z-index: 2;
+    z-index: 10;
     opacity: 0;
     pointer-events: none;
     transition: var(--transition);
@@ -5475,7 +5475,7 @@ margin-top: 2rem;
     font-weight: bold;
     color: #1e1e1e;
 }
-.functions-account > ul > li:first-child > div a{
+.functions-account > ul > li:first-child > div a.cdsg_btn{
     font-size: 14px;
     height: 37px;
     line-height: 37px;
@@ -5503,3 +5503,29 @@ margin-top: 2rem;
     display: block;
 }
 
+.functions-account > ul ul{
+    margin: 1rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.functions-account > ul ul li{
+    border-bottom: 1px solid #d9d9d9;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    font-size: 14px;
+    padding: .7rem 0;
+}
+.functions-account > ul ul li a{display: flex;gap: 1rem;}
+
+.functions-account > ul .logged_in:after{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/logged_in.svg);
+    display: block;
+    width: 63px;
+    height: 193px;
+    margin: -150px 1rem -1.5rem auto;
+    z-index: 3;
+    position: relative;
+    pointer-events: none;
+}
