@@ -363,7 +363,7 @@ theme.generateContent.functions = function(prop, oObj){
     }else{
         el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
         el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
-        el.append('<div class="col"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a></div>');
+        el.append('<div class="col position-relative"><a href="/conta/index" class="functions-account"><img src="'+ CDN_PATH + 'user.svg' +'"/></a><ul><li><div>Olá <span class="username">humano</span></div><div class="logged_out mt-2">Você já tem uma conta?<div class="row mt-3"><div class="col-auto"><a class="cdsg_btn bg_green" href="/conta/login">Entrar</a></div><div class="col ps-0"><a class="cdsg_btn" href="/conta/criar?email=%20">Cadastre-se</a></div></div></div></li></ul></div>');
         el.append('<div class="col">'+ theme.headerCart +'</a></div>');
         el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
         el.find('.carrinho .icon-shopping-cart').remove();
@@ -562,7 +562,7 @@ theme.functions.testimonials = function(cms_testimonials){
             item.append(gallery);
         }
         i_.attributes.content != null ? item.append('<p>'+ i_.attributes.content +'</p>') : false;
-        i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
+        i_.attributes.order && i_.attributes.order.data && i_.attributes.order.data.attributes.client_name != null ? item.append('<strong>'+ i_.attributes.order.data.attributes.client_name +'</strong>') : false;
 
         list.append(item);      
     });
@@ -2172,7 +2172,7 @@ theme.pages['pagina-404'] = function(){
 theme.pages['pagina-produto'] = function(){
     $('.produto > .row-fluid > .span6:first-child').attr('class','col-md-8 apx_product_left apx_loading');
     $('.produto > .row-fluid > .span6:last-child').attr('class','col-md-4');
-    $('.produto > .row-fluid').attr('class','row');
+    $('.produto > .row-fluid').attr('class','row product_main_row');
 
     $('.apx_product_left').empty();        
 
@@ -2239,6 +2239,16 @@ theme.pages['pagina-produto'] = function(){
         });
     }
 
+    $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Frete e Prazo de Entrega</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content cep_"></div></div>')
+    $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Detalhes do Produto</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ $('#descricao').html() +'</div></div>');
+    $('.abas-custom').remove();
+    $('.cep').appendTo('.cms_tabs_content.cep_');
+
+    $('body').on('click','.cms_tabs .cms_tabs_header button', function(){
+        $(this).find('i').toggleClass('fa-plus fa-minus');
+        $(this).closest('.cms_tabs').find('.cms_tabs_content').slideToggle();
+    });
+
     //TESTIMONIALS
     let cms_testimonials = sessionStorage.getItem('cms_testimonials_'+sku);
     if(cms_testimonials){
@@ -2262,6 +2272,31 @@ theme.pages['pagina-produto'] = function(){
             $('.compre-junto .compre-junto__conteudo .compre-junto__produtos > *').unwrap();
         }
     });
+
+    $('.produto .acoes-produto a').click(function(e){
+        e.preventDefault();
+        let me = $(this);
+        me.addClass('cdsg_loading');
+        let href = $(this).attr('href');
+        $.get(href, function(response){
+            console.log(response);
+            if(response.status == "sucesso"){
+                theme.functions.loadPopCart();   
+            }
+            me.removeClass('cdsg_loading');
+        })
+    });
+
+    $('[data-variacao-id]').click(function(){
+        let id = $(this).attr('data-variacao-id');
+        
+        let image = window.produto_grades_imagens[id] ? window.produto_grades_imagens[id] : false;
+
+        if(image){
+            image = image[0];
+            $(`.slider-nav [data-image-id="${image}"] a`).click();
+        }
+    })
     
 
 };
@@ -2336,7 +2371,7 @@ theme.functions.productInfo = function(info){
         
         $.each(info.images, function(k_, i_){
             $('.apx_gallery .slider-for').append('<div class="item" data-image-id="'+ i_.id +'"><a href="#"><img src="'+ window.MEDIA_URL + i_.url.slice(1,i_.url.length) +'"/></a></div>')
-            $('.apx_gallery .slider-nav').append('<div class="item '+ (k_ == 0 ? 'active': '') +'"><a href="#"><img src="'+ window.MEDIA_URL + i_.url.slice(1,i_.url.length) +'"/></a></div>');
+            $('.apx_gallery .slider-nav').append('<div class="item '+ (k_ == 0 ? 'active': '') +'" data-image-id="'+ i_.id +'"><a href="#"><img src="'+ window.MEDIA_URL + i_.url.slice(1,i_.url.length) +'"/></a></div>');
         });
 
         $('.slider-for').slick({
@@ -2348,11 +2383,22 @@ theme.functions.productInfo = function(info){
             nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg' + '"/></button>',
             
         });
+        
 
         $('.slider-for').on('beforeChange', function(event, slick, currentSlide, nextSlide){
             $('.slider-nav .active').removeClass('active');
             $($('.slider-nav .item').get(nextSlide)).addClass('active');            
         });
+
+        $('.slider-nav a').on('click', function(e){
+            e.preventDefault();
+            let position = $('.slider-nav a').index(this);
+            console.log(position);
+            $('.slider-for').slick('slickGoTo', position);
+            $('.slider-nav .active').removeClass('active');
+            $(this).closest('.item').addClass('active');            
+        });
+
 
         if(info.description.youtube_url){
             console.log(info.description.youtube_url);
@@ -2389,19 +2435,12 @@ theme.functions.productCMSInfo = function(info){
     }
 
     if(info.tabs && info.tabs.length > 0){
-        $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Frete e Prazo de Entrega</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content cep_"></div></div>')
+        
         $.each(info.tabs.reverse(), function(k_, i_){
             $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>'+ i_.title +'</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ i_.content +'</div></div>')
-        });
+        });     
 
-        $('.principal #DelimiterFloat').after('<div class="cms_tabs"><div class="cms_tabs_header"><h3>Detalhes do Produto</h3><button type="button"><i class="fa fa-plus"></i></button></div><div class="cms_tabs_content">'+ $('#descricao').html() +'</div></div>');
-        $('.abas-custom').remove();
-        $('.cep').appendTo('.cms_tabs_content.cep_');
-
-        $('body').on('click','.cms_tabs .cms_tabs_header button', function(){
-            $(this).find('i').toggleClass('fa-plus fa-minus');
-            $(this).closest('.cms_tabs').find('.cms_tabs_content').slideToggle();
-        });
+        
     }
 };
 
@@ -2642,16 +2681,35 @@ theme.functions.popFunctions = function(){
             `<div class="heading">`+
                 `<b>Minha Sacola (<span class="cart_quantity">0</span>)</b>`+
             `</div>`+
-            `<div class="list">`+
+            `<div class="list px-3">`+
                 
             `</div>`+
+            `<div class="footing"><div class="row align-items-center"><div class="col-6"><b>TOTAL<br><span class="total"></span></b><small>ou em <span class="installments">1x</span> de <span class="installments-price">R$ 000,00</span> sem juros</small></div><div class="col-6"><a href="/carrinho/index">Fechar Pedido</a></div></div></div>`+
         `</div>`+    
     `</div>`);
 
     $('body').on('click','.trigger_minicart, #cabecalho .carrinho a', function(e){
         e.preventDefault();
-        $('#cdsg_pop_cart').toggleClass('visible');
-    })
+        if($('#cdsg_pop_cart').hasClass('visible')){
+            $('#cdsg_pop_cart').removeClass('visible');   
+        }else{
+            if($('#cdsg_pop_cart .list').children().length == 0){
+                theme.functions.loadPopCart();                            
+            }else{
+                $('#cdsg_pop_cart').addClass('visible');   
+            }            
+        }     
+    });
+
+    $('body').on('click','#cdsg_pop_cart .ajaxed', function(e){
+        e.preventDefault();
+        $('#cdsg_pop_cart').addClass('cdsg_loading');
+        let href = $(this).attr('href');
+        $.get(href, function(){
+            theme.functions.loadPopCart();            
+        })
+        //theme.functions.loadPopCart();        
+    });
 
     // $.each(function(k_, item){
     //     let block = $('<div class="row"> <div class="col-3 figure"> </div><div class="col-9"> <div class="row"> <div class="col-8"> <a href="${item.url}"> ${item.name}</a> <div class="options"> </div></div><div class="col-4"> ${item.price.promotionalPrice > 0 ? '<s>' + theme.functions.formatMoney(item.price.promotionalPrice) + '</s>'}<b>${theme.functions.formatMoney(item.price.sellingPrice)}</b> </div></div></div></div>');
@@ -2660,6 +2718,68 @@ theme.functions.popFunctions = function(){
     // })
     // $('body').append('<div id="load"></div>');
     // $('#load').load('http://127.0.0.1:5500/popfunctions.html')
+}
+
+theme.settings.installments = 10;
+theme.functions.loadPopCart = function(){
+    $.get('/carrinho/minicart', function(response){
+        const { carrinho } = response;
+        let pop = $('#cdsg_pop_cart');
+        $('.cart_quantity').text(carrinho.items.length)
+            
+        if(carrinho.items.length > 0){
+            pop.find('.empty').hide();
+            let list = pop.find('.list');
+            pop.find('.list').empty();
+            $.each(carrinho.items, function(k, item){                
+                let block = $(`<div data-produto-parent="${item.parentId}" data-produto-id="${item.id}" class="row py-3"> <div class="col-3"><div class="figure"></div> </div><div class="col-9"> <div class="row"> <div class="col"> <a href="${item.url}"> ${item.name}</a> <div class="options"> </div></div><div class="col-auto"> ${item.price.promotionalPrice > 0 ? '<s>' + theme.functions.formatMoney(item.price.promotionalPrice) + '</s>' : ''}<b>${theme.functions.formatMoney(item.price.sellingPrice)}</b> </div></div><div class="row align-items-center mt-3"><div class="col"><div class="quantity"><a class="ajaxed ${item.quantity - 1 == 0 ? 'disabled' : ''}" href="/carrinho/produto/${item.id}/atualizar/${item.quantity - 1}"><i class="fa fa-minus"></i></a><input type="number" value="${item.quantity}"/><a class="ajaxed ${item.quantity + 1 > item.stock ? 'disabled' : ''}" href="/carrinho/produto/${item.id}/atualizar/${item.quantity + 1}"><i class="fa fa-plus"></i></a></div></div><div class="col-auto"><a class="ajaxed" href="/carrinho/produto/${item.id}/remover/${item.id}"><img src="${CDN_PATH + 'trash.svg'}"/></a></div></div></div></div>`);
+                
+                
+                let colors = item.parentId ? (sessionStorage.getItem(`colors_${item.parentId}`) ? JSON.parse(sessionStorage.getItem(`colors_${item.parentId}`)) : []) : [];
+                
+                let img = MEDIA_URL + '200x200/' + item.images[0].path;
+                let options = '';
+                $.each(item.variationTypes[0].variations, function(k_, variation){                    
+                    options = options + (variation.color ? '<span class="color" style="background-color:'+ variation.color+'"></span>' : '');
+                    options = options + (variation.secondaryColor ? '<span class="color" style="background-color:'+ variation.secondaryColor+'"></span>' : '');
+                    options = options + (!variation.color && !variation.secondaryColor ? '<span class="text">' + variation.name + '</span>' : '');                    
+
+                    if(item.parentId && colors.find(el => el.id == variation.id) && colors.find(el => el.id == variation.id).images[0]){     
+                        console.log(colors)                   ;
+                        console.log(colors.find(el => el.id == variation.id));
+                        console.log(item.images);
+                        img = MEDIA_URL + '200x200/' + item.images.find(el => el.id == colors.find(el => el.id == variation.id).images[0].id).path;
+                    }
+                });
+
+                block.find('.figure').html(`<img src="${img}"/>`);
+
+                block.find('.options').append(options);                
+                list.append(block);
+            });
+
+            pop.find('.total').html(`${theme.functions.formatMoney(carrinho.totals.total)}`);
+            pop.find('.installments').html(`${theme.settings.installments}x`);
+            pop.find('.installments-price').html(`${theme.functions.formatMoney(carrinho.totals.total / theme.settings.installments)}`);
+            if(carrinho.totals.cupomDiscount || carrinho.totals.paymentDiscount || carrinho.totals.shipping){
+                let content = "";
+                content = content + (carrinho.totals.items != 0 ? 'Subtotal: ' + theme.functions.formatMoney(carrinho.totals.items) + '<br/>' : '');
+                content = content + (carrinho.totals.shipping != 0 ? 'Frete: ' + theme.functions.formatMoney(carrinho.totals.shipping) + '<br/>' : '');
+                content = content + (carrinho.totals.cupomDiscount != 0 ? 'Cupom: ' + theme.functions.formatMoney(carrinho.totals.cupomDiscount * -1) + '<br/' : '');
+                content = content + (carrinho.totals.paymentDiscount != 0 ? 'Forma de Pag.: ' + theme.functions.formatMoney(carrinho.totals.paymentDiscount * -1) + '<br/>' : '');
+                pop.find('.total').append(`<i class="value-info fa fa-info" data-html="true" data-placement="top" data-toggle="popover" data-container="#cdsg_pop_cart .footing .total" title="Entenda o valor:" data-content="${content}"></i>`)
+                $('.total [data-toggle="popover"]').popover();
+            }
+
+            pop.find('.content').show();
+        }else{
+            pop.find('.empty').show();
+            pop.find('.content').hide();
+        }
+        $('#cdsg_pop_cart').removeClass('cdsg_loading');
+        $('#cdsg_pop_cart').addClass('visible');
+    });
+    
 }
 $(document).ready(function(){
     $('.menu [title="OCULTAR"]').closest('li').prev().nextAll().remove();
