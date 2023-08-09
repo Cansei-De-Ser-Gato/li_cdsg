@@ -2531,6 +2531,7 @@ body.pagina-produto .acoes-produto[style="display: none;"]{display:none!importan
     display: flex;
     flex-direction: column;
 }
+#modalRecuperarSenha form label,
 form[action$="/conta/criar"] label,
 .cadastro-logar .control-group label,
 .cdsg_page_content.contact form .control-group label,
@@ -2548,6 +2549,7 @@ form[action$="/conta/criar"] label,
     width: 234px;
     padding: 0 .7rem;
 }
+#modalRecuperarSenha form input,
 .cadastro-logar .control-group input,
 .cdsg_page_content.contact form .control-group input,
 .cdsg_page_content.contact form .control-group textarea{
@@ -2562,12 +2564,14 @@ form[action$="/conta/criar"] label,
     font-size: 12px;
 }
 
+#modalRecuperarSenha .modal-footer button,
 form[action$="/conta/criar"] button,
 .cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls a,
 .cdsg_account  .acao-editar > *{margin: 0!important;display: flex;width: auto;align-items: center;gap: 3rem;}
 
+#modalRecuperarSenha .modal-footer button,
 form[action$="/conta/criar"] button,
 .cadastro-logar .control-group .controls button,
 .cdsg_page_content.contact form .control-group .controls button,
@@ -5613,3 +5617,74 @@ form[action$="/conta/criar"] button{
 }
 
 .row-fluid [class*="span"]:first-child{min-height: 0;}
+
+#modalRecuperarSenha[style="display: block;"]{
+    display: flex!important;
+}
+#modalRecuperarSenha{
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/forgot_password.png);
+    background-size: cover;
+    background-position: center right;
+    width: 634px;
+    height: 480px;
+    margin-left: 0;
+    translate: -50% -50%;
+    top: 50%;
+    align-items: center;
+}
+#modalRecuperarSenha > div{
+    width: 270px;
+    border-radius: 10px;
+    margin: 2rem;
+    background: #fff;
+    padding: 1rem 0;
+}
+#modalRecuperarSenha > div .modal-header{border: 0;}
+#modalRecuperarSenha > div .modal-header button:after,
+#modalRecuperarSenha > div .modal-header button:before{
+    background: #1e1e1e;
+    width: 2px;
+}
+#modalRecuperarSenha > div .modal-header button {
+    font-size: 0;
+    position: absolute;
+    opacity: 1;
+    top: 1.5rem;
+    right: 1.5rem;
+    height: 32px;
+    width: 32px;
+}
+#modalRecuperarSenha > div .modal-header .titulo{
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 23px;
+}
+#modalRecuperarSenha .modal-body{border: 0;}
+#modalRecuperarSenha  .conteudoRecuperarSenha p{
+    font-size: 16px;
+    margin-bottom: 1.5rem;
+    
+}
+#modalRecuperarSenha .modal-footer{
+    background: transparent;
+    border: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    padding-top: 0;
+}
+#modalRecuperarSenha .modal-footer a{
+    width: fit-content;
+    background: transparent;
+    border: 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    color: #1e1e1e;
+    padding: 0 0 5px 0;
+    border-radius: 0;
+    margin: 1rem auto 0 auto;
+}
+#modalRecuperarSenha .modal-footer button{
+    display: block;
+}
