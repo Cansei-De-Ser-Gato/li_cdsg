@@ -1588,11 +1588,15 @@ theme.build.checkoutFooter = function(){
 theme.lang.cadastro_titulo = "Cadastre-se";
 theme.lang.cadastro_desc = "Preencha os dados para criar seu cadastro.";
 theme.pages['pagina-cadastro'] = function(){
-    $('#corpo > .conteiner').prepend('<div class="row cdsg_login my-md-5"><div class="col-12 col-md-4 cadastro_left title_cdsg"></div><div class="col-12 col-md-8 cadastro_right"></div></div>');
-    $('.formulario-cadastro-cliente').appendTo('.cadastro_right');
+    $('#corpo > .conteiner').prepend('<div class=" col-md-4 col-12 cadastro_left title_cdsg"></div>');
+    //$('#corpo > .conteiner').prepend('<div class="row cdsg_login my-md-5"><div class="col-12 col-md-4 cadastro_left title_cdsg"></div><div class="col-12 col-md-8 cadastro_right"></div></div>');
+    //$('.formulario-cadastro-cliente').appendTo('.cadastro_right');
     $('h1').appendTo('.cadastro_left');
     
     $('h1').html(theme.lang.cadastro_titulo + `<small>${theme.lang.cadastro_desc}</small>`);
+    $('.cadastro_left').append(`<img class="d-none d-md-block mt-5" src="${CDN_PATH + 'claw.svg' }"/>`);
+    //$('.formulario-cadastro-cliente .span6').toggleClass('span6 col-12');
+    
 }
 
 theme.lang.esqueceu_a_senha = "Esqueceu a senha?";
