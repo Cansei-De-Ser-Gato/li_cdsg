@@ -5826,3 +5826,82 @@ form[action$="/conta/criar"] button{
 .pagina-cadastro .formulario-cadastro-cliente .acao-editar button{font-size: 16px;}
 .pagina-cadastro .title_cdsg {    padding-bottom: 6rem;}
 .pagina-cadastro #corpo{margin: 3rem 0;}
+
+.modal-modalNewsletter{overflow: visible;}
+.modal-modalNewsletter .fancybox-inner{width: 400px!important;    overflow: visible!important;}
+.modal-modalNewsletter .fancybox-skin{
+    background: transparent;
+    box-shadow: 0px 0px 0px!important;
+    padding: 0!important;
+}
+#modalNewsletter:before{
+    content: "";
+    background-image: url(https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/popup_gato.png);
+    height: 212px;
+    width: 242px;
+    display: block;
+    margin: 0 auto -7rem auto;
+    z-index: 2;
+    position: relative;
+}
+.fancybox-lock.fancybox-overlay{overflow: visible;}
+body #modalNewsletter .componente{
+    background: #f2f2f2;
+    border: 0;
+    box-shadow: 0px 4px 4px rgba(0,0,0,.25);
+    border-radius: 10px;
+    padding: 7rem 1rem 1rem 1rem;
+}
+body #modalNewsletter .componente .titulo{
+    color: #1e1e1e;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: bold;
+}
+body #modalNewsletter .componente .titulo i{display: none;}
+body #modalNewsletter  .newsletter-cadastro{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+body #modalNewsletter  .newsletter-cadastro input{font-size: 16px;}
+body #modalNewsletter  .newsletter-cadastro button,
+body #modalNewsletter  .newsletter-cadastro input{
+    height: 46px;
+    float: none;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+}
+body #modalNewsletter  .newsletter-cadastro button{
+    background: var(--green);
+}
+body #modalNewsletter  .newsletter-cadastro button:before{
+    content: "Me conta, Chico";
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: var(--body_f_family);
+    border: 0!important;
+    line-height: 18px;
+}
+#modalNewsletter .componente .texto-newsletter {
+    font-size: 16px;
+    line-height: 24px;
+}
+body #modalNewsletter  .interno-conteudo:after{
+    content: "Relaxa, eu mando e-mail com baixa frequência e você poderá cancelar a qualquer momento.";
+    font-weight: 600;
+    font-size: 10px;
+    margin-top: 1rem;
+    display: block;
+}
+body #modalNewsletter  .alert{font-size: 12px;}
+body #modalNewsletter  .alert .close{
+    font-size: 20px;
+    top: -5px;
+}
+body #modalNewsletter  .newsletter-confirmacao{}
+body #modalNewsletter  .newsletter-confirmacao .icon-ok{}
+body #modalNewsletter  .newsletter-confirmacao .icon-ok:before{display: none;}
