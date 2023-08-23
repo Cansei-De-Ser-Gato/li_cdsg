@@ -230,12 +230,14 @@ theme.generateContent.menu_extra = function(prop, oObj){
         el = $('<nav class="d-flex flex-column"></nav>');
         el.append('<div class="col"><a href="/pagina/dmf.html" target=_blank>Dúvidas?</a></div>');
         el.append('<div class="col"><a href="/pagina/quem-somos.html" target=_blank>Quem Somos</a></div>');
-        el.append('<div class="col"><a href="/pagina/contato.html">Atendimento</a></div>');
-        el.append('<div class="col"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');        
+        el.append('<div class="col"><a href="/pagina/contato.html">Contato</a></div>');
+        el.append('<div class="col"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');   
+        //el.append('<div class="col"><a href="https://blog.canseidesergato.com/" target=_blank>FAQ</a></div>');        
     }else{
         el = $('<nav class="d-flex align-items-center row"></nav>');
+        //el.append('<div class="col"><a href="https://blog.canseidesergato.com/" target=_blank>FAQ</a></div>');    
         el.append('<div class="col px-md-4"><a href="https://blog.canseidesergato.com/" target=_blank>Blog</a></div>');
-        el.append('<div class="col px-md-4"><a href="/pagina/contato.html">Atendimento</a></div>');
+        el.append('<div class="col px-md-4"><a href="/pagina/contato.html">Contato</a></div>');
     }
     return el.prop('outerHTML');
 };
@@ -363,7 +365,7 @@ theme.generateContent.functions = function(prop, oObj){
     }else{
         el.append('<div class="col d-none d-md-block"><button class="cdsg_search_trigger" type="button"><img src="'+ CDN_PATH + 'search.svg' +'"/></button><div apx_load="search"></div></div>');
         el.append('<div class="col d-none d-md-block"><a href="/conta/favorito/listar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a></div>');
-        el.append('<div class="col position-relative functions-account"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a><ul><li><div>Olá <span class="username">humano</span>,</div><div class="logged_out mt-2">Você já tem uma conta?<div class="row mt-3"><div class="col-auto"><a class="cdsg_btn bg_green" href="/conta/login">Entrar</a></div><div class="col ps-0"><a class="cdsg_btn" href="/conta/criar?email=%20">Cadastre-se</a></div></div></div><div class="logged_in"><ul><li><a href="/conta/index"><img src="'+ CDN_PATH + 'account_account.svg' +'"/> Minha Conta</a></li><li><a href="/conta/pedidos/listar"><img src="'+ CDN_PATH + 'account_orders.svg' +'"/> Meus Pedidos</a></li><li><a href="/conta/favoritos"><img src="'+ CDN_PATH + 'account_wishlist.svg' +'"/> Meus Favoritos</a></li></ul></div></li></ul></div>');
+        el.append('<div class="col position-relative functions-account"><a href="/conta/index"><img src="'+ CDN_PATH + 'user.svg' +'"/></a><ul><li><div>Olá, <span class="username">humano</span></div><div class="logged_out mt-2">Você já tem uma conta?<div class="row mt-3"><div class="col-auto"><a class="cdsg_btn bg_green" href="/conta/login">Entrar</a></div><div class="col ps-0"><a class="cdsg_btn" href="/conta/criar?email=%20">Cadastre-se</a></div></div></div><div class="logged_in"><ul><li><a href="/conta/index"><img src="'+ CDN_PATH + 'account_account.svg' +'"/> Minha Conta</a></li><li><a href="/conta/pedidos/listar"><img src="'+ CDN_PATH + 'account_orders.svg' +'"/> Meus Pedidos</a></li><li><a href="/conta/favoritos"><img src="'+ CDN_PATH + 'account_wishlist.svg' +'"/> Meus Favoritos</a></li></ul></div></li></ul></div>');
         el.append('<div class="col">'+ theme.headerCart +'</a></div>');
         el.find('.carrinho .icon-shopping-cart').before('<img src="'+ CDN_PATH + 'cart.svg' +'"/>');
         el.find('.carrinho .icon-shopping-cart').remove();
@@ -373,7 +375,7 @@ theme.generateContent.functions = function(prop, oObj){
 
 theme.generateContent.search = function(prop, oObj){
     let el = $('<div class="container"><button class="cdsg_search_trigger" type="button"></div>');
-    el.append('<div class="cdsg_search_form"><form id="form-buscar" action="/buscar" method="get"><button class="botao botao-busca" aria-label="Buscar"><img src="'+ CDN_PATH + 'search_green.svg' +'"/></button><input id="auto-complete" type="text" name="q" placeholder="O que procuras, humano?" value="" autocomplete="off" maxlength="255" class="ui-autocomplete-input"><button type="button" class="clear_list"></button></form></div>');
+    el.append('<div class="cdsg_search_form"><form id="form-buscar" action="/buscar" method="get"><button class="botao botao-busca" aria-label="Buscar"><img src="'+ CDN_PATH + 'search_green.svg' +'"/></button><input id="auto-complete" type="text" name="q" placeholder="O que procura, humano?" value="" autocomplete="off" maxlength="255" class="ui-autocomplete-input"><button type="button" class="clear_list"></button></form></div>');
     el.append('<div class="cdsg_results"> <div class="row"> <div class="col-12 results-products"> <div class="row justify-content-between align-items-center count"></div><div class="row list"></div></div><div class="d-none col-12 results-blog-posts"> <div class="row count"></div><div class="row list"></div></div></div></div>');
     el.append('<div class="cdsg_suggestion"></div>');
     
@@ -415,7 +417,7 @@ theme.functions.sessionData = function(){
     let sessionAccount = sessionStorage.getItem('account') && JSON.parse(sessionStorage.getItem('account'));
 
     account.isLogged = $.cookie('LI-isUserLogged') === "false" ? false : true;
-    account.userName = $.cookie('LI-UserLoggedName') ? $.cookie('LI-UserLoggedName').split(' ')[0] : 'Visitante';
+    account.userName = $.cookie('LI-UserLoggedName') ? $.cookie('LI-UserLoggedName').split(' ')[0] : 'humano';
     
     
     if(account.isLogged){
@@ -982,7 +984,7 @@ theme.build.footer = function(){
             `<div class="col-md-auto col-12">` +
                 `<h4>${theme.lang.footer.institucional} <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="menu_footer" apx_load_prop="O CANSEI DE SER GATO"></div>` +
-                `<div class="d-md-block d-none"><h4>Onde encontrar nossos produtos <i class="d-md-none d-block expand"></i></h4>` +
+                `<div class="d-md-block d-none"><h4>Onde encontrar meus produtos <i class="d-md-none d-block expand"></i></h4>` +
                 `<div apx_load="find_where_form"></div></div>` +
                 
             `</div>` +
@@ -1022,7 +1024,7 @@ theme.build.footer = function(){
         `</div>` +
     `</div>` +
     `<hr></hr>` +
-    `<div class="container footer_bottom pb-4">` +
+    `<div class="container footer_bottom pb-2">` +
         `<div class="row align-items-center justify-content-between">` +
             `<div class="col-md-auto col-12 d-flex flex-md-row flex-column align-items-center">` +
                 `<h4 class="me-md-4">${theme.lang.footer.pagamento} <i class="d-md-none d-block expand"></i></h4>` +
@@ -2235,7 +2237,7 @@ theme.pages['pagina-produto'] = function(){
     
 
     //DMF - benefits
-    $('#buy-together-position1').before('<div apx_load="benefits" class="cdsg_benefits"></div>');    
+    //$('#buy-together-position1').before('<div apx_load="benefits" class="cdsg_benefits"></div>');    
 
     //testimonials
     $('#blank-product-position4').after('<div class="cms_product_testimonials"></div>');    
@@ -2453,7 +2455,12 @@ theme.functions.productInfo = function(info){
         }
 
         $('.apx_gallery').append('<a class="apx_add_wishlist" href="/conta/favorito/'+ window.PRODUTO_ID+'/adicionar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a>')
-        
+        if(theme.account && theme.account.wishlist){
+            let q = theme.account.wishlist.find(el => el.id_produto == window.PRODUTO_ID);
+            if(q){
+                $('.apx_gallery .apx_add_wishlist').addClass('already_add')
+            }
+        }
         $('.apx_gallery').removeClass('apx_loading');
     }
     
@@ -2911,7 +2918,11 @@ $(window).load(function(){
 });
 
 theme.build.afterLoad = function(){
-    $('[data-produtos-linha]:not(.slick-slider)').each(function(){
+    // $('[data-produtos-linha]:not(.slick-slider)').each(function(){
+    //     $(this).find('.nome-produto').equalHeights();
+    // }); 
+    $('[data-produtos-linha]').each(function(){
+        $(this).find('.cdsg_colors').equalHeights();
         $(this).find('.nome-produto').equalHeights();
     });    
 }
