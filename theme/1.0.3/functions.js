@@ -1294,7 +1294,7 @@ theme.functions.sidePage = function(){
 }
 
 theme.lang.faq = [];
-theme.lang.faq.titulo="FAQ - Chico Responde";
+theme.lang.faq.titulo="FAQ - Chico Response";
 theme.build.faq = function(){
     let currentContent = $('#corpo .secao-principal .caixa-sombreada').html();
     let el = $('<div class="row align-items-start justify-content-between"></div>');
@@ -1393,7 +1393,7 @@ theme.build.contact_page = function(){
     
 
     el.append('<div class="col-12 col-md-3 cdsg_page_side_left">'+ currentContent +'</div>');
-    el.append(`<div class="col-md-9 col-12 cdsg_page_content contact_main mt-4"><div class="row align-items-start"><div class="col-12 col-md-4"><strong>Whatsapp</strong><p class="d-block mb-3">Você pode comprar por aqui também =)</p><div class="row align-items-center"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-12 col-md-4"><strong>E-mail</strong><a href="/pagina/formulario-de-contato.html" class="cdsg_btn">Formulário de Contato</a><p class="d-block mb-3">Ou você pode mandar um e-mail para <a href="mailto:loja@canseidesergato.com"><u><b>loja@canseidesergato.com</b></u></a></p></div><div class="col-12 col-md-4"><strong>FAQ - Chico Responde</strong><p class="mb-2">Já conhece a sessão Chico responde?<br>Aqui eu respondo dúvidas sobre:</p>${faq.prop('outerHTML')}</div></div></div>`);
+    el.append(`<div class="col-md-9 col-12 cdsg_page_content contact_main mt-4"><div class="row align-items-start"><div class="col-12 col-md-4"><strong>Whatsapp</strong><p class="d-block mb-3">Você pode comprar por aqui também =)</p><div class="row align-items-center"><div class="col-auto"><div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"><div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-12 col-md-4"><strong>E-mail</strong><a href="/pagina/formulario-de-contato.html" class="cdsg_btn">Formulário de Contato</a><p class="d-block mb-3">Ou você pode mandar um e-mail para<a href="mailto:loja@canseidesergato.com"><u><b>loja@canseidesergato.com</b></u></a></p></div><div class="col-12 col-md-4"><strong>FAQ - Chico Responde</strong><p class="mb-2">Já conhece a sessão Chico responde?<br>Aqui eu respondo dúvidas sobre:</p>${faq.prop('outerHTML')}</div></div></div>`);
     //el.append( `<div class="col-12 col-md-3 cdsg_side_page_bar ms-auto" ><b class="d-block mb-2">${theme.lang.contato.outras_formas_titulo}</b><p class="mb-2">${theme.lang.contato.outras_formas}</p><hr></hr><p class="d-block mb-3">Compre ou tire suas dúvidas por <b>WhatsApp</b></p><div class="row align-items-center"> <div class="col-auto"> <div class="row align-items-center"> <div class="col-auto"> <div apx_load="load_img" apx_load_prop="footer_whatsapp.svg"></div></div><div class="col-auto"> <div apx_load="contact_phone" class="mb-2"></div><div apx_load="contact_hour"></div></div></div></div><div class="col-auto"> <div apx_load="load_img" apx_load_prop="whatsapp_qrcode.png"></div></div></div><hr></hr><div class="row mt-4"> <div class="col-12"><b class="d-block mb-3">${theme.lang.contato.parceria_titulo}</b><p>${theme.lang.contato.parceria}</p></div></div><img class="side_img" src="${CDN_PATH + 'gato_pages__.png'}"/></div>`);
     $('#corpo .secao-principal').html('<div class="container">'+el.prop('outerHTML')+'</div>');
     $('#corpo .secao-principal').append(`<div class="container  pt-5 mt-5 contact_row_publi"><div class="row justify-content-between align-items-center"><div class="col-12 col-md-3 text-center"><img src="${CDN_PATH + 'ball.svg'}"></div><div class="col-12 col-md-3"><div class="box-publi p-4"><b class="d-block mb-2">PARCERIA E PUBLICIDADE</b><p>${theme.lang.contato.parceria}</p></div></div></div></div>`);
@@ -1976,8 +1976,8 @@ theme.pages['pagina-conta'] = function(){
     });
 
     
-    // $('.outros-enderecos fieldset').append('<div class="acao-editar"></div>');
-     $('.outros-enderecos legend a:not(.botao)').addClass('botao').appendTo('.outros-enderecos .acao-editar');
+    $('.outros-enderecos fieldset').append('<div class="acao-editar"></div>');
+    $('.outros-enderecos legend a').addClass('botao').appendTo('.outros-enderecos .acao-editar');
     
 
     $('fieldset legend .botao.principal').text('Editar');
@@ -2232,7 +2232,7 @@ theme.pages['pagina-produto'] = function(){
     
     
     //video
-    $('#buy-together-position1').before('<div class="apx_product_video"><div class="listagem mb-4"><strong class="titulo">Como Montar</strong></div></div>');    
+    $('#buy-together-position1').before('<div class="apx_product_video"></div>');    
 
     
 
@@ -2451,7 +2451,7 @@ theme.functions.productInfo = function(info){
         if(info.description.youtube_url){
             console.log(info.description.youtube_url);
             $('.apx_gallery').append(`<button onclick="theme.functions.scrollTo('.apx_product_video')" type="button" class="apx_youtube_vid"></button>`);
-            $('.apx_product_video').append(`<iframe src="https://www.youtube.com/embed/${info.description.youtube_url.split('?v=')[1]}" controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`)
+            $('.apx_product_video').html(`<iframe src="https://www.youtube.com/embed/${info.description.youtube_url.split('?v=')[1]}" controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`)
         }
 
         $('.apx_gallery').append('<a class="apx_add_wishlist" href="/conta/favorito/'+ window.PRODUTO_ID+'/adicionar"><img src="'+ CDN_PATH + 'wishlist.svg' +'"/></a>')
@@ -2542,31 +2542,39 @@ theme.functions.headerCategoriesDropdown = function(){
         
         if($('#cabecalho .nivel-um > .com-filho').length > 0){
             $('#cabecalho .nivel-um > .com-filho').each(function(){
-                let title = $(this).children('a').text();
-                let href = $(this).children('a').attr('href');
-                
-                $(this).find('.nivel-dois').prepend(`<li class="sub_header"><strong>${title}</strong></li>`);
-                $(this).find('.nivel-dois').append(`<li class="sub_cta"><a href="${href}">Ver todos os produtos</a></li>`);
+                $(this).find('.nivel-dois > li > a').each(function(){
+                    let me = $(this);
+                    let txt = $(this).text().toLowerCase().trim();
+                    let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
 
-                // $(this).find('.nivel-dois > li > a').each(function(){
-                //     let me = $(this);
-                //     let txt = $(this).text().toLowerCase().trim();
-                //     let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
-
-                //     q ? me.prepend(`<div class="image"><img src="${q.attributes.icon && q.attributes.icon.data && q.attributes.icon.data[0].attributes.url || 'https://via.placeholder.com/111x111'}"/></div>`) : me.prepend(`<div class="image"><img src="https://via.placeholder.com/111x111"/></div>`)
-                // });
+                    q ? me.prepend(`<div class="image"><img src="${q.attributes.icon && q.attributes.icon.data && q.attributes.icon.data[0].attributes.url || 'https://via.placeholder.com/111x111'}"/></div>`) : me.prepend(`<div class="image"><img src="https://via.placeholder.com/111x111"/></div>`)
+                });
                 
                 if($(this).closest('#cdsg_mobile_menu').length == 0){
-                    $(this).find('.nivel-dois').wrap('<div class="cdsg_dropdown_box justify-content-between "></div>');
-                    $(this).find('.nivel-dois').wrap('<div class="d-flex justify-content-between flex-column spacer_menu p-5"></div>');
-                    $(this).find('.sub_header').prependTo($(this).find('.spacer_menu'))
-                    $(this).find('.sub_cta').appendTo($(this).find('.spacer_menu'))
+                    $(this).find('.nivel-dois').wrap('<div class="cdsg_dropdown_box container justify-content-between align-items-center"></div>');
+
                     let me = $(this);
                     let txt = $(this).find('.titulo').text().toLowerCase().trim();
                     let q = cms_categories.find(el => el.attributes.title.toLowerCase().trim() == txt);
 
-                    
                     if(q){
+                        if(q.attributes.dropdown_left_banner && q.attributes.dropdown_left_banner.Image && q.attributes.dropdown_left_banner.Image.data){
+                            let el = $('<div class="dropdown_left_banner col-auto"></div>');                        
+                            let box;
+                            if(q.attributes.dropdown_left_banner.url != ""){
+                                box = $('<a href="'+ q.attributes.dropdown_left_banner.url +'"></a>');
+                            }else{
+                                box = $('<div></div>');
+                            }
+
+                            q.attributes.dropdown_left_banner.Image.data.attributes.url ? box.append(`<img src="${q.attributes.dropdown_left_banner.Image.data.attributes.url}"/>`) : false;
+                            q.attributes.dropdown_left_banner.title ? box.append(`<strong>${q.attributes.dropdown_left_banner.title}</strong>`) : false;
+                            q.attributes.dropdown_left_banner.button_text ? box.append(`<button>${q.attributes.dropdown_left_banner.button_text}</button>`) : false;
+
+                            el.append(box);
+                            me.children('.cdsg_dropdown_box').prepend(el)
+                        }
+
                         if(q.attributes.dropdown_right_banner && q.attributes.dropdown_right_banner.Image && q.attributes.dropdown_right_banner.Image.data){
                             let el = $('<div class="dropdown_right_banner col-auto"></div>');                        
                             let box;

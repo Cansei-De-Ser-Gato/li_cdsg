@@ -82,15 +82,10 @@
     --forbiden_f_title:40px;
     --forbiden_f_text:19px;
 
-    /* --faq_header_f_text:45px; */
-    --faq_header_f_text:36px;
+    --faq_header_f_text:45px;
     --faq_menu_f_text:14px;
     --faq_f_title:25px;
-    /* --faq_f_text:20px; */
-    --faq_f_text:16px;
-
-    /* --text_side_pages:18px; */
-    --text_side_pages:14px;
+    --faq_f_text:20px;
 
     --menu_dropdown_text_f_size:14px;
     --menu_dropdown_banner_f_size:36px;
@@ -1475,6 +1470,7 @@ padding-right: calc(var(--bs-gutter-x) * .5);
 .menu.superior > .nivel-um > li.com-filho{position: initial;}
 .menu.superior > .nivel-um > li.com-filho:hover .cdsg_dropdown_box{
     display: flex;
+    justify-content: space-between;
     left: 0;
 }
 .menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box{
@@ -1493,8 +1489,7 @@ padding-right: calc(var(--bs-gutter-x) * .5);
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
-    /* max-width: 535px; */
-    max-width: 370px;
+    max-width: 535px;
     align-items: flex-start;
 }
 .menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box .nivel-dois li,
@@ -1524,7 +1519,16 @@ padding-right: calc(var(--bs-gutter-x) * .5);
     height: 100%;
     object-fit: cover;
 }
-.menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box {
+.menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100vw;
+    left: 50%;
+    translate: -50% 0;
+    z-index: -1;
+    background: #f2f2f2;
     box-shadow: 0px 4px 4px rgba(0,0,0,.25);
 }
 .menu.superior > .nivel-um > li.com-filho .cdsg_dropdown_box:after {display: none;}
@@ -4044,7 +4048,7 @@ body.pagina-carrinho #corpo .finalizar-compra .acao-editar .botao.principal{
 .cdsg_side_left{}
 .cdsg_page_side_left h1{line-height: initial;margin-bottom: 2rem;margin-top: 0;}
 .cdsg_page_side_left p{
-    font-size: var(--text_side_pages);
+    font-size: 18px;
 }
 
 .cdsg_page_content.contact{}
@@ -4506,19 +4510,12 @@ body .modal-modalNewsletter .fancybox-close:before,
     position: relative;
 }
 .apx_product_video iframe{
-    /* width: 100vw;
+    width: 100vw;
     position: relative;
     left: 50%;
     translate: -50% 0;
     height: calc(100vw * .563);
-    margin-bottom: -3px; */
-    width: 80%;
-    aspect-ratio: 1.7;
-    height: auto;
-    left: auto;
-    translate: unset;
-    margin: 0 auto;
-    display: block;
+    margin-bottom: -3px;
 }
 @media(max-width:990px){
     body,
@@ -5892,8 +5889,7 @@ form[action$="/conta/criar"] button{
     padding: 0.5rem 1rem!important;
     text-align: left;
     font-size: 16px;
-    background: #000;
-    color: #fff;
+    background: var(--violet);
     margin: 0 -1.5rem 1.5rem -1.5rem;
     width: calc(100% + 3rem);
     box-sizing: border-box;
@@ -6083,108 +6079,4 @@ body .modal-modalNewsletter .fancybox-close{
 body:not(.pagina-inicial) #barraNewsletter.posicao-rodape{
     border-top: 1px solid #d9d9d9;
     padding-top: 2rem;
-}
-
-.cdsg_dropdown_box{}
-.cdsg_dropdown_box .nivel-dois{
-    flex-direction: column!important;
-    gap: 0!important;
-    padding: 0!important;
-}
-
-.cdsg_dropdown_box .nivel-dois li{flex: 0 0 auto!important;}
-.cdsg_dropdown_box .nivel-dois li{
-    border-bottom: 1px solid #dedede!important;
-    width: fit-content;
-    min-width: 150px;
-    text-align: left;
-    justify-content: left;
-    align-items: flex-start;
-    padding: 5px 0!important;
-}
-
-.cdsg_dropdown_box .nivel-dois li a{
-display: block;    
-width: fit-content;
-}
-.cdsg_dropdown_box .sub_cta a{
-    
-    font-size:var(--menu_dropdown_button_f_size);
-    background: var(--green);
-    line-height: 38px;
-    padding: 0 1.5rem;
-    border: 0;
-    border-radius: 20px;
-    font-weight: bold;
-    color: #fff!important;
-    text-transform: uppercase;
-    width: fit-content;
-}
-.cdsg_dropdown_box .sub_header strong{font-size: 36px;display: block;line-height: initial;}
-/* .menu.superior > .nivel-um > li.com-filho:hover .cdsg_dropdown_box{
-    align-items: flex-start;
-} */
-
-.categoria-id-19984657  .cdsg_dropdown_box .nivel-dois{
-    flex-direction: row!important;
-    flex-wrap: wrap!important;
-}
-.categoria-id-19984657 .cdsg_dropdown_box .nivel-dois{
-    justify-content: flex-start;
-}
-.categoria-id-19984657 .cdsg_dropdown_box .nivel-dois li{
-    width: calc(50% - 1rem);
-}
-.categoria-id-19984657 .cdsg_dropdown_box .nivel-dois li:nth-child(even){
-    margin-left: 2rem;
-}
-.sub_header,
-.sub_cta{padding: 0!important;}
-/* .spacer_menu{height: 100%;} */
-/* .categoria-id-19984657 .cdsg_dropdown_box .nivel-dois li:not(:first-child):not(:last-child){
-    width: calc(50% - 1rem);
-}
- */
-/* .categoria-id-19984657 .cdsg_dropdown_box .nivel-dois li:last-child a{width: fit-content;}
-.categoria-id-19984657  .cdsg_dropdown_box .nivel-dois li:first-child,
-.categoria-id-19984657  .cdsg_dropdown_box .nivel-dois li:last-child{width: 100%!important;} */
-
-.endereco-adicional.span6{
-    width: 100%;
-    margin: 0;
-}
-.endereco-adicional .acao-editar{gap: 1rem;}
-
-
-@media(min-width:990px){
-    .pagina-cadastro .dados-pessoais{}
-    .pagina-cadastro .dados-pessoais:after,
-    .pagina-cadastro .dados-pessoais:before{
-        display: none;
-    }
-    .pagina-cadastro .dados-pessoais > .span6{
-        width: 100%;
-        max-width: 100%;
-    }
-    .pagina-cadastro .dados-pessoais{
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-    .pagina-cadastro .dados-pessoais > .span6 fieldset{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0 2rem;
-    }
-    .pagina-cadastro .dados-pessoais > .span6 fieldset .control-group{
-        width: calc(50% - 1rem);
-        float: none;
-    }
-}
-
-[for="id_cep"] + .controls .help-inline{
-    text-align: right;
-    margin-top: -1rem;
-    margin-bottom: 1rem;
 }
