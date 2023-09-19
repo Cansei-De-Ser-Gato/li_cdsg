@@ -2205,7 +2205,25 @@ theme.pages['pagina-pagina'] = function(){
     } 
 
     if(page_title == 'quem somos'){
-        //$('.conteudo').load('http://127.0.0.1:5500/quem_somos.html');                                          
+        $('.conteudo').load('http://127.0.0.1:5500/html/quem_somos.html', function(){
+            $('.historia_main').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: true,
+                dots:false,
+                asNavFor: '.historia_nav'
+            });
+            $('.historia_nav').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                asNavFor: '.historia_main',
+                dots: true,
+                arrows:true,
+                prevArrow: '<button type="button" class="apx_arrow prev"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>',
+                nextArrow: '<button type="button" class="apx_arrow next"><img src="' + CDN_PATH + 'arrow_slider_black_l.svg'  + '"/></button>'    
+            });
+        });                                          
         let html = $('.conteudo .quem_somos').html();
         $('.conteudo').html(html)
 

@@ -6389,3 +6389,54 @@ width: fit-content;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+/* 19set2023 */
+@media(max-width:990px){
+    [data-page="quem somos"] #navegacao a{font-size:18px}
+    [data-page="quem somos"] #origem .box p{font-size: 16px;}
+    [data-page="quem somos"] #navegacao > div{justify-content: space-between!important;}
+    [data-page="quem somos"] #origem .box {
+        margin: 0 -1.4rem;
+    }
+    [data-page="quem somos"] #origem .floating img{max-width: 100%;}
+    [data-page="quem somos"] #origem .floating{
+        position: relative;
+        left: auto;
+        width: 100%;
+        right: 0;
+        
+        max-width: 100%;
+    }
+    [data-page="quem somos"] #origem .floating > img{
+        margin: 0 -1.4rem 0 auto;
+    }
+    [data-page="quem somos"] #origem .floating .row{
+        flex-direction: column;
+        gap: 2rem;
+    }
+    [data-page="quem somos"] #historia .historia_main {
+        width: 100%;
+        left: unset;
+        translate: unset;
+    }
+    [data-page="quem somos"] #historia .floating{
+        position: relative;
+        right: unset;
+        bottom: unset;
+        max-width: 100%;
+    }
+    [data-page="quem somos"] #historia {
+        flex-direction: column-reverse;
+        display: flex;
+    }
+    [data-page="quem somos"] #historia .historia_main img,
+    #dmf  .dmf_main {margin: 0 -1.4rem;}
+    #dmf .dmf_block{
+        margin: 2rem -1.4rem 2rem -1.4rem;
+        margin-bottom: unset;
+        padding: 3rem;
+        height: auto;
+    }
+    [data-page="quem somos"] #historia .historia_nav .item{height: auto;}
+    [data-page="quem somos"] #historia .historia_nav .item p{padding:0 3rem}
+}
