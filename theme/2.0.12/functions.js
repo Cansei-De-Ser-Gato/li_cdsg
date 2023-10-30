@@ -2994,7 +2994,7 @@ theme.functions.popFunctions = function(){
         e.preventDefault();
         $('#cdsg_pop_cart').addClass('cdsg_loading');
         let href = $(this).attr('href');
-        $.get(href, function(){
+        $.get(href, function(response){
             if(response.status == "sucesso"){
                 $(document).trigger('li_change_quantity', [{
                     item_id : response.produto_id,
