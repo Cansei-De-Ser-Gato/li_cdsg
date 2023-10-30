@@ -2436,7 +2436,8 @@ theme.pages['pagina-categoria'] = function(){
     
 
 }
-
+theme.pages['pagina-busca'] = theme.pages['pagina-categoria']();
+theme.pages['pagina-marca'] = theme.pages['pagina-categoria']();
 theme.pages['pagina-404'] = function(){
     $('#corpo').addClass('pagina-404');
     $('#corpo .secao-principal').html(`<div class="my-md-5 py-md-5"><div class="row justify-content-center align-items-center"><div class="col-6"><img src="${CDN_PATH + '404.svg'}"/></div><div class="col-12 col-md-5"><h1 class="mb-5">${theme.lang.nao_encontrado.titulo}</h1><p>${theme.lang.nao_encontrado.texto}</p></div></div></div>`);
