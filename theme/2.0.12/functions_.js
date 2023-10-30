@@ -3,7 +3,7 @@
 
 const CDN_PATH = "https://cdn.jsdelivr.net/gh/Cansei-De-Ser-Gato/li_cdsg/assets/";
 const CMS_PATH = "https://cms-cdsg.up.railway.app/api";
-
+w
 var map;
 let theme = [];
 
