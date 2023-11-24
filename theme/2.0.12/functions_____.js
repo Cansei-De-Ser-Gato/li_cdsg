@@ -2554,8 +2554,8 @@ theme.pages['pagina-produto'] = function(){
         $.get(href, function(response){
             console.log(response);
             if(response.status == "sucesso"){
-                if($.cookie('product_added')) {
-                    const product = JSON.parse(atob($.cookie('product_added')));
+                // if($.cookie('product_added')) {
+                //     const product = JSON.parse(atob($.cookie('product_added')));
           
                     $(document).trigger('li_add_to_cart', [{
                         item_id : response.produto.id,
@@ -2564,8 +2564,8 @@ theme.pages['pagina-produto'] = function(){
                         quantity: response.produto.quantidade
                     }]);
           
-                    $.removeCookie('product_added', { path: '/' });
-                  }
+                  //   $.removeCookie('product_added', { path: '/' });
+                  // }
                 theme.functions.loadPopCart();   
             }
             me.removeClass('cdsg_loading');
