@@ -3028,7 +3028,7 @@ theme.functions.popFunctions = function(){
                 //     item_id : response.produto_id,
                 //     quantity: response.quantidade
                 // }]);
-                let MS={id:response.carrinho_id,items:[{item_id:response.produto.id,item_sku:response.produto.sku,item_name:response.produto.nome,price:response.produto.preco,quantity:response.produto.quantidade}]};
+                let MS={id:response.carrinho_id,items:[{item_id:response.produto.id,quantity:(response.produto && response.produto.quantidade ? response.produto.quantidade : 0)}]};
                 let L=sendMetrics({type:"event",name:"add_to_cart",data:MS});
                 $(document).trigger("li_change_quantity",[L,MS]);
             }
