@@ -113,12 +113,12 @@ theme.init = function(){
         }
 
         //REDUCE IMAGES WHEN HAS A MOBILE VIEW
-        if(!trigger.includes('[mobile]') && theme.isMobile){
-            $(this).closest('li').remove();                        
-        }
-        if(trigger.includes('[mobile]') && !theme.isMobile){
-            $(this).closest('li').remove();                        
-        }
+        // if(!trigger.includes('[mobile]') && theme.isMobile){
+        //     $(this).closest('li').remove();                        
+        // }
+        // if(trigger.includes('[mobile]') && !theme.isMobile){
+        //     $(this).closest('li').remove();                        
+        // }
     });
 
     // if($('.banner.cheio img').length  == 0){
